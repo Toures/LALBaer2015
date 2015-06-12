@@ -21,9 +21,9 @@ public class GUI extends JFrame implements ActionListener {
 
 	private final static String TITLE = "IM-Planer";
 
-	private static TableData tableDataMaster;
-	private static TableData tableDataProfessor;
-	private static TableData tableDataStudent;
+	private static DataModel tableDataMaster;
+	private static DataModel tableDataProfessor;
+	private static DataModel tableDataStudent;
 
 	// Menüleiste
 	private JMenuBar jMenuBar;
@@ -100,7 +100,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == save) {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
-			System.out.println("Datei schließen");
+			
 		}
 
 	}
@@ -164,9 +164,9 @@ public class GUI extends JFrame implements ActionListener {
 
 	private void createTable() {
 
-		tableDataMaster = new TableData();
-		tableDataProfessor = new TableData();
-		tableDataStudent = new TableData();
+		tableDataMaster = new DataModel();
+		tableDataProfessor = new DataModel();
+		tableDataStudent = new DataModel();
 
 		tableMaster = new JTable(tableDataMaster);
 		tableProfessor = new JTable(tableDataProfessor);

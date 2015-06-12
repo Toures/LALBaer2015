@@ -6,13 +6,13 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 import javax.swing.table.AbstractTableModel;
 
-public class TableData extends AbstractTableModel {
+public class DataModel extends AbstractTableModel {
 	private static final int ROWS = 10;
 	private static final int COLS = 10;
 
 	private Object[][] data;
 
-	TableData() {
+	DataModel() {
 		data = new Object[ROWS][COLS];
 		for (int row = 0; row < data.length; row++) {
 			for (int col = 0; col < data[0].length; col++) {
