@@ -1,4 +1,4 @@
-package de.hs_mannheim.IB.SS15.OOT;
+package de.hs_mannheim.IB.SS15.OOT.Participants;
 
 public class Examinee extends Participant{
 
