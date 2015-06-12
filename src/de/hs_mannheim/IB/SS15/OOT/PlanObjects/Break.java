@@ -2,14 +2,15 @@ package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
 public class Break implements PlanObject{
 
-	public Break() {
-		// TODO Auto-generated constructor stub
+	private int length;
+	
+	public Break(int length) {
+		this.length = length;
 	}
 
 	@Override
 	public int getLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.length;
 	}
 
 }
