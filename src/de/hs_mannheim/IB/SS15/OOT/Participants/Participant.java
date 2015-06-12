@@ -13,9 +13,6 @@ public abstract class Participant {
 		this.subjects = subjects;
 		this.desires = desires;		
 	}
-	protected Participant(String name, Subject[] subjects) {
-		this.name = name;
-		this.subjects = subjects;
-	}	
+
 
 }
