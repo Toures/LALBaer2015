@@ -20,7 +20,6 @@ public class Exam implements PlanObject{
 		this.examiner = examiner;
 		this.assessor = assessor;
 		this.length = length;
-		//felder
 	}
 
 	@Override
