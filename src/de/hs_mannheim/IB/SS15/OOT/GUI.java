@@ -20,10 +20,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class GUI extends JFrame implements ActionListener {
 
 	private final static String TITLE = "IM-Planer";
+	private final static int NUM_OF_PLANS = 3;
 
-	private static DataModel tableDataMaster;
-	private static DataModel tableDataProfessor;
-	private static DataModel tableDataStudent;
+	private Schedule[] schedule;
+	private DataModel[] tableData;
 
 	// Menüleiste
 	private JMenuBar jMenuBar;
@@ -93,6 +93,7 @@ public class GUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// JMenuBar
 		if (e.getSource() == newFile) {
 			System.out.println("Neue Datei");
 		} else if (e.getSource() == open) {
@@ -100,8 +101,24 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == save) {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
-			
+			System.out.println("Programm beenden");
 		}
+
+		// EastButtons
+		else if (e.getSource() == btnRooms) {
+			System.out.println("btnRooms");
+		} else if (e.getSource() == btnStudents) {
+			System.out.println("btnStudents");
+		} else if (e.getSource() == btnSubjects) {
+			System.out.println("btnSubjects");
+		} else if (e.getSource() == btnAddBreak) {
+			System.out.println("btnAddBreak");
+		}
+
+	}
+
+	public Schedule createNewSchedule(String name) {
+		return new Schedule(name);
 
 	}
 
@@ -148,15 +165,15 @@ public class GUI extends JFrame implements ActionListener {
 
 		createTable();
 
-		JPanel master = new JPanel();
+		JPanel master = new JPanel(new GridLayout());
 		master.add(new JScrollPane(tableMaster));
 		tabTable.addTab("Master", master);
 
-		JPanel professor = new JPanel();
+		JPanel professor = new JPanel(new GridLayout());
 		professor.add(new JScrollPane(tableProfessor));
 		tabTable.addTab("Professor", professor);
 
-		JPanel student = new JPanel();
+		JPanel student = new JPanel(new GridLayout());
 		student.add(new JScrollPane(tableStudent));
 		tabTable.addTab("Student", student);
 
@@ -164,14 +181,21 @@ public class GUI extends JFrame implements ActionListener {
 
 	private void createTable() {
 
-		tableDataMaster = new DataModel();
-		tableDataProfessor = new DataModel();
-		tableDataStudent = new DataModel();
+		// init Arrays
+		schedule = new Schedule[NUM_OF_PLANS];
+		tableData = new DataModel[NUM_OF_PLANS];
 
-		tableMaster = new JTable(tableDataMaster);
-		tableProfessor = new JTable(tableDataProfessor);
-		tableStudent = new JTable(tableDataStudent);
+		// create Schedulers and Tables
+		for (int i = 0; i < schedule.length; i++) {
+			schedule[i] = new Schedule("Schedule " + i);
+			tableData[i] = new DataModel(20, 10);
+		}
 
+		// create JTables from DataModels
+		tableMaster = new JTable(tableData[0]);
+		tableProfessor = new JTable(tableData[1]);
+		tableStudent = new JTable(tableData[2]);
+		
 	}
 
 	private void createEastButtons() {
@@ -180,12 +204,16 @@ public class GUI extends JFrame implements ActionListener {
 		east.setLayout(new GridLayout(4, 1));
 
 		btnRooms = new JButton("Räume");
+		btnRooms.addActionListener(this);
 		east.add(btnRooms);
 		btnStudents = new JButton("Studenten");
+		btnStudents.addActionListener(this);
 		east.add(btnStudents);
 		btnSubjects = new JButton("Fächer");
+		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
 		btnAddBreak = new JButton("Pause hinzufügen");
+		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
 
 	}

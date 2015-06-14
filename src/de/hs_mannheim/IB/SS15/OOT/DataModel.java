@@ -6,43 +6,60 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.PlanObject;
+
 public class DataModel extends AbstractTableModel {
-	private static final int ROWS = 10;
-	private static final int COLS = 10;
+	private int amountOfRows;
+	private int amountOfColumns;
 
-	private Object[][] data;
+	private PlanObject[][] data;
 
-	DataModel() {
-		data = new Object[ROWS][COLS];
-		for (int row = 0; row < data.length; row++) {
-			for (int col = 0; col < data[0].length; col++) {
-				data[row][col] = "" + row * col;
+	DataModel(int rows, int columns) {
+		this.amountOfRows = rows;
+		this.amountOfColumns = columns;
+		
+		data = new PlanObject[amountOfRows][amountOfColumns];
+		for (int tempRowCounter = 0; tempRowCounter < data.length; tempRowCounter++) {
+			for (int temColumCounter = 0; temColumCounter < data[0].length; temColumCounter++) {
+				data[tempRowCounter][temColumCounter] = new PlanObject() {
+					
+					@Override
+					public int getLength() {
+						// TODO Auto-generated method stub
+						return 0;
+					}
+				};
 			}
 		}
 
 	}
 
+	@Override
 	public int getColumnCount() {
-		return COLS;
+		return amountOfColumns;
 	}
 
+	@Override
 	public int getRowCount() {
-		return ROWS;
+		return amountOfRows;
 	}
 
+	@Override
 	public String getColumnName(int col) {
-		return "" + col;
+		return "Raum " + col;
 	}
 
+	@Override
 	public Object getValueAt(int row, int col) {
 		return data[row][col];
 	}
 
-	public void setValueAt(Object value, int row, int col) {
-		data[row][col] = value.toString();
+	public void setValueAt(PlanObject value, int row, int col) {
+		data[row][col] = value;
 		fireTableCellUpdated(row, col);
 	}
 
+	@Override
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
