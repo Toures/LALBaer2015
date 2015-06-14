@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -33,6 +34,9 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem open;
 	private JMenuItem save;
 	private JMenuItem exit;
+	
+	private JMenu info;
+	private JMenuItem about;
 
 	private JTabbedPane tabTable;
 	private JTable tableMaster;
@@ -102,6 +106,8 @@ public class GUI extends JFrame implements ActionListener {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
+		} else if (e.getSource() == about) {
+			JOptionPane.showMessageDialog(this, "LALBaer2015");
 		}
 
 		// EastButtons
@@ -135,13 +141,22 @@ public class GUI extends JFrame implements ActionListener {
 		save.addActionListener(this);
 		exit = new JMenuItem("Beenden");
 		exit.addActionListener(this);
+		
+		info = new JMenu("Info");
+		
+		about = new JMenuItem("Über");
+		about.addActionListener(this);
 
 		file.add(newFile);
 		file.add(open);
 		file.add(save);
 		file.add(exit);
+		
+		info.add(about);
 
+		// add submenus to Bar
 		jMenuBar.add(file);
+		jMenuBar.add(info);
 	}
 
 	private void createLayout() {
