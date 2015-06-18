@@ -213,7 +213,7 @@ public class GUI extends JFrame implements ActionListener {
 		// create Schedulers and Tables
 		for (int i = 0; i < schedule.length; i++) {
 			schedule[i] = new Schedule("Schedule " + i);
-			tableData[i] = new DataModel(20, 10);
+			tableData[i] = new DataModel(97, 5);
 		}
 
 		// create JTables from DataModels

@@ -20,4 +20,11 @@ public class Subject {
 		return abbreviation;
 	}
 
+	@Override
+	public String toString() {
+		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
+	}
+	
+
+
 }

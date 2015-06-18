@@ -50,16 +50,26 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnRemoveSubject) {
 
-			String name = JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach entfernen", JOptionPane.PLAIN_MESSAGE);
-
+			// dropdown Menü mit den möglichen Fächern
 			ArrayList<Subject> subjects = gui.getBackend().getSubjects();
+			
+			if (subjects.size() > 0) {
+				Subject selectedSubject = (Subject) JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach entfernen", JOptionPane.QUESTION_MESSAGE, null, subjects.toArray(), subjects.get(0));
 
-			for (int i = 0; i < subjects.size(); i++) {
-				if (subjects.get(i).getName().equals(name)) {
-					subjects.remove(i);
-					return;
+				if (selectedSubject != null) {
+					for (int i = 0; i < subjects.size(); i++) {
+						if (subjects.get(i).equals(selectedSubject)) {
+							subjects.remove(i);
+							return;
+						}
+					}
 				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Fach entfernen", JOptionPane.ERROR_MESSAGE);
 			}
+			
+
+
 		}
 
 	}
