@@ -40,9 +40,9 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnAddSubject) {
 
-			String name = JOptionPane.showInputDialog(null, "Name des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
+			String name = JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
 			if (name != null) {
-				String abbreviation = JOptionPane.showInputDialog(null, "Kürzel des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
+				String abbreviation = JOptionPane.showInputDialog(this, "Kürzel des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
 				if (abbreviation != null) {
 					gui.getBackend().createSubject(name, abbreviation);
 				}
@@ -50,7 +50,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnRemoveSubject) {
 
-			String name = JOptionPane.showInputDialog(null, "Name des Fachs:", "Fach entfernen", JOptionPane.PLAIN_MESSAGE);
+			String name = JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach entfernen", JOptionPane.PLAIN_MESSAGE);
 
 			ArrayList<Subject> subjects = gui.getBackend().getSubjects();
 

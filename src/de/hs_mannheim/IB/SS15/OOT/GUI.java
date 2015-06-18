@@ -70,7 +70,7 @@ public class GUI extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		
 		// temp
-		createNewMainController();
+		backend = createNewMainController();
 
 	}
 

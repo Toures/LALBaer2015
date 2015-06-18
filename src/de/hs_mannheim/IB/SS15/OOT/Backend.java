@@ -23,12 +23,11 @@ public class Backend {
 		// TODO init Arrays
 	}
 
-	public void createSubject(String name, String abbreviation) {
+	public Subject createSubject(String name, String abbreviation) {
+		Subject returnSubject = new Subject(name, abbreviation);
+		subjects.add(returnSubject);
 
-		subjects.add(new Subject(name, abbreviation));
-
-		// return new Subject(name, abbreviation);
-
+		return returnSubject;
 	}
 
 	public ArrayList<Subject> getSubjects() {
