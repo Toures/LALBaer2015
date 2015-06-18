@@ -25,6 +25,7 @@ public class Subject {
 		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
 	}
 	
+	
 
 
 }

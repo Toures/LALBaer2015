@@ -33,5 +33,13 @@ public class Backend {
 	public ArrayList<Subject> getSubjects() {
 		return subjects;
 	}
+	public void removeSubject(String name){
+		for (Subject s : subjects) {
+			if(s.getName().equals(name)){
+				subjects.remove(s);
+			}
+			
+		}
+	}
 
 }
