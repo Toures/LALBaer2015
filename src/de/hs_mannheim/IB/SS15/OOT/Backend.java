@@ -6,6 +6,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
 public class Backend {
 
@@ -105,5 +106,22 @@ public class Backend {
 			
 		}
 	}
+	public Schedule getExaminerSchedule(Examiner examiner) {
+		Schedule ret = new Schedule("ExaminerSchedule");
+		ArrayList<Exam> temp = schedule[0].getExams();
+		for (int i = 0; i < temp.size(); i++) {
+			if (temp.get(i).getExaminer().equals(examiner)) {
+				ret.getExams().add(temp.get(i));
+			}
+		}
+		
+		return ret;
+	}
 
+	public Schedule getStudentSchedule() {
+		Schedule ret = new Schedule("StudentSchedule");
+		ArrayList<Exam> temp = schedule[0].getExams();
+		ret.setExams(temp);
+		return ret;
+	}
 }
