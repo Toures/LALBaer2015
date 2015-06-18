@@ -14,5 +14,22 @@ public abstract class Participant {
 		this.desires = desires;		
 	}
 
+	public Subject[] getSubjects() {
+		return subjects;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public Desire[] getDesires() {
+		return desires;
+	}
+
+	
+	
+
 
 }
