@@ -25,6 +25,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	private Schedule[] schedule;
 	private DataModel[] tableData;
+	
+	private Backend backend;
 
 	// Menüleiste
 	private JMenuBar jMenuBar;
@@ -66,6 +68,9 @@ public class GUI extends JFrame implements ActionListener {
 		setSize(800, 400);
 
 		setLocationRelativeTo(null);
+		
+		// temp
+		createNewMainController();
 
 	}
 
@@ -116,7 +121,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnStudents) {
 			System.out.println("btnStudents");
 		} else if (e.getSource() == btnSubjects) {
-			System.out.println("btnSubjects");
+			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
 			System.out.println("btnAddBreak");
 		}
@@ -126,6 +131,11 @@ public class GUI extends JFrame implements ActionListener {
 	public Schedule createNewSchedule(String name) {
 		return new Schedule(name);
 
+	}
+	
+	public Backend createNewMainController() {
+		return new Backend(schedule);
+		
 	}
 
 	private void createJMenuBar() {
@@ -231,6 +241,10 @@ public class GUI extends JFrame implements ActionListener {
 		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
 
+	}
+
+	public Backend getBackend() {
+		return backend;
 	}
 
 }

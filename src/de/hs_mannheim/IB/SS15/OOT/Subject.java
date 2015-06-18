@@ -2,16 +2,22 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 public class Subject {
 
-	public Subject() {
-		int i = 0;
-		i++;
-		int a = 2;
-		int b = i+a;
+	private String name;
+	private String abbreviation;
 
-		
-		
-		
-		System.out.println("ASDF");
+	private int amountOfExaminees;
+
+	public Subject(String name, String abbreviation) {
+		this.name = name;
+		this.abbreviation = abbreviation;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
 	}
 
 }
