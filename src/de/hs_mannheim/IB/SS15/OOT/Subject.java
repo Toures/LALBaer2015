@@ -20,12 +20,13 @@ public class Subject {
 		return abbreviation;
 	}
 
+	public int getAmountOfExaminees() {
+		return amountOfExaminees;
+	}
+
 	@Override
 	public String toString() {
 		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
 	}
-	
-	
-
 
 }
