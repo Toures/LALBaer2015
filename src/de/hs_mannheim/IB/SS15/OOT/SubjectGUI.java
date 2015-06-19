@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 public class SubjectGUI extends JFrame implements ActionListener {
 
@@ -33,7 +32,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		createLayout();
 
 		pack();
-		setSize(400, 200);
+//		setSize(400, 200);
 		setLocationRelativeTo(gui);
 
 		setVisible(true);
@@ -83,7 +82,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		// set Layout
 		getContentPane().setLayout(new BorderLayout());
 
-		// TODO CENTER (Liste der aktuellen Fächer)
+		// CENTER Panel
 		createTable();
 
 		// SOUTH Panel

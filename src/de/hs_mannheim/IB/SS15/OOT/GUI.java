@@ -62,10 +62,9 @@ public class GUI extends JFrame implements ActionListener {
 		// Options
 		// -------------------------------
 
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		pack();
-		setSize(800, 400);
 
 		setLocationRelativeTo(null);
 		                
@@ -120,7 +119,7 @@ public class GUI extends JFrame implements ActionListener {
 		else if (e.getSource() == btnRooms) {
 			System.out.println("btnRooms");
 		} else if (e.getSource() == btnStudents) {
-			System.out.println("btnStudents");
+			new StudentsGUI(this);
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
