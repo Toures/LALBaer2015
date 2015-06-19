@@ -125,21 +125,6 @@ public class Backend {
 		ret.setExams(temp);
 		return ret;
 	}
-	/**
-	 * Checks if the name is in the arrayList
-	 * @param list the List 
-	 * @param name the name of the element you want to check
-	 * @return true if the name is in the list false if not
-	 */
-	public boolean isInList(ArrayList<Participant> list, String name){
-		for(Participant p : list){
-			if(p.getName().equals(name)){
-				return true;
-			}
-		}
-		return false;
-		
-	}
 	
 	public void generateExams() {
 		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
