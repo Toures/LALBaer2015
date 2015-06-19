@@ -3,3 +3,6 @@
 .project
 /LALBaer2015/nbproject/private/
 /nbproject/private/
+/nbproject/
+build.xml
+manifest.mf
