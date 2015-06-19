@@ -35,13 +35,13 @@ public class Backend {
 	}
 	
 	
-	public Examiner creatExaminer (String name, Subject[] subjects, Desire[] desires){
+	public Examiner createExaminer (String name, Subject[] subjects, Desire[] desires){
 		Examiner returnExaminer = new Examiner(name, subjects, desires);
 		examiner.add(returnExaminer);
 		return returnExaminer;
 	}
 	
-	public Assessor creatAssessor (String name, Subject[] subjects){
+	public Assessor createAssessor (String name, Subject[] subjects){
 		Assessor returnAssessor = new Assessor(name, subjects);
 		assessor.add(returnAssessor);
 		return returnAssessor;
