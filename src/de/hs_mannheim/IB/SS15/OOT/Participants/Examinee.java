@@ -8,4 +8,16 @@ public class Examinee extends Participant{
 		super(name,subjects,desires);
 	}
 	
+	public boolean hasSubject(Subject subject) {
+		 for(int i = 0; i < subjects.size(); i++)
+			 if(subjects.get(i).equals(subject))
+				 return true;
+		 return false;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
 }

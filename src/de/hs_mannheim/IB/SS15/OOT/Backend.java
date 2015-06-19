@@ -16,6 +16,7 @@ public class Backend {
 	ArrayList<Examinee> examinee;
 	ArrayList<Examiner> examiner;
 	ArrayList<Assessor> assessor;
+	ArrayList<Exam> exams;
 	Schedule[] schedule;
 
 	public Backend(Schedule[] schedule) {
@@ -23,9 +24,8 @@ public class Backend {
 
 		subjects = new ArrayList<Subject>();
 		examinee = new ArrayList<Examinee>();
+		examiner = new ArrayList<Examiner>();
 		assessor = new ArrayList<Assessor>();
-		
-		
 	}
 
 	public Examinee createExaminee(String name, Subject[] subjects, Desire[] desires){
@@ -139,5 +139,93 @@ public class Backend {
 		}
 		return false;
 		
+	}
+	
+	public void generateExams() {
+		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
+		ArrayList<Exam> examCollection = new ArrayList<Exam>();
+		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
+
+		for(int count = 0; count < examinee.size(); count++){
+			examineeCollection.add(examinee.get(count));
+		}
+		
+		//get an ArrayList with the subjects sorted from highest amount of examinees to lowest
+		for (int i = 0; i < subjects.size(); i++) {
+			if(subjectsForExam.size() != 0 && subjectsForExam.get(i) != subjects.get(i)){
+				for (int j = 0; j < subjectsForExam.size(); j++) {
+					if(subjects.get(i).getAmountOfExaminees() > subjectsForExam.get(j).getAmountOfExaminees()){
+						subjectsForExam.add(j, subjects.get(i));
+						j = subjectsForExam.size();
+					}
+				}
+			}else{
+				subjectsForExam.add(subjects.get(i));
+			}
+		}
+
+		//create the amount of exams needed 100%
+		for(int i = 0; i < subjectsForExam.get(0).getAmountOfExaminees(); i++){
+			examCollection.add(new Exam());
+			examCollection.get(i).addSubject(subjectsForExam.get(0));
+		}
+		
+		ArrayList<Integer> couples = new ArrayList<Integer>();
+		int coupleCounter = 0; 
+		
+		//get an ArrayList with combination of subjects with the first subject of the list from before
+		for(int i = 1; i < subjectsForExam.size(); i++){
+			for(int cnt = 0; cnt < examinee.size(); cnt++){
+				if(examinee.get(cnt).hasSubject(subjectsForExam.get(0)) && examinee.get(cnt).hasSubject(subjectsForExam.get(i))){
+					coupleCounter++;
+				}
+			}
+			couples.add(coupleCounter);
+			coupleCounter = 0;
+		}
+		
+		int highestVal = -1, indexOfHighestVal = 0;
+		//gets the combination that appears the most
+		for (int i = 0; i < couples.size(); i++) {
+			if(i == 0){
+				highestVal = couples.get(i);
+			}else if(couples.get(i) > couples.get(indexOfHighestVal)){
+				indexOfHighestVal = i;
+				highestVal = couples.get(i);
+			}
+		}
+		
+		for(int i = 0; i < couples.get(indexOfHighestVal); i++){
+			examCollection.get(i).addSubject(subjectsForExam.get(indexOfHighestVal));
+		}
+		
+		//!!!!!!!!!!!!!filter Students that have this combination and delete them from the temp list!!!!!!!!
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE TO KEEP WORKING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		if(highestVal < subjectsForExam.get(0).getAmountOfExaminees()){
+			int difference = highestVal - subjectsForExam.get(0).getAmountOfExaminees();
+			int newIndex = 0;
+			if(couples.contains(difference)){
+				for(int i = 0; i < couples.size(); i++){
+					if(couples.get(i) == difference){
+						newIndex = i;
+					}
+				}
+			}else{
+				for (int i = 0; i < couples.size(); i++) {
+					if(couples.get(i) < difference){
+						newIndex = i;
+					}
+				}
+			}
+			
+			for(int i = 0; i < couples.get(newIndex); i++){
+				examCollection.get(i).addSubject(subjectsForExam.get(newIndex));
+			}
+			
+		}else{
+			
+		}
+
 	}
 }
