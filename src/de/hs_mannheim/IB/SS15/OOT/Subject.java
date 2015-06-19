@@ -28,5 +28,13 @@ public class Subject {
 	public String toString() {
 		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
 	}
+	
+	public boolean equals(Object sub){
+		if(this.getName().equals(((Subject)sub).getName())){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 }

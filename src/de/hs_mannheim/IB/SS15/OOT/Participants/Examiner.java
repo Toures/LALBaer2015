@@ -8,4 +8,9 @@ public class Examiner extends Participant{
 		super(name,subjects,desires);
 	}
 
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
 }
