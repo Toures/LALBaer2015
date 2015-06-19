@@ -62,13 +62,13 @@ public class GUI extends JFrame implements ActionListener {
 		// Options
 		// -------------------------------
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		pack();
 		setSize(800, 400);
 
 		setLocationRelativeTo(null);
-		
+		                
 		// temp
 		backend = createNewMainController();
 
@@ -111,6 +111,7 @@ public class GUI extends JFrame implements ActionListener {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
+                        System.exit(0);
 		} else if (e.getSource() == about) {
 			JOptionPane.showMessageDialog(this, "LALBaer2015");
 		}
