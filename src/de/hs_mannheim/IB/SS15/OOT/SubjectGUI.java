@@ -18,7 +18,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 	private GUI gui;
 
-	private JTable subjectTable;
+	private JScrollPane scrollSubjectTable;
 
 	private JPanel south;
 
@@ -92,6 +92,13 @@ public class SubjectGUI extends JFrame implements ActionListener {
 	}
 
 	private void createTable() {
+		 
+		if (scrollSubjectTable != null) {
+			// remove old subjectTable
+			getContentPane().remove(scrollSubjectTable);
+		}
+
+		// create new subjectTable
 		ArrayList<Subject> subjects = gui.getBackend().getSubjects();
 
 		String columns[] = { "Name", "Abkürzung", "Anzahl der Studenten" };
@@ -103,9 +110,13 @@ public class SubjectGUI extends JFrame implements ActionListener {
 			rows[i][2] = subjects.get(i).getAmountOfExaminees();
 		}
 
-		subjectTable = new JTable(rows, columns);
+		scrollSubjectTable = new JScrollPane(new JTable(rows, columns));
 
-		getContentPane().add(new JScrollPane(subjectTable), BorderLayout.CENTER);
+		getContentPane().add(scrollSubjectTable, BorderLayout.CENTER);
+		
+		// update UI
+		repaint();
+		revalidate();
 	}
 
 	private void createSouthButtons() {
