@@ -28,6 +28,8 @@ public class GUI extends JFrame implements ActionListener {
 	
 	private Backend backend;
 
+	
+	
 	// Men�leiste
 	private JMenuBar jMenuBar;
 
