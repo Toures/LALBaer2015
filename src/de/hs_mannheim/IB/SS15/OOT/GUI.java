@@ -1,5 +1,5 @@
 package de.hs_mannheim.IB.SS15.OOT;
-
+//testline
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,7 @@ public class GUI extends JFrame implements ActionListener {
 	
 	private Backend backend;
 
-	// Menüleiste
+	// Menï¿½leiste
 	private JMenuBar jMenuBar;
 
 	private JMenu file;
@@ -105,7 +105,7 @@ public class GUI extends JFrame implements ActionListener {
 		if (e.getSource() == newFile) {
 			System.out.println("Neue Datei");
 		} else if (e.getSource() == open) {
-			System.out.println("Datei öffnen");
+			System.out.println("Datei ï¿½ffnen");
 		} else if (e.getSource() == save) {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
@@ -145,7 +145,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		newFile = new JMenuItem("Neu");
 		newFile.addActionListener(this);
-		open = new JMenuItem("Öffnen");
+		open = new JMenuItem("ï¿½ffnen");
 		open.addActionListener(this);
 		save = new JMenuItem("Speichern");
 		save.addActionListener(this);
@@ -154,7 +154,7 @@ public class GUI extends JFrame implements ActionListener {
 		
 		info = new JMenu("Info");
 		
-		about = new JMenuItem("Über");
+		about = new JMenuItem("ï¿½ber");
 		about.addActionListener(this);
 
 		file.add(newFile);
@@ -228,16 +228,16 @@ public class GUI extends JFrame implements ActionListener {
 		east = new JPanel();
 		east.setLayout(new GridLayout(4, 1));
 
-		btnRooms = new JButton("Räume");
+		btnRooms = new JButton("Rï¿½ume");
 		btnRooms.addActionListener(this);
 		east.add(btnRooms);
 		btnStudents = new JButton("Studenten");
 		btnStudents.addActionListener(this);
 		east.add(btnStudents);
-		btnSubjects = new JButton("Fächer");
+		btnSubjects = new JButton("Fï¿½cher");
 		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
-		btnAddBreak = new JButton("Pause hinzufügen");
+		btnAddBreak = new JButton("Pause hinzufï¿½gen");
 		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
 
