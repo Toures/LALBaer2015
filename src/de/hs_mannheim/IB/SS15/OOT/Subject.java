@@ -36,5 +36,9 @@ public class Subject {
 			return false;
 		}
 	}
+	
+	public Subject cloneDeep(){
+		return new Subject(this.name, this.abbreviation);
+	}
 
 }

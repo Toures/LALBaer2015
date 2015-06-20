@@ -10,6 +10,10 @@ public abstract class Participant {
 	protected String name;
 	protected Desire[] desires;
 	
+	protected Participant(){
+		
+	}
+	
 	protected Participant(String name, Subject[] subjects, Desire[] desires) {
 		this.name = name;
 		for(int i = 0; i < subjects.length; i++){
@@ -20,6 +24,15 @@ public abstract class Participant {
 
 	public abstract String getName();
 	
+	public abstract Desire[] getDesires();
+	
+	public abstract ArrayList<Subject> getSubjects();
+	
+	public abstract void setName(String name);
+	
+	public abstract void setDesires(Desire[] desires);
+	
+	public abstract void setSubjects(ArrayList<Subject> subjects);
 
 
 }

@@ -130,9 +130,10 @@ public class Backend {
 		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
 		ArrayList<Exam> examCollection = new ArrayList<Exam>();
 		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
+		ArrayList<Examinee> tmpExamineeCollection = new ArrayList<Examinee>();
 
 		for(int count = 0; count < examinee.size(); count++){
-			examineeCollection.add(examinee.get(count));
+			examineeCollection.add(examinee.get(count).cloneDeep());
 		}
 		
 		//get an ArrayList with the subjects sorted from highest amount of examinees to lowest
@@ -140,12 +141,12 @@ public class Backend {
 			if(subjectsForExam.size() != 0 && subjectsForExam.get(i) != subjects.get(i)){
 				for (int j = 0; j < subjectsForExam.size(); j++) {
 					if(subjects.get(i).getAmountOfExaminees() > subjectsForExam.get(j).getAmountOfExaminees()){
-						subjectsForExam.add(j, subjects.get(i));
+						subjectsForExam.add(j, subjects.get(i).cloneDeep());
 						j = subjectsForExam.size();
 					}
 				}
 			}else{
-				subjectsForExam.add(subjects.get(i));
+				subjectsForExam.add(subjects.get(i).cloneDeep());
 			}
 		}
 
@@ -184,11 +185,33 @@ public class Backend {
 			examCollection.get(i).addSubject(subjectsForExam.get(indexOfHighestVal));
 		}
 		
-		//!!!!!!!!!!!!!filter Students that have this combination and delete them from the temp list!!!!!!!!
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE TO KEEP WORKING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//if examinees with only 2 subjects exist and have this sepcific combination they get inserted
+		int newCnt = 0;
+		for(int i = 0; i < examineeCollection.size(); i++){
+			if(examineeCollection.get(i).getSubjects().size() == 2){
+				if(examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[0]) 
+						&& examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[1])){
+					examCollection.get(newCnt).setExaminee(examineeCollection.get(i));
+					examineeCollection.remove(i);
+					newCnt++;
+				}
+			}
+		}
+		
+		for(int i = 0; i < examineeCollection.size(); i++){
+			if(examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[0]) 
+					&& examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[1])){
+				examCollection.get(newCnt).setExaminee(examineeCollection.get(i));
+				tmpExamineeCollection.add(examineeCollection.get(i));
+				examineeCollection.remove(i);
+				newCnt++;
+			}
+		}
+		
+		
 		
 		if(highestVal < subjectsForExam.get(0).getAmountOfExaminees()){
-			int difference = highestVal - subjectsForExam.get(0).getAmountOfExaminees();
+			int difference = highestVal - subjectsForExam.get(0).getAmountOfExaminees(), secondDiff;
 			int newIndex = 0;
 			if(couples.contains(difference)){
 				for(int i = 0; i < couples.size(); i++){
@@ -201,6 +224,16 @@ public class Backend {
 					if(couples.get(i) < difference){
 						newIndex = i;
 					}
+				}
+				secondDiff = difference - couples.get(newIndex);
+				if(couples.contains(secondDiff)){
+					for(int i = 0; i < couples.size(); i++){
+						if(couples.get(i) == secondDiff){
+							newIndex = i;
+						}
+					}
+				}else{
+					
 				}
 			}
 			
