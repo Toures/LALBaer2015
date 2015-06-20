@@ -6,7 +6,7 @@ import de.hs_mannheim.IB.SS15.OOT.Subject;
 
 public class Examiner extends Participant{
 
-	public Examiner(String name, Subject[] subjects, Desire[] desires) {
+	public Examiner(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires) {
 		super(name,subjects,desires);
 	}
 
@@ -16,7 +16,7 @@ public class Examiner extends Participant{
 	}
 
 	@Override
-	public Desire[] getDesires() {
+	public ArrayList<Desire> getDesires() {
 		return this.desires;
 	}
 
@@ -31,7 +31,7 @@ public class Examiner extends Participant{
 	}
 
 	@Override
-	public void setDesires(Desire[] desires) {
+	public void setDesires(ArrayList<Desire> desires) {
 		this.desires = desires;
 	}
 

@@ -11,6 +11,8 @@ public class Schedule {
 
 	private ArrayList<Exam> exams;
 	private ArrayList<Break> breaks;
+	
+	public DataModel table;
 
 	public Schedule(String name) {
 		this.name = name;
@@ -18,8 +20,8 @@ public class Schedule {
 	}
 
 	public DataModel createNewTable(int rows, int columns) {
-		return new DataModel(rows, columns);
-		
+		table = new DataModel(rows, columns);
+		return table;
 	}
 
 	public String getName() {

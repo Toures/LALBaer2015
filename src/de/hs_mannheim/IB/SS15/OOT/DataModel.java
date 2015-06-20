@@ -63,8 +63,11 @@ public class DataModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		if (col == 0) {
-			int time = 480 + 5 * row;
-			return (time / 60) + ":" + (time % 60);
+			int time = Backend.TIME_BEGIN + 5 * row;
+			if(time % 60 < 10)
+				return (time / 60) + ":0" + (time % 60);
+			else
+				return (time / 60) + ":" + (time % 60);
 		}
 
 		return data[row][col];

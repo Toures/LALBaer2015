@@ -10,7 +10,7 @@ public class Examinee extends Participant{
 
 	}
 
-	public Examinee(String name, Subject[] subjects, Desire[] desires) {
+	public Examinee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires) {
 		super(name,subjects,desires);
 	}
 
@@ -24,9 +24,9 @@ public class Examinee extends Participant{
 	public Examinee cloneDeep(){
 		Examinee clonedExaminee = new Examinee();
 		ArrayList<Subject> clonedSubjects = new ArrayList<Subject>();
-		Desire[] clonedDesires = new Desire[this.desires.length];
-		for(int i = 0; i < this.getSubjects().size(); i++){
-			clonedDesires[i] = this.getDesires()[i].cloneDeep();
+		ArrayList<Desire> clonedDesires = new ArrayList<Desire>();
+		for(int i = 0; i < this.getDesires().size(); i++){
+			clonedDesires.add(this.getDesires().get(i).cloneDeep());
 		}
 		for(int i = 0; i < this.getSubjects().size(); i++){
 			clonedSubjects.add(this.getSubjects().get(i).cloneDeep());
@@ -43,7 +43,7 @@ public class Examinee extends Participant{
 	}
 
 	@Override
-	public Desire[] getDesires() {
+	public ArrayList<Desire> getDesires() {
 		return this.desires;
 	}
 
@@ -58,7 +58,7 @@ public class Examinee extends Participant{
 	}
 
 	@Override
-	public void setDesires(Desire[] desires) {
+	public void setDesires(ArrayList<Desire> desires) {
 		this.desires = desires;
 	}
 

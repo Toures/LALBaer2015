@@ -7,7 +7,7 @@ import de.hs_mannheim.IB.SS15.OOT.Subject;
 
 public class Assessor extends Participant {
 
-	public Assessor(String name, Subject[] subjects) {
+	public Assessor(String name, ArrayList<Subject> subjects) {
 		super(name, subjects, null);
 	}
 
@@ -17,7 +17,7 @@ public class Assessor extends Participant {
 	}
 
 	@Override
-	public Desire[] getDesires() {
+	public ArrayList<Desire> getDesires() {
 		return this.desires;
 	}
 
@@ -32,7 +32,7 @@ public class Assessor extends Participant {
 	}
 
 	@Override
-	public void setDesires(Desire[] desires) {
+	public void setDesires(ArrayList<Desire> desires) {
 		this.desires = desires;
 	}
 

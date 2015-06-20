@@ -2,6 +2,7 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 import java.util.ArrayList;
 
+import sun.security.util.Length;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
@@ -10,6 +11,10 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Participant;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
 public class Backend {
+	
+	public static final int TIME_BEGIN = 8*60; // 8:00 am
+	public static final int TIME_END = 20*60; // 8:00 pm
+	static final int MAX_PARALLEL_EXAMS = 3;
 
 	ArrayList<Subject> subjects;
 
@@ -28,20 +33,20 @@ public class Backend {
 		assessor = new ArrayList<Assessor>();
 	}
 
-	public Examinee createExaminee(String name, Subject[] subjects, Desire[] desires){
+	public Examinee createExaminee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires){
 		Examinee returnExaminee = new Examinee(name,subjects, desires);
 		examinee.add(returnExaminee);
 		return returnExaminee;
 	}
 	
 	
-	public Examiner createExaminer (String name, Subject[] subjects, Desire[] desires){
+	public Examiner createExaminer (String name, ArrayList<Subject> subjects, ArrayList<Desire> desires){
 		Examiner returnExaminer = new Examiner(name, subjects, desires);
 		examiner.add(returnExaminer);
 		return returnExaminer;
 	}
 	
-	public Assessor createAssessor (String name, Subject[] subjects){
+	public Assessor createAssessor (String name, ArrayList<Subject> subjects){
 		Assessor returnAssessor = new Assessor(name, subjects);
 		assessor.add(returnAssessor);
 		return returnAssessor;
@@ -245,5 +250,43 @@ public class Backend {
 			
 		}
 
+	}
+	
+	/**
+	 * Generates the master table with all given exams.
+	 */
+	public void generateMasterTable() {
+		
+		int times[] = new int[MAX_PARALLEL_EXAMS];
+		DataModel master = schedule[0].createNewTable((TIME_END-TIME_BEGIN)/5, MAX_PARALLEL_EXAMS); //New master table
+		int favoriteRow[] = new int[examiner.size()]; //The first time an examiner is added to the master plan, he will be preferably put in the same column.
+		boolean tested[] = new boolean[examinee.size()]; //If someone already was tested and has another exam, the program will try to put those exams far away, time-wise.
+		
+		//---Begin with examiners and their favouriteRow---//
+		for(Exam exam : exams) {
+			Examiner[] examiner = exam.getExaminer();
+			int examiner1Index = this.examiner.indexOf(examiner[0]);
+			int examiner2Index = this.examiner.indexOf(examiner[1]);
+			
+			//CASE: first occurence of examiner
+			if(favoriteRow[examiner1Index] == 0) { //Has no favorite row yet.
+				int col = 0, lowestTime = 48*60;
+				for(int i = 0; i < times.length; i++) {
+					if(times[i] > lowestTime) {
+						lowestTime = times[i];
+						col = i;
+					}
+				}
+				favoriteRow[examiner1Index] = col; //New favorite row
+				if(favoriteRow[examiner2Index] == 0)
+					favoriteRow[examiner2Index] = col;
+			}
+			
+			if(exam.checkDesires(3, times[favoriteRow[examiner1Index]])) { //No overlapping?
+				master.setValueAt(exam, times[favoriteRow[examiner1Index]], favoriteRow[examiner1Index]);
+				
+			}
+				
+		}
 	}
 }
