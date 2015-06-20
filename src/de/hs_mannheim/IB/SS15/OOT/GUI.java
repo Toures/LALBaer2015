@@ -1,5 +1,5 @@
 package de.hs_mannheim.IB.SS15.OOT;
-//testline
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -25,11 +25,9 @@ public class GUI extends JFrame implements ActionListener {
 
 	private Schedule[] schedule;
 	private DataModel[] tableData;
-	
+
 	private Backend backend;
 
-	
-	
 	// Men�leiste
 	private JMenuBar jMenuBar;
 
@@ -38,7 +36,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem open;
 	private JMenuItem save;
 	private JMenuItem exit;
-	
+
 	private JMenu info;
 	private JMenuItem about;
 
@@ -64,12 +62,12 @@ public class GUI extends JFrame implements ActionListener {
 		// Options
 		// -------------------------------
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		pack();
 
 		setLocationRelativeTo(null);
-		                
+
 		// temp
 		backend = createNewMainController();
 
@@ -112,7 +110,7 @@ public class GUI extends JFrame implements ActionListener {
 			System.out.println("Datei speichern");
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
-                        System.exit(0);
+			System.exit(0);
 		} else if (e.getSource() == about) {
 			JOptionPane.showMessageDialog(this, "LALBaer2015");
 		}
@@ -134,10 +132,10 @@ public class GUI extends JFrame implements ActionListener {
 		return new Schedule(name);
 
 	}
-	
+
 	public Backend createNewMainController() {
 		return new Backend(schedule);
-		
+
 	}
 
 	private void createJMenuBar() {
@@ -153,9 +151,9 @@ public class GUI extends JFrame implements ActionListener {
 		save.addActionListener(this);
 		exit = new JMenuItem("Beenden");
 		exit.addActionListener(this);
-		
+
 		info = new JMenu("Info");
-		
+
 		about = new JMenuItem("�ber");
 		about.addActionListener(this);
 
@@ -163,7 +161,7 @@ public class GUI extends JFrame implements ActionListener {
 		file.add(open);
 		file.add(save);
 		file.add(exit);
-		
+
 		info.add(about);
 
 		// add submenus to Bar
@@ -222,7 +220,7 @@ public class GUI extends JFrame implements ActionListener {
 		tableMaster = new JTable(tableData[0]);
 		tableProfessor = new JTable(tableData[1]);
 		tableStudent = new JTable(tableData[2]);
-		
+
 	}
 
 	private void createEastButtons() {

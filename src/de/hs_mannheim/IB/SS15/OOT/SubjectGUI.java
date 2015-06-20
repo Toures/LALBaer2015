@@ -32,7 +32,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		createLayout();
 
 		pack();
-//		setSize(400, 200);
+		// setSize(400, 200);
 		setLocationRelativeTo(gui);
 
 		setVisible(true);
@@ -91,7 +91,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 	}
 
 	private void createTable() {
-		 
+
 		if (scrollSubjectTable != null) {
 			// remove old subjectTable
 			getContentPane().remove(scrollSubjectTable);
@@ -112,7 +112,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		scrollSubjectTable = new JScrollPane(new JTable(rows, columns));
 
 		getContentPane().add(scrollSubjectTable, BorderLayout.CENTER);
-		
+
 		// update UI
 		repaint();
 		revalidate();
