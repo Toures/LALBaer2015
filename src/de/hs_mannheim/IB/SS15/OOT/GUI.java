@@ -60,6 +60,7 @@ public class GUI extends JFrame implements ActionListener {
 		createJMenuBar();
 		createLayout();
 
+		
 		// -------------------------------
 		// Options
 		// -------------------------------
@@ -108,14 +109,12 @@ public class GUI extends JFrame implements ActionListener {
 			System.out.println("Neue Datei");
 		} else if (e.getSource() == open) {
 			// Opening FileChooser for open Dialog
-			// TODO Data object needs to be serializable
 			JFileChooser fc = new JFileChooser((File)null);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
 				System.out.println("Dokument öffnen");
 			}
 		} else if (e.getSource() == save) {
 			// Opening FileChooser for save Dialog
-			// TODO Data object needs to be serializable
 			JFileChooser fc = new JFileChooser((File)null);
 			if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
 				System.out.println("Dokument beenden");
