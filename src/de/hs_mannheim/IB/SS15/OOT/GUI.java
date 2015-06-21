@@ -115,7 +115,6 @@ public class GUI extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource() == save) {
 			// Opening FileChooser for save Dialog
-			// TODO Data object needs to be serializable
 			JFileChooser fc = new JFileChooser((File)null);
 			if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
 				System.out.println("Dokument beenden");
