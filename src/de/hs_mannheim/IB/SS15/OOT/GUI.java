@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -105,9 +107,18 @@ public class GUI extends JFrame implements ActionListener {
 		if (e.getSource() == newFile) {
 			System.out.println("Neue Datei");
 		} else if (e.getSource() == open) {
-			System.out.println("Datei �ffnen");
+			// Opening FileChooser for open Dialog
+			// TODO Data object needs to be serializable
+			JFileChooser fc = new JFileChooser((File)null);
+			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+				System.out.println("Dokument öffnen");
+			}
 		} else if (e.getSource() == save) {
-			System.out.println("Datei speichern");
+			// Opening FileChooser for save Dialog
+			JFileChooser fc = new JFileChooser((File)null);
+			if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+				System.out.println("Dokument beenden");
+			}
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
 			System.exit(0);
