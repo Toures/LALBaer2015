@@ -123,6 +123,14 @@ public class Exam implements PlanObject{
 		//		dass sie in einer Prüfung beschäftigt sind und keine anderen Prüfungen beisitzen können.
 	}
 	
+	public void addExaminer(Examiner ex) {
+		if (examiner[0] == null) {
+			examiner[0] = ex;
+		} else if (examiner[1] == null) {
+			examiner[1] = ex;
+		}
+	}
+	
 	@Override
 	public String toString() {
 		String output = "Prüfung in " + subjects[0].getAbbreviation();

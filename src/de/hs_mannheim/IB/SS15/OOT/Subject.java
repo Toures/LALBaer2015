@@ -24,21 +24,36 @@ public class Subject {
 		return amountOfExaminees;
 	}
 
+	public void setAmountOfExaminees(int amountOfExaminees) {
+		this.amountOfExaminees = amountOfExaminees;
+	}
+
 	@Override
 	public String toString() {
 		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
 	}
-	
-	public boolean equals(Object sub){
-		if(this.getName().equals(((Subject)sub).getName())){
+
+	public boolean equals(Object sub) {
+		if (this == sub) {
 			return true;
-		}else{
+		} else if (sub == null) {
+			return false;
+		} else if (this.getName().equals(((Subject) sub).getName())) {
+			return true;
+		} else {
 			return false;
 		}
 	}
-	
-	public Subject cloneDeep(){
-		return new Subject(this.name, this.abbreviation);
+
+	public Subject cloneDeep() {
+		Subject clonedSub = new Subject(this.name, this.abbreviation);
+		clonedSub.setAmountOfExaminees(this.getAmountOfExaminees());
+		return clonedSub;
+	}
+
+	public void decrementAmountOfExaminees() {
+		amountOfExaminees--;
+		
 	}
 
 }

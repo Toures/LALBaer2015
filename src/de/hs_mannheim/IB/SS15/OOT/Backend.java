@@ -32,6 +32,13 @@ public class Backend {
 		examiner = new ArrayList<Examiner>();
 		assessor = new ArrayList<Assessor>();
 	}
+	
+	public Backend(ArrayList<Subject> subjects, ArrayList<Examinee> examinee, ArrayList<Examiner> examiner, ArrayList<Exam> exams) {
+		this.examinee = examinee;
+		this.examiner = examiner;
+		this.subjects = subjects;
+		this.exams = exams;
+	}
 
 	public Examinee createExaminee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires){
 		Examinee returnExaminee = new Examinee(name,subjects, desires);
@@ -131,123 +138,273 @@ public class Backend {
 		return ret;
 	}
 	
-	public void generateExams() {
-		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
-		ArrayList<Exam> examCollection = new ArrayList<Exam>();
-		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
-		ArrayList<Examinee> tmpExamineeCollection = new ArrayList<Examinee>();
+	public void generateExams(){
+		int tmpIndex = 0;
+		boolean inserted = false;
 
+		//Lists of subjects and examinee's that got deep cloned for use
+		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
+		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
+		ArrayList<Examiner> examiners = new ArrayList<Examiner>();
+
+		//List of the exams; builds up throughout this method
+		ArrayList<Exam> examCollection = new ArrayList<Exam>();
+
+		//ArrayList that is changed several times within the method; it holds the amount of combinations of 1 chosen subject with the rest
+		ArrayList<Integer> combi1SpecSubjectAndOthers = new ArrayList<Integer>();
+
+		//sets up the examineeCollection-list with clones
 		for(int count = 0; count < examinee.size(); count++){
 			examineeCollection.add(examinee.get(count).cloneDeep());
 		}
-		
-		//get an ArrayList with the subjects sorted from highest amount of examinees to lowest
+
+		//sets up the examiners-list with clones
+		for(int count = 0; count < examiner.size(); count++){
+			examiners.add(examiner.get(count).cloneDeep());
+		}
+
+		//get an ArrayList with the subjects sorted from highest amount of examinee's to lowest (each subject cloned)
 		for (int i = 0; i < subjects.size(); i++) {
-			if(subjectsForExam.size() != 0 && subjectsForExam.get(i) != subjects.get(i)){
+			if(subjectsForExam.size() != 0){
 				for (int j = 0; j < subjectsForExam.size(); j++) {
+					inserted = false;
 					if(subjects.get(i).getAmountOfExaminees() > subjectsForExam.get(j).getAmountOfExaminees()){
 						subjectsForExam.add(j, subjects.get(i).cloneDeep());
 						j = subjectsForExam.size();
+						inserted = true;
 					}
+				}
+				if(!inserted){
+					subjectsForExam.add(subjects.get(i).cloneDeep());
 				}
 			}else{
 				subjectsForExam.add(subjects.get(i).cloneDeep());
 			}
 		}
 
-		//create the amount of exams needed 100%
 		for(int i = 0; i < subjectsForExam.get(0).getAmountOfExaminees(); i++){
 			examCollection.add(new Exam());
 			examCollection.get(i).addSubject(subjectsForExam.get(0));
 		}
-		
-		ArrayList<Integer> couples = new ArrayList<Integer>();
-		int coupleCounter = 0; 
-		
-		//get an ArrayList with combination of subjects with the first subject of the list from before
-		for(int i = 1; i < subjectsForExam.size(); i++){
-			for(int cnt = 0; cnt < examinee.size(); cnt++){
-				if(examinee.get(cnt).hasSubject(subjectsForExam.get(0)) && examinee.get(cnt).hasSubject(subjectsForExam.get(i))){
-					coupleCounter++;
-				}
-			}
-			couples.add(coupleCounter);
-			coupleCounter = 0;
-		}
-		
-		int highestVal = -1, indexOfHighestVal = 0;
-		//gets the combination that appears the most
-		for (int i = 0; i < couples.size(); i++) {
-			if(i == 0){
-				highestVal = couples.get(i);
-			}else if(couples.get(i) > couples.get(indexOfHighestVal)){
-				indexOfHighestVal = i;
-				highestVal = couples.get(i);
-			}
-		}
-		
-		for(int i = 0; i < couples.get(indexOfHighestVal); i++){
-			examCollection.get(i).addSubject(subjectsForExam.get(indexOfHighestVal));
-		}
-		
-		//if examinees with only 2 subjects exist and have this sepcific combination they get inserted
-		int newCnt = 0;
-		for(int i = 0; i < examineeCollection.size(); i++){
-			if(examineeCollection.get(i).getSubjects().size() == 2){
-				if(examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[0]) 
-						&& examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[1])){
-					examCollection.get(newCnt).setExaminee(examineeCollection.get(i));
-					examineeCollection.remove(i);
-					newCnt++;
-				}
-			}
-		}
-		
-		for(int i = 0; i < examineeCollection.size(); i++){
-			if(examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[0]) 
-					&& examineeCollection.get(i).hasSubject(examCollection.get(0).getSubjects()[1])){
-				examCollection.get(newCnt).setExaminee(examineeCollection.get(i));
-				tmpExamineeCollection.add(examineeCollection.get(i));
-				examineeCollection.remove(i);
-				newCnt++;
-			}
-		}
-		
-		
-		
-		if(highestVal < subjectsForExam.get(0).getAmountOfExaminees()){
-			int difference = highestVal - subjectsForExam.get(0).getAmountOfExaminees(), secondDiff;
-			int newIndex = 0;
-			if(couples.contains(difference)){
-				for(int i = 0; i < couples.size(); i++){
-					if(couples.get(i) == difference){
-						newIndex = i;
+
+		//the subject with the most participants needs 1 exam for each participant
+		combi1SpecSubjectAndOthers.add(-1);
+
+		while(subjectsForExam.size() > 0){
+
+			fillListOfCombinations(subjectsForExam, examineeCollection, combi1SpecSubjectAndOthers);
+			int highestComb, indexOfhighestComb;
+			indexOfhighestComb = getIndexOfHighestValue(combi1SpecSubjectAndOthers);
+			highestComb = combi1SpecSubjectAndOthers.get(indexOfhighestComb);
+
+			//combinations with other subjects exist
+			if(highestComb != 0){
+
+				for(int i = 0; i < examineeCollection.size(); i++){
+					if(examineeCollection.get(i).hasSubject(subjectsForExam.get(0)) 
+							&& examineeCollection.get(i).hasSubject(subjectsForExam.get(indexOfhighestComb))){
+
+						if(examineeCollection.get(i).getSubjects().size() == 2){
+							examCollection.get(tmpIndex).setExaminee(examineeCollection.get(i));
+							examCollection.get(tmpIndex).addSubject(subjectsForExam.get(indexOfhighestComb));
+							examineeCollection.remove(i);
+							i--;
+							tmpIndex++;
+						}else{
+							examCollection.get(tmpIndex).setExaminee(examineeCollection.get(i));
+							examCollection.get(tmpIndex).addSubject(subjectsForExam.get(indexOfhighestComb));
+							examineeCollection.get(i).removeSubject(subjectsForExam.get(indexOfhighestComb));
+							examineeCollection.get(i).removeSubject(subjectsForExam.get(0));
+							tmpIndex++;
+						}
+
+						subjectsForExam.get(indexOfhighestComb).decrementAmountOfExaminees();
+						subjectsForExam.get(0).decrementAmountOfExaminees();
 					}
 				}
+
+				//the second subject is done due to creating all these combinations, no need to work with this later on
+				if(subjectsForExam.get(indexOfhighestComb).getAmountOfExaminees() == 0){
+					subjectsForExam.remove(indexOfhighestComb);
+				}
+
+				//no combination exists
 			}else{
-				for (int i = 0; i < couples.size(); i++) {
-					if(couples.get(i) < difference){
-						newIndex = i;
-					}
-				}
-				secondDiff = difference - couples.get(newIndex);
-				if(couples.contains(secondDiff)){
-					for(int i = 0; i < couples.size(); i++){
-						if(couples.get(i) == secondDiff){
-							newIndex = i;
+
+				for(int i = 0; i < examineeCollection.size(); i++){
+					if(examineeCollection.get(i).hasSubject(subjectsForExam.get(0))){
+						examCollection.get(tmpIndex).setExaminee(examineeCollection.get(i));
+						examineeCollection.get(i).removeSubject(subjectsForExam.get(0));
+						tmpIndex++;
+						subjectsForExam.get(0).decrementAmountOfExaminees();
+						if(examineeCollection.get(i).getSubjects().size() == 0){
+							examineeCollection.remove(i);
 						}
 					}
-				}else{
+				}	
+			}
+
+			//all exams for this subjects are done, move on to the next one
+			if(subjectsForExam.get(0).getAmountOfExaminees() == 0 && subjectsForExam.size() != 1){
+				subjectsForExam.remove(0);
+				subjectsForExam = sortSubjectsToExaminees(subjectsForExam);
+				for(int i = 0; i < subjectsForExam.get(0).getAmountOfExaminees(); i++){
+					examCollection.add(new Exam());
+					examCollection.get(tmpIndex+i).addSubject(subjectsForExam.get(0));
+				}
+			}else if(subjectsForExam.get(0).getAmountOfExaminees() == 0 && subjectsForExam.size() == 1){
+				subjectsForExam.remove(0);
+			}
+
+			for(int i = 1; i < combi1SpecSubjectAndOthers.size();){
+				combi1SpecSubjectAndOthers.remove(i);
+			}
+		}
+
+		ArrayList<Exam> tmpExams = new ArrayList<Exam>();
+
+		//temporary list of all exams for use
+		for (int i = 0; i < examCollection.size(); i++) {
+			tmpExams.add(examCollection.get(i));
+		}
+
+		while(examsHaveNoExaminer(examCollection)){
+			for (int i = 0; tmpExams.size() != 0;) {
+
+				//exam with only one subject
+				if(tmpExams.get(i).getSubjects()[0] != null && tmpExams.get(i).getSubjects()[1] == null){
 					
+					for (int j = 0; j < examiners.size(); j++) {
+						if(examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[0])){
+							if(tmpExams.get(i).getExaminer()[0] == null){
+								tmpExams.get(i).addExaminer(examiners.get(j));
+							}
+						}
+					}
+					tmpExams.remove(i);
+				}else{
+
+					//looks for examiners that have both subjects of the current exams in their subject list, so there would be no need for a second examiner
+					for (int j = 0; j < examiners.size(); j++) {
+						if(examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[0])
+								&& examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[1])){
+							tmpExams.get(i).addExaminer(examiners.get(j));
+							tmpExams.remove(i);
+							examiners.remove(j);
+							j--;
+						}
+					}
+
+					//looks for examiners that have at least 1 subject of the current exam to add as examiner
+					for (int j = 0; j < examiners.size(); j++) {
+						if(examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[0])
+								|| examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[1])){
+							if(tmpExams.get(i).getExaminer()[0] == null || tmpExams.get(i).getExaminer()[1] == null){
+								tmpExams.get(i).addExaminer(examiners.get(j));
+							}else{
+								tmpExams.remove(i);
+								j = -1;
+							}
+						}
+					}
+				}
+				
+				//no examiners left, but some exams have only one examiner, they get assessors later on
+				if(examiners.size() == 0){
+					for (int j = 0; j < tmpExams.size(); j++) {
+						tmpExams.remove(j);			
+					}
+				}
+				
+				//last exam was finished, can be removed so the loop ends
+				if(tmpExams.get(i).getExaminer()[0] != null && tmpExams.size() == 1){
+					tmpExams.remove(i);
 				}
 			}
-			
-			for(int i = 0; i < couples.get(newIndex); i++){
-				examCollection.get(i).addSubject(subjectsForExam.get(newIndex));
+		}
+
+		this.exams = examCollection;
+		
+		
+		//Ausgabe für den Test
+//		for (int i = 0; i < exams.size(); i++) {
+//			System.out.println(exams.get(i).toString());
+//		}
+
+	}
+
+	private boolean examsHaveNoExaminer(ArrayList<Exam> examCol) {
+		for(int i = 0; i < examCol.size(); i++){
+			if(examCol.get(i).getExaminer() == null || examCol.get(i).getExaminer()[0] == null){
+				return true;
 			}
-			
-		}else{
-			
+		}
+		return false;
+	}
+
+	/**
+	 * Sorts a list of subjects relative to the amount of examinee's it has. From highest to lowest
+	 * @param subjList the to be sorted list of subjects
+	 * @return a sorted list of subjects relative to the amount of examinee's it has
+	 */
+	private ArrayList<Subject> sortSubjectsToExaminees(ArrayList<Subject> subjList) {
+		ArrayList<Subject> tmpSubjectList = new ArrayList<Subject>();
+		boolean inserted = false;
+
+		for (int i = 0; i < subjList.size(); i++) {
+			if(tmpSubjectList.size() != 0){
+				for (int j = 0; j < tmpSubjectList.size(); j++) {
+					inserted = false;
+					if(subjList.get(i).getAmountOfExaminees() > tmpSubjectList.get(j).getAmountOfExaminees()){
+						tmpSubjectList.add(j, subjList.get(i));
+						j = tmpSubjectList.size();
+						inserted = true;
+					}
+				}
+				if(!inserted){
+					tmpSubjectList.add(subjList.get(i));
+				}
+			}else{
+				tmpSubjectList.add(subjList.get(i));
+			}
+		}
+		return tmpSubjectList;
+	}
+
+	/**
+	 * method to get the index of the highest value in the given list
+	 * @param combinationList the list to find the highest value from
+	 * @return index of the highest value in the list
+	 */
+	private int getIndexOfHighestValue(ArrayList<Integer> combinationList){
+		int index = 0;
+		for (int i = 1; i < combinationList.size(); i++) {
+			if(combinationList.get(i) > combinationList.get(index)){
+				index = i;
+			}
+		}
+		return index;
+	}
+
+	/**
+	 * Method to fill the ArrayList<Integer> in relation to the criteria, ergo amount of examinee's
+	 * that participate in the chosen subject, but have also others. Eventually filling it up with the possible combination
+	 * of said chosen subject and their others.
+	 * @param subj list of all subjects, but u need only one specific one
+	 * @param examinee list of all examinee's
+	 * @param combinationList the to be filled list
+	 */
+	private void fillListOfCombinations(ArrayList<Subject> subj, ArrayList<Examinee> examinee, ArrayList<Integer> combinationList) {
+		int combinationCnt = 0;
+
+		for(int i = 1; i < subj.size(); i++){
+			for(int cnt = 0; cnt < examinee.size(); cnt++){
+				if(examinee.get(cnt).hasSubject(subj.get(0)) && examinee.get(cnt).hasSubject(subj.get(i))){
+					combinationCnt++;
+				}
+			}
+			combinationList.add(combinationCnt);
+			combinationCnt = 0;
 		}
 
 	}
