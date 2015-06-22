@@ -40,7 +40,10 @@ public class Backend {
 		this.exams = exams;
 	}
 
-	public Examinee createExaminee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires){
+	public Examinee createExaminee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires)throws IllegalArgumentException{
+		if(name==null||name.isEmpty()||subjects == null||desires==null){
+			throw new IllegalArgumentException();
+		}
 		Examinee returnExaminee = new Examinee(name,subjects, desires);
 		examinee.add(returnExaminee);
 		return returnExaminee;
