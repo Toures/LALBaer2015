@@ -146,7 +146,7 @@ public class StudentsGUI extends JFrame implements ActionListener {
 			public void valueChanged(ListSelectionEvent e) {
 				currentSubject = gui.getBackend().getSubjects().get(selectSubjectTable.getSelectedRow()); // update jTable				
 				mainTableModel.updateData();
-
+				// TODO update table :(
 			}
 		});
 
