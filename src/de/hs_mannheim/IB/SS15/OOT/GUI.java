@@ -135,7 +135,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
-			System.out.println("btnAddBreak");
+			new BreakGUI(this);
 		}
 
 	}
