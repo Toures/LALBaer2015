@@ -7,3 +7,5 @@
 build.xml
 manifest.mf
 .DS_Store
+.AppleDouble
+.LSOverride
