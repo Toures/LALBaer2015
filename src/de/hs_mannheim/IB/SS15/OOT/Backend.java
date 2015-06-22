@@ -323,14 +323,29 @@ public class Backend {
 			}
 		}
 
+		for(int i = 0; i < examCollection.size(); i++){
+			if(examCollection.get(i).getSubjects()[1] != null){
+				if(examCollection.get(i).getSubjects()[0].isPreEffort() && examCollection.get(i).getSubjects()[1].isPreEffort()){
+					examCollection.get(i).setLength(10);
+					
+				}else if((examCollection.get(i).getSubjects()[0].isPreEffort() && !examCollection.get(i).getSubjects()[1].isPreEffort()) 
+						|| (!examCollection.get(i).getSubjects()[0].isPreEffort() && examCollection.get(i).getSubjects()[1].isPreEffort())){
+					examCollection.get(i).setLength(15);
+					
+				}else{
+					examCollection.get(i).setLength(20);
+				}
+			}else{
+				if(examCollection.get(i).getSubjects()[0].isPreEffort()){
+					examCollection.get(i).setLength(5);
+					
+				}else{
+					examCollection.get(i).setLength(10);
+				}
+			}		
+		}
+		
 		this.exams = examCollection;
-		
-		
-		//Ausgabe für den Test
-//		for (int i = 0; i < exams.size(); i++) {
-//			System.out.println(exams.get(i).toString());
-//		}
-
 	}
 
 	private boolean examsHaveNoExaminer(ArrayList<Exam> examCol) {

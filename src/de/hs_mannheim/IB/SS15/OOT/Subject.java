@@ -4,12 +4,20 @@ public class Subject {
 
 	private String name;
 	private String abbreviation;
+	private boolean preEffort;
 
 	private int amountOfExaminees;
 
+	public Subject(String name, String abbreviation, boolean preEffort) {
+		this.name = name;
+		this.abbreviation = abbreviation;
+		this.setPreEffort(preEffort);
+	}
+	
 	public Subject(String name, String abbreviation) {
 		this.name = name;
 		this.abbreviation = abbreviation;
+		this.setPreEffort(false);
 	}
 
 	public String getName() {
@@ -54,6 +62,14 @@ public class Subject {
 	public void decrementAmountOfExaminees() {
 		amountOfExaminees--;
 		
+	}
+
+	public boolean isPreEffort() {
+		return preEffort;
+	}
+
+	public void setPreEffort(boolean preEffort) {
+		this.preEffort = preEffort;
 	}
 
 }
