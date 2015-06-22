@@ -12,11 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 
 public class SubjectGUI extends JFrame implements ActionListener {
 
-	private GUI gui;
-
+	// Swing
 	private JScrollPane scrollSubjectTable;
 
 	private JPanel south;
@@ -24,8 +24,13 @@ public class SubjectGUI extends JFrame implements ActionListener {
 	private JButton btnAddSubject;
 	private JButton btnRemoveSubject;
 
+	//
+	private GUI mainGUI;
+	private SubjectDataModel dataModel;
+	private JTable jTable;
+
 	public SubjectGUI(GUI gui) {
-		this.gui = gui;
+		this.mainGUI = gui;
 
 		setTitle("Fächer");
 
@@ -48,15 +53,15 @@ public class SubjectGUI extends JFrame implements ActionListener {
 			if (name != null) {
 				String abbreviation = JOptionPane.showInputDialog(this, "Kürzel des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
 				if (abbreviation != null) {
-					gui.getBackend().createSubject(name, abbreviation);
-					createTable();
+					mainGUI.getBackend().createSubject(name, abbreviation);
+					dataModel.updateData();
 				}
 			}
 
 		} else if (e.getSource() == btnRemoveSubject) {
 
 			// dropdown Menü mit den möglichen Fächern
-			ArrayList<Subject> subjects = gui.getBackend().getSubjects();
+			ArrayList<Subject> subjects = mainGUI.getBackend().getSubjects();
 
 			if (subjects.size() > 0) {
 				Subject selectedSubject = (Subject) JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach entfernen", JOptionPane.QUESTION_MESSAGE, null, subjects.toArray(), subjects.get(0));
@@ -92,30 +97,12 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 	private void createTable() {
 
-		if (scrollSubjectTable != null) {
-			// remove old subjectTable
-			getContentPane().remove(scrollSubjectTable);
-		}
+		dataModel = new SubjectDataModel(mainGUI);
+		jTable = new JTable(dataModel);
 
-		// create new subjectTable
-		ArrayList<Subject> subjects = gui.getBackend().getSubjects();
-
-		String columns[] = { "Name", "Abkürzung", "Anzahl der Studenten" };
-
-		Object rows[][] = new Object[subjects.size()][3];
-		for (int i = 0; i < subjects.size(); i++) {
-			rows[i][0] = subjects.get(i).getName();
-			rows[i][1] = subjects.get(i).getAbbreviation();
-			rows[i][2] = subjects.get(i).getAmountOfExaminees();
-		}
-
-		scrollSubjectTable = new JScrollPane(new JTable(rows, columns));
+		scrollSubjectTable = new JScrollPane(jTable);
 
 		getContentPane().add(scrollSubjectTable, BorderLayout.CENTER);
-
-		// update UI
-		repaint();
-		revalidate();
 	}
 
 	private void createSouthButtons() {
@@ -130,6 +117,85 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		btnRemoveSubject.addActionListener(this);
 		south.add(btnRemoveSubject);
 
+	}
+
+}
+
+class SubjectDataModel extends AbstractTableModel {
+
+	private GUI mainGUI;
+
+	private ArrayList<Subject> subjects;
+
+	private final int COLUMS = 3;
+
+	SubjectDataModel(GUI mainGUI) {
+		this.mainGUI = mainGUI;
+
+		updateData();
+	}
+
+	public void updateData() {
+
+		subjects = mainGUI.getBackend().getSubjects();
+
+		fireTableDataChanged(); // Notifies all listeners that all cell values in the table's rows may have changed.
+
+	}
+
+	@Override
+	public int getRowCount() {
+		return subjects.size();
+	}
+
+	@Override
+	public int getColumnCount() {
+		return COLUMS;
+	}
+
+	@Override
+	public String getColumnName(int col) {
+		if (col == 0) {
+			return "Name";
+		} else if (col == 1) {
+			return "Abkürzung";
+		} else {
+			return "Anzahl der Studenten";
+		}
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+
+		if (columnIndex == 0) {
+			return subjects.get(rowIndex).getName();
+		} else if (columnIndex == 1) {
+			return subjects.get(rowIndex).getAbbreviation();
+		} else {
+			return subjects.get(rowIndex).getAmountOfExaminees();
+		}
+
+	}
+
+	public void setValueAt(Object value, int row, int col) {
+
+		if (col == 0) {
+			subjects.get(row).setName(value.toString());
+		} else if (col == 1) {
+			subjects.get(row).setAbbreviation(value.toString());
+		}
+
+		fireTableCellUpdated(row, col);
+	}
+
+	@Override
+	public boolean isCellEditable(int row, int col) {
+
+		if (col == 0 || col == 1) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

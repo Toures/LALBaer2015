@@ -15,6 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 
@@ -30,7 +31,11 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	private JButton btnAddStudent;
 	private JButton btnRemoveStudent;
 
-	private Subject currentSubject;
+	public static Subject currentSubject;
+	private SelectSubjectTableModel selectSubjectTableModel;
+	private JTable selectSubjectTable;
+	private MainTableModel mainTableModel;
+	private JTable mainJTable;
 
 	public StudentsGUI(GUI gui) {
 		this.gui = gui;
@@ -76,7 +81,7 @@ public class StudentsGUI extends JFrame implements ActionListener {
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();
 				tempSub.add(currentSubject);
 				gui.getBackend().createExaminee(name, tempSub, null);
-				createMainTable();
+				mainTableModel.updateData(); // update jTable
 			}
 		}
 
@@ -91,11 +96,13 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 			if (selectedSubject != null) {
 
-				// TODO
+				// TODO removeSubject aus Backend updaten
+				// gui.getBackend().removeSubject(selectedSubject);
+
 				for (int i = 0; i < subjects.size(); i++) {
 					if (subjects.get(i).equals(selectedSubject)) {
 						subjects.remove(i);
-						createMainTable();
+						mainTableModel.updateData();
 						return;
 					}
 				}
@@ -111,7 +118,10 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());
 
 		// CENTER Panel
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createSubjectTable(), createMainTable());
+		createSubjectTable();
+		createMainTable();
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(selectSubjectTable), new JScrollPane(mainJTable));
 		splitPane.setDividerLocation(150);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -120,84 +130,30 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		getContentPane().add(south, BorderLayout.SOUTH);
 	}
 
-	private JScrollPane createSubjectTable() {
-		// bad code too much overhead
+	private void createSubjectTable() {
 
-		if (scrollSubjectTable != null) {
-			// remove old scrollSubjectTable if it exists
-			getContentPane().remove(scrollSubjectTable);
-		}
+		mainTableModel = new MainTableModel(gui);
+		mainJTable = new JTable(mainTableModel);
 
-		// create new subjectTable
-		ArrayList<Subject> subjects = gui.getBackend().getSubjects();
+		mainJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
-		String columns[] = { "Fächer" };
-
-		Object rows[][] = new Object[subjects.size()][1];
-		for (int i = 0; i < subjects.size(); i++) {
-			rows[i][0] = subjects.get(i).getName() + " (" + subjects.get(i).getAbbreviation() + ")";
-
-		}
-
-		JTable jTable = new JTable(rows, columns);
-		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
+			// TODO not fired?!?!
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// TODO autoupdate jTable
-				currentSubject = gui.getBackend().getSubjects().get(jTable.getSelectedRow()); // update jTable
-				createMainTable();
+
+				System.out.println("Selected Row = " + mainJTable.getSelectedRow());
+
+				currentSubject = gui.getBackend().getSubjects().get(mainJTable.getSelectedRow()); // update jTable
+				mainTableModel.updateData();
+
 			}
 		});
-
-		scrollSubjectTable = new JScrollPane(jTable);
-
-		// update UI
-		repaint();
-		revalidate();
-
-		return scrollSubjectTable;
 	}
 
-	private JScrollPane createMainTable() {
+	private void createMainTable() {
 
-		// bad code too much overhead
-
-		if (scrollMainTable != null) {
-			// remove old scrollMainTable if it exists
-			getContentPane().remove(scrollMainTable);
-		}
-
-		// create new subjectTable
-		ArrayList<Examinee> examinees = gui.getBackend().getExaminee();
-
-		String columns[] = { "Vorname", "Nachname" };
-
-		Object rows[][] = new Object[examinees.size()][2];
-
-		getStudentWithSubject(rows, examinees);
-
-		scrollMainTable = new JScrollPane(new JTable(rows, columns));
-
-		// update UI
-		repaint();
-		revalidate();
-
-		return scrollMainTable;
-	}
-
-	private void getStudentWithSubject(Object rows[][], ArrayList<Examinee> examinees) {
-
-		int numOfStudentsCounter = 0;
-
-		for (int i = 0; i < examinees.size(); i++) {
-			if (examinees.get(i).hasSubject(currentSubject)) {
-				rows[numOfStudentsCounter][0] = examinees.get(i).getName();
-				rows[numOfStudentsCounter][1] = "Nachname " + i;
-				numOfStudentsCounter++;
-			}
-
-		}
+		selectSubjectTableModel = new SelectSubjectTableModel(gui);
+		selectSubjectTable = new JTable(selectSubjectTableModel);
 
 	}
 
@@ -213,6 +169,127 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		btnRemoveStudent.addActionListener(this);
 		south.add(btnRemoveStudent);
 
+	}
+
+}
+
+class SelectSubjectTableModel extends AbstractTableModel {
+
+	private GUI mainGUI;
+
+	private ArrayList<Subject> subjects;
+
+	private final int COLUMS = 1;
+
+	SelectSubjectTableModel(GUI mainGUI) {
+		this.mainGUI = mainGUI;
+
+		subjects = mainGUI.getBackend().getSubjects();
+		if (subjects != null && subjects.size() > 0 && subjects.get(0) != null) {
+			StudentsGUI.currentSubject = subjects.get(0);
+		}
+
+	}
+
+	@Override
+	public int getRowCount() {
+		return subjects.size();
+	}
+
+	@Override
+	public int getColumnCount() {
+		return COLUMS;
+	}
+
+	@Override
+	public String getColumnName(int col) {
+		return "Fächer";
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		return subjects.get(rowIndex).getName() + " (" + subjects.get(rowIndex).getAbbreviation() + ")";
+
+	}
+
+	@Override
+	public boolean isCellEditable(int row, int col) {
+		return false;
+	}
+
+}
+
+class MainTableModel extends AbstractTableModel {
+
+	private GUI mainGUI;
+
+	private ArrayList<Examinee> examinee;
+
+	private final int COLUMS = 2;
+
+	MainTableModel(GUI mainGUI) {
+		this.mainGUI = mainGUI;
+
+		examinee = new ArrayList<Examinee>();
+
+		updateData();
+
+	}
+
+	public void updateData() {
+
+		examinee.clear();
+
+		fireTableDataChanged();
+
+		for (int i = 0; i < mainGUI.getBackend().getExaminee().size(); i++) {
+			if (mainGUI.getBackend().getExaminee().get(i) != null && mainGUI.getBackend().getExaminee().get(i).hasSubject(StudentsGUI.currentSubject)) {
+				examinee.add(mainGUI.getBackend().getExaminee().get(i));
+			}
+		}
+
+		fireTableDataChanged(); // Notifies all listeners that all cell values in the table's rows may have changed.
+
+	}
+
+	@Override
+	public int getRowCount() {
+		return examinee.size();
+	}
+
+	@Override
+	public int getColumnCount() {
+		return COLUMS;
+	}
+
+	@Override
+	public String getColumnName(int col) {
+		if (col == 0) {
+			return "Vorname";
+		} else if (col == 1) {
+			return "Nachname";
+		}
+
+		return null;
+
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+
+		if (columnIndex == 0) {
+			return examinee.get(rowIndex).getName();
+		} else if (columnIndex == 1) {
+			return examinee.get(rowIndex).getName();
+		}
+
+		return null;
+
+	}
+
+	@Override
+	public boolean isCellEditable(int row, int col) {
+		return false;
 	}
 
 }

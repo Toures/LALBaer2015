@@ -13,7 +13,7 @@ public class Subject {
 		this.abbreviation = abbreviation;
 		this.setPreEffort(preEffort);
 	}
-	
+
 	public Subject(String name, String abbreviation) {
 		this.name = name;
 		this.abbreviation = abbreviation;
@@ -24,8 +24,16 @@ public class Subject {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getAbbreviation() {
 		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
 	}
 
 	public int getAmountOfExaminees() {
@@ -61,7 +69,7 @@ public class Subject {
 
 	public void decrementAmountOfExaminees() {
 		amountOfExaminees--;
-		
+
 	}
 
 	public boolean isPreEffort() {
