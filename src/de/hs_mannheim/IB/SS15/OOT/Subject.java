@@ -4,12 +4,20 @@ public class Subject {
 
 	private String name;
 	private String abbreviation;
+	private boolean preEffort;
 
 	private int amountOfExaminees;
 
+	public Subject(String name, String abbreviation, boolean preEffort) {
+		this.name = name;
+		this.abbreviation = abbreviation;
+		this.setPreEffort(preEffort);
+	}
+	
 	public Subject(String name, String abbreviation) {
 		this.name = name;
 		this.abbreviation = abbreviation;
+		this.setPreEffort(false);
 	}
 
 	public String getName() {
@@ -24,21 +32,44 @@ public class Subject {
 		return amountOfExaminees;
 	}
 
+	public void setAmountOfExaminees(int amountOfExaminees) {
+		this.amountOfExaminees = amountOfExaminees;
+	}
+
 	@Override
 	public String toString() {
 		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
 	}
-	
-	public boolean equals(Object sub){
-		if(this.getName().equals(((Subject)sub).getName())){
+
+	public boolean equals(Object sub) {
+		if (this == sub) {
 			return true;
-		}else{
+		} else if (sub == null) {
+			return false;
+		} else if (this.getName().equals(((Subject) sub).getName())) {
+			return true;
+		} else {
 			return false;
 		}
 	}
-	
-	public Subject cloneDeep(){
-		return new Subject(this.name, this.abbreviation);
+
+	public Subject cloneDeep() {
+		Subject clonedSub = new Subject(this.name, this.abbreviation);
+		clonedSub.setAmountOfExaminees(this.getAmountOfExaminees());
+		return clonedSub;
+	}
+
+	public void decrementAmountOfExaminees() {
+		amountOfExaminees--;
+		
+	}
+
+	public boolean isPreEffort() {
+		return preEffort;
+	}
+
+	public void setPreEffort(boolean preEffort) {
+		this.preEffort = preEffort;
 	}
 
 }

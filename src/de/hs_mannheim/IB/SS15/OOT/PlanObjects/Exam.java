@@ -34,6 +34,10 @@ public class Exam implements PlanObject{
 	public int getLength() {
 		return this.length;
 	}
+	
+	public void setLength(int length){
+		this.length = length;
+	}
 
 	public Assessor getAssessor() {
 		return assessor;
@@ -121,6 +125,14 @@ public class Exam implements PlanObject{
 		examinee.addExamDesire(time, time+length, this);
 		//TODO:	Was ist mit Beisitzern? Sie haben keine Desires, diese sind aber notwendig mit diesem Lösungsansatz um anzuzeigen,
 		//		dass sie in einer Prüfung beschäftigt sind und keine anderen Prüfungen beisitzen können.
+	}
+	
+	public void addExaminer(Examiner ex) {
+		if (examiner[0] == null) {
+			examiner[0] = ex;
+		} else if (examiner[1] == null) {
+			examiner[1] = ex;
+		}
 	}
 	
 	@Override
