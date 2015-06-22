@@ -157,7 +157,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		newFile = new JMenuItem("Neu");
 		newFile.addActionListener(this);
-		open = new JMenuItem("�ffnen");
+		open = new JMenuItem("Öffnen");
 		open.addActionListener(this);
 		save = new JMenuItem("Speichern");
 		save.addActionListener(this);
@@ -166,7 +166,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		info = new JMenu("Info");
 
-		about = new JMenuItem("�ber");
+		about = new JMenuItem("Über");
 		about.addActionListener(this);
 
 		file.add(newFile);
@@ -240,16 +240,16 @@ public class GUI extends JFrame implements ActionListener {
 		east = new JPanel();
 		east.setLayout(new GridLayout(4, 1));
 
-		btnRooms = new JButton("R�ume");
+		btnRooms = new JButton("Räume");
 		btnRooms.addActionListener(this);
 		east.add(btnRooms);
 		btnStudents = new JButton("Studenten");
 		btnStudents.addActionListener(this);
 		east.add(btnStudents);
-		btnSubjects = new JButton("F�cher");
+		btnSubjects = new JButton("Fächer");
 		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
-		btnAddBreak = new JButton("Pause hinzuf�gen");
+		btnAddBreak = new JButton("Pause hinzufügen");
 		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
 
