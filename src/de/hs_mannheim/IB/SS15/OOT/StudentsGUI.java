@@ -131,29 +131,24 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	}
 
 	private void createSubjectTable() {
-
 		mainTableModel = new MainTableModel(gui);
 		mainJTable = new JTable(mainTableModel);
 
-		mainJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+	}
 
-			// TODO not fired?!?!
+	private void createMainTable() {
+		selectSubjectTableModel = new SelectSubjectTableModel(gui);
+		selectSubjectTable = new JTable(selectSubjectTableModel);
+
+		selectSubjectTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-
-				System.out.println("Selected Row = " + mainJTable.getSelectedRow());
-
-				currentSubject = gui.getBackend().getSubjects().get(mainJTable.getSelectedRow()); // update jTable
+				currentSubject = gui.getBackend().getSubjects().get(selectSubjectTable.getSelectedRow()); // update jTable				
 				mainTableModel.updateData();
 
 			}
 		});
-	}
-
-	private void createMainTable() {
-
-		selectSubjectTableModel = new SelectSubjectTableModel(gui);
-		selectSubjectTable = new JTable(selectSubjectTableModel);
 
 	}
 
@@ -239,8 +234,6 @@ class MainTableModel extends AbstractTableModel {
 	public void updateData() {
 
 		examinee.clear();
-
-		fireTableDataChanged();
 
 		for (int i = 0; i < mainGUI.getBackend().getExaminee().size(); i++) {
 			if (mainGUI.getBackend().getExaminee().get(i) != null && mainGUI.getBackend().getExaminee().get(i).hasSubject(StudentsGUI.currentSubject)) {
