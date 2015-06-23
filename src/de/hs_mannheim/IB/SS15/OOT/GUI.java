@@ -30,7 +30,7 @@ public class GUI extends JFrame implements ActionListener {
 
 	private Backend backend;
 
-	// Menï¿½leiste
+	// Menüleiste
 	private JMenuBar jMenuBar;
 
 	private JMenu file;
@@ -111,7 +111,7 @@ public class GUI extends JFrame implements ActionListener {
 			// Opening FileChooser for open Dialog
 			JFileChooser fc = new JFileChooser((File)null);
 			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-				System.out.println("Dokument Ã¶ffnen");
+				System.out.println("Dokument öffnen");
 			}
 		} else if (e.getSource() == save) {
 			// Opening FileChooser for save Dialog
@@ -240,16 +240,16 @@ public class GUI extends JFrame implements ActionListener {
 		east = new JPanel();
 		east.setLayout(new GridLayout(4, 1));
 
-		btnRooms = new JButton("RÃ¤ume");
+		btnRooms = new JButton("Räume");
 		btnRooms.addActionListener(this);
 		east.add(btnRooms);
 		btnStudents = new JButton("Studenten");
 		btnStudents.addActionListener(this);
 		east.add(btnStudents);
-		btnSubjects = new JButton("FÃ¤cher");
+		btnSubjects = new JButton("Fächer");
 		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
-		btnAddBreak = new JButton("Pause hinzufÃ¼gen");
+		btnAddBreak = new JButton("Pause hinzufügen");
 		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
 

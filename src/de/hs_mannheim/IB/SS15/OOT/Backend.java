@@ -2,16 +2,14 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 import java.util.ArrayList;
 
-import sun.security.util.Length;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
-import de.hs_mannheim.IB.SS15.OOT.Participants.Participant;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
 public class Backend {
-	
+
 	public static final int TIME_BEGIN = 8*60; // 8:00 am
 	public static final int TIME_END = 20*60; // 8:00 pm
 	static final int MAX_PARALLEL_EXAMS = 3;
@@ -32,7 +30,7 @@ public class Backend {
 		examiner = new ArrayList<Examiner>();
 		assessor = new ArrayList<Assessor>();
 	}
-	
+
 	public Backend(ArrayList<Subject> subjects, ArrayList<Examinee> examinee, ArrayList<Examiner> examiner, ArrayList<Exam> exams) {
 		this.examinee = examinee;
 		this.examiner = examiner;
@@ -42,27 +40,32 @@ public class Backend {
 
 	public Examinee createExaminee(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires)throws IllegalArgumentException{
 		if(name==null||name.isEmpty()||subjects == null||desires==null){
-			throw new IllegalArgumentException();
+			System.err.println("null-argument was given to createExaminee, no examinee is added");
+			Examinee returnExaminee = new Examinee(name,subjects, desires);
+			examinee.add(returnExaminee);
+			return returnExaminee;
+			//			throw new IllegalArgumentException();
+		}else{
+			Examinee returnExaminee = new Examinee(name,subjects, desires);
+			examinee.add(returnExaminee);
+			return returnExaminee;
 		}
-		Examinee returnExaminee = new Examinee(name,subjects, desires);
-		examinee.add(returnExaminee);
-		return returnExaminee;
 	}
-	
-	
+
+
 	public Examiner createExaminer (String name, ArrayList<Subject> subjects, ArrayList<Desire> desires){
 		Examiner returnExaminer = new Examiner(name, subjects, desires);
 		examiner.add(returnExaminer);
 		return returnExaminer;
 	}
-	
+
 	public Assessor createAssessor (String name, ArrayList<Subject> subjects){
 		Assessor returnAssessor = new Assessor(name, subjects);
 		assessor.add(returnAssessor);
 		return returnAssessor;
 	}
-	
-	
+
+
 	public Subject createSubject(String name, String abbreviation) {
 		Subject returnSubject = new Subject(name, abbreviation);
 		subjects.add(returnSubject);
@@ -70,27 +73,27 @@ public class Backend {
 		return returnSubject;
 	}
 
-	
+
 	public ArrayList<Assessor> getAssessor() {
 		return assessor;
 	}
-	
-	
+
+
 	public ArrayList<Examinee> getExaminee() {
 		return examinee;
 	}
-	
-	
+
+
 	public ArrayList<Examiner> getExaminer() {
 		return examiner;
 	}
-	
-	
+
+
 	public ArrayList<Subject> getSubjects() {
 		return subjects;
 	}
-	
-	
+
+
 	public void removeAssessor(String name){
 		for ( Assessor a : assessor){
 			if(a.getName().equals(name)){
@@ -98,7 +101,7 @@ public class Backend {
 			}
 		}
 	}
-	
+
 	public void removeExaminee(String name){
 		for(Examinee e : examinee){
 			if(e.getName().equals(name)){
@@ -106,7 +109,7 @@ public class Backend {
 			}
 		}
 	}
-	
+
 	public void removeExaminer(String name){
 		for (Examiner e : examiner){
 			if(e.getName().equals(name)){
@@ -119,7 +122,7 @@ public class Backend {
 			if(s.getName().equals(name)){
 				subjects.remove(s);
 			}
-			
+
 		}
 	}
 	public Schedule getExaminerSchedule(Examiner examiner) {
@@ -130,7 +133,7 @@ public class Backend {
 				ret.getExams().add(temp.get(i));
 			}
 		}
-		
+
 		return ret;
 	}
 
@@ -140,7 +143,7 @@ public class Backend {
 		ret.setExams(temp);
 		return ret;
 	}
-	
+
 	public void generateExams(){
 		int tmpIndex = 0;
 		boolean inserted = false;
@@ -276,7 +279,7 @@ public class Backend {
 
 				//exam with only one subject
 				if(tmpExams.get(i).getSubjects()[0] != null && tmpExams.get(i).getSubjects()[1] == null){
-					
+
 					for (int j = 0; j < examiners.size(); j++) {
 						if(examiners.get(j).hasSubject(tmpExams.get(i).getSubjects()[0])){
 							if(tmpExams.get(i).getExaminer()[0] == null){
@@ -311,14 +314,14 @@ public class Backend {
 						}
 					}
 				}
-				
+
 				//no examiners left, but some exams have only one examiner, they get assessors later on
 				if(examiners.size() == 0){
 					for (int j = 0; j < tmpExams.size(); j++) {
 						tmpExams.remove(j);			
 					}
 				}
-				
+
 				//last exam was finished, can be removed so the loop ends
 				if(tmpExams.get(i).getExaminer()[0] != null && tmpExams.size() == 1){
 					tmpExams.remove(i);
@@ -330,24 +333,24 @@ public class Backend {
 			if(examCollection.get(i).getSubjects()[1] != null){
 				if(examCollection.get(i).getSubjects()[0].isPreEffort() && examCollection.get(i).getSubjects()[1].isPreEffort()){
 					examCollection.get(i).setLength(10);
-					
+
 				}else if((examCollection.get(i).getSubjects()[0].isPreEffort() && !examCollection.get(i).getSubjects()[1].isPreEffort()) 
 						|| (!examCollection.get(i).getSubjects()[0].isPreEffort() && examCollection.get(i).getSubjects()[1].isPreEffort())){
 					examCollection.get(i).setLength(15);
-					
+
 				}else{
 					examCollection.get(i).setLength(20);
 				}
 			}else{
 				if(examCollection.get(i).getSubjects()[0].isPreEffort()){
 					examCollection.get(i).setLength(5);
-					
+
 				}else{
 					examCollection.get(i).setLength(10);
 				}
 			}		
 		}
-		
+
 		this.exams = examCollection;
 	}
 
@@ -426,23 +429,23 @@ public class Backend {
 		}
 
 	}
-	
+
 	/**
 	 * Generates the master table with all given exams.
 	 */
 	public void generateMasterTable() {
-		
+
 		int times[] = new int[MAX_PARALLEL_EXAMS];
 		DataModel master = schedule[0].createNewTable((TIME_END-TIME_BEGIN)/5, MAX_PARALLEL_EXAMS); //New master table
 		int favoriteRow[] = new int[examiner.size()]; //The first time an examiner is added to the master plan, he will be preferably put in the same column.
 		boolean tested[] = new boolean[examinee.size()]; //If someone already was tested and has another exam, the program will try to put those exams far away, time-wise.
-		
+
 		//---Begin with examiners and their favouriteRow---//
 		for(Exam exam : exams) {
 			Examiner[] examiner = exam.getExaminer();
 			int examiner1Index = this.examiner.indexOf(examiner[0]);
 			int examiner2Index = this.examiner.indexOf(examiner[1]);
-			
+
 			//CASE: first occurence of examiner
 			if(favoriteRow[examiner1Index] == 0) { //Has no favorite row yet.
 				int col = 0, lowestTime = 48*60;
@@ -456,12 +459,12 @@ public class Backend {
 				if(favoriteRow[examiner2Index] == 0)
 					favoriteRow[examiner2Index] = col;
 			}
-			
+
 			if(exam.checkDesires(3, times[favoriteRow[examiner1Index]])) { //No overlapping?
 				master.setValueAt(exam, times[favoriteRow[examiner1Index]], favoriteRow[examiner1Index]);
-				
+
 			}
-				
+
 		}
 	}
 }

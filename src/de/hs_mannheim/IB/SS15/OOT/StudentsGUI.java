@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 
 public class StudentsGUI extends JFrame implements ActionListener {
@@ -30,12 +31,14 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 	private JButton btnAddStudent;
 	private JButton btnRemoveStudent;
+	private JButton btnAddDesire;
 
 	public static Subject currentSubject;
 	private SelectSubjectTableModel selectSubjectTableModel;
 	private JTable selectSubjectTable;
 	private MainTableModel mainTableModel;
 	private JTable mainJTable;
+	private DesireGUI desireGUI;
 
 	public StudentsGUI(GUI gui) {
 		this.gui = gui;
@@ -65,7 +68,8 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnRemoveStudent) {
 			removeStudentDialog();
-
+		} else if(e.getSource() == btnAddDesire){
+//			desireGUI.addDesire();
 		}
 
 	}
@@ -76,11 +80,12 @@ public class StudentsGUI extends JFrame implements ActionListener {
 			String abbreviation = JOptionPane.showInputDialog(this, "Nachname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
 			if (abbreviation != null) {
 				// createExaminee
-
+				new DesireGUI(this);
+				ArrayList<Desire> desireList = new ArrayList<Desire>();
 				// TODO (quickFix createExaminee muss geändert werden)
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();
 				tempSub.add(currentSubject);
-				gui.getBackend().createExaminee(name, tempSub, null);
+				gui.getBackend().createExaminee(name, tempSub, desireList);
 				mainTableModel.updateData(); // update jTable
 			}
 		}
@@ -154,7 +159,7 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 	private void createSouthButtons() {
 		south = new JPanel();
-		south.setLayout(new GridLayout(1, 2));
+		south.setLayout(new GridLayout(1, 3));
 
 		btnAddStudent = new JButton("Student hinzufügen");
 		btnAddStudent.addActionListener(this);
@@ -163,6 +168,10 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		btnRemoveStudent = new JButton("Student löschen");
 		btnRemoveStudent.addActionListener(this);
 		south.add(btnRemoveStudent);
+
+		btnAddDesire = new JButton("Wunsch hinzufügen");
+		btnAddDesire.addActionListener(this);
+		south.add(btnAddDesire);
 
 	}
 
