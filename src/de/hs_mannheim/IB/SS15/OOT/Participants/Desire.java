@@ -53,4 +53,8 @@ public class Desire {
 			this.priority = priority;
 	}
 
+	public String toString(){
+		String vonBis = "Von:" + time[0]+":"+time[1]+"Uhr"+"\nBis:"+time[2]+":"+time[3];
+		return (vonBis + "\n"+comment);
+	}
 }

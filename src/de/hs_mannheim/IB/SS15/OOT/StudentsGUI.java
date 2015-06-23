@@ -91,16 +91,16 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	}
 	
 	private void addStudentDialog() {
-		String name = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
-		if (name != null) {
-			String abbreviation = JOptionPane.showInputDialog(this, "Nachname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
-			if (abbreviation != null) {
+		String firstName = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
+		if (firstName != null) {
+			String secondName = JOptionPane.showInputDialog(this, "Nachname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
+			if (secondName != null) {
 				// createExaminee
 				ArrayList<Desire> desireList = new ArrayList<Desire>();
 				// TODO (quickFix createExaminee muss geändert werden)
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();
 				tempSub.add(currentSubject);
-				gui.getBackend().createExaminee(name, tempSub, desireList);
+				gui.getBackend().createExaminee(firstName, tempSub, desireList);
 				mainTableModel.updateData(); // update jTable
 			}
 		}

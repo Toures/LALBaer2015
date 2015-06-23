@@ -40,7 +40,8 @@ public class DesireGUI extends JFrame implements ActionListener {
 			int toHour = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			int toMinute = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			String comment = desireComment.getText();
-			participant.addExamDesire(fromHour, fromMinute, toHour, toMinute, (Integer)priorityCombo.getSelectedItem());
+			participant.getDesires().add(new Desire(fromHour, fromMinute, toHour, toMinute, 
+					comment,(Integer)priorityCombo.getSelectedItem()));
 			this.setVisible(false);
 			this.parent.setEnabled(true);
 		} else if(e.getSource()==cancel){
