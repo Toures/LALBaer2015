@@ -62,7 +62,6 @@ public class GUI extends JFrame implements ActionListener {
 		createJMenuBar();
 		createLayout();
 
-		
 		// -------------------------------
 		// Options
 		// -------------------------------
@@ -111,14 +110,14 @@ public class GUI extends JFrame implements ActionListener {
 			System.out.println("Neue Datei");
 		} else if (e.getSource() == open) {
 			// Opening FileChooser for open Dialog
-			JFileChooser fc = new JFileChooser((File)null);
-			if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+			JFileChooser fc = new JFileChooser((File) null);
+			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				System.out.println("Dokument öffnen");
 			}
 		} else if (e.getSource() == save) {
 			// Opening FileChooser for save Dialog
-			JFileChooser fc = new JFileChooser((File)null);
-			if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+			JFileChooser fc = new JFileChooser((File) null);
+			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				// plan object needs to be serializable
 				System.out.println("Dokument beenden");
 			}
@@ -129,7 +128,7 @@ public class GUI extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
 			System.exit(0);
@@ -141,13 +140,13 @@ public class GUI extends JFrame implements ActionListener {
 		else if (e.getSource() == btnRooms) {
 			System.out.println("btnRooms");
 		} else if (e.getSource() == btnStudents) {
-			
+
 			if (backend.getSubjects().size() <= 0) {
 				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Studenten", JOptionPane.ERROR_MESSAGE);
 			} else {
 				new StudentsGUI(this);
 			}
-			
+
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {

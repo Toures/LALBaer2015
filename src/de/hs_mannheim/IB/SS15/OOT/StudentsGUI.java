@@ -67,61 +67,54 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnAddStudent) {
 			addStudentDialog();
-
 		} else if (e.getSource() == btnRemoveStudent) {
 			removeStudentDialog();
-		} else if(e.getSource() == btnAddDesire){
+		} else if (e.getSource() == btnAddDesire) {
 			addDesireToExaminee();
 		}
 
 	}
-	
-	private void addDesireToExaminee(){
-		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
 
-		if (examinee.size() > 0 &&  mainJTable.getSelectedRow() >= 0) {
-			new DesireGUI(this, examinee.get(mainJTable.getSelectedRow()));
-			mainTableModel.updateData(); // update jTable
-		}
-		
-	}
-	
 	private void addStudentDialog() {
-		String name = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
+		String name = JOptionPane.showInputDialog(this, "Name des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
 		if (name != null) {
-				// createExaminee
-				ArrayList<Desire> desireList = new ArrayList<Desire>();
-				// TODO (quickFix createExaminee muss geändert werden)
+
+			try {
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();
 				tempSub.add(currentSubject);
-				gui.getBackend().createExaminee(name , tempSub, desireList);
+				gui.getBackend().createExaminee(name, tempSub, new ArrayList<Desire>());
 				mainTableModel.updateData(); // update jTable
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Student hinzufügen", JOptionPane.ERROR_MESSAGE);
+			}
+
 		}
 
 	}
 
 	private void removeStudentDialog() {
 		// dropdown Menü mit den möglichen Fächern
-		ArrayList<Subject> subjects = gui.getBackend().getSubjects();
+		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
 
-		if (subjects.size() > 0) {
-			Subject selectedSubject = (Subject) JOptionPane.showInputDialog(this, "Name des Studenten:", "Studenten entfernen", JOptionPane.QUESTION_MESSAGE, null, subjects.toArray(), subjects.get(0));
+		if (examinee.size() > 0) {
+			Examinee selectedExaminee = (Examinee) JOptionPane.showInputDialog(this, "Name des Studenten:", "Studenten entfernen", JOptionPane.QUESTION_MESSAGE, null, examinee.toArray(), examinee.get(0));
 
-			if (selectedSubject != null) {
-
-				// TODO removeSubject aus Backend updaten
-				// gui.getBackend().removeSubject(selectedSubject);
-
-				for (int i = 0; i < subjects.size(); i++) {
-					if (subjects.get(i).equals(selectedSubject)) {
-						subjects.remove(i);
-						mainTableModel.updateData();
-						return;
-					}
-				}
+			if (selectedExaminee != null) {
+				gui.getBackend().removeExaminee(selectedExaminee);
 			}
+
 		} else {
 			JOptionPane.showMessageDialog(this, "Es sind noch keine Studenten vorhanden.", "Studenten entfernen", JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+
+	private void addDesireToExaminee() {
+		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
+
+		if (examinee.size() > 0 && mainJTable.getSelectedRow() >= 0) {
+			new DesireGUI(this, examinee.get(mainJTable.getSelectedRow()));
+			mainTableModel.updateData(); // update jTable
 		}
 
 	}
@@ -157,9 +150,8 @@ public class StudentsGUI extends JFrame implements ActionListener {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				currentSubject = gui.getBackend().getSubjects().get(selectSubjectTable.getSelectedRow()); // update jTable				
+				currentSubject = gui.getBackend().getSubjects().get(selectSubjectTable.getSelectedRow()); // update jTable
 				mainTableModel.updateData();
-				// TODO update table :(    
 			}
 		});
 
@@ -298,8 +290,18 @@ class MainTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public boolean isCellEditable(int row, int col) {
-		return false;
+	public void setValueAt(Object value, int row, int col) {
+		if (col == 0) {
+			examinee.get(row).setName(value.toString());
+		}
 	}
 
+	@Override
+	public boolean isCellEditable(int row, int col) {
+		if (col == 0) {
+			return true;
+		}
+
+		return false;
+	}
 }

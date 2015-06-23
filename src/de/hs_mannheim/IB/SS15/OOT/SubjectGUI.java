@@ -53,8 +53,13 @@ public class SubjectGUI extends JFrame implements ActionListener {
 			if (name != null) {
 				String abbreviation = JOptionPane.showInputDialog(this, "Kürzel des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
 				if (abbreviation != null) {
-					mainGUI.getBackend().createSubject(name, abbreviation);
-					dataModel.updateData();
+					try {
+						mainGUI.getBackend().createSubject(name, abbreviation);
+						dataModel.updateData();
+					} catch (Exception error) {
+						JOptionPane.showMessageDialog(this, error.getMessage(), "Fach hinzufügen", JOptionPane.ERROR_MESSAGE);
+					}
+
 				}
 			}
 
@@ -70,7 +75,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 					for (int i = 0; i < subjects.size(); i++) {
 						if (subjects.get(i).equals(selectedSubject)) {
 							subjects.remove(i);
-							createTable();
+							dataModel.updateData();
 							return;
 						}
 					}
@@ -177,6 +182,7 @@ class SubjectDataModel extends AbstractTableModel {
 
 	}
 
+	@Override
 	public void setValueAt(Object value, int row, int col) {
 
 		if (col == 0) {
