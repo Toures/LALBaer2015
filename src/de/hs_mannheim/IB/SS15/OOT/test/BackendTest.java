@@ -39,7 +39,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExamineeTest_NameNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee(null, subjects, desires);
 	}
@@ -47,7 +47,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExamineeTest_NameEmpty() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("", subjects, desires);
 	}
@@ -55,7 +55,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExamineeTest_SubjectsNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", null, desires);
 	}
@@ -63,7 +63,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	// TODO Exception (was für eine ??)
 	public void createExamineeTest_ZeroSubjects() {
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", subjects, desires);
 	}
@@ -87,7 +87,7 @@ public class BackendTest {
 
 		String name = "Examinee01";
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		Examinee examinee = backend.createExaminee(name, subjects, desires);
 
@@ -105,7 +105,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExaminerTest_NameNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminer(null, subjects, desires);
 
@@ -114,7 +114,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExaminerTest_NameEmpty() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminer("", subjects, desires);
 	}
@@ -122,7 +122,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createExaminerTest_SubjectsNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminer("Examiner01", null, desires);
 	}
@@ -130,7 +130,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	// TODO Exception (was für eine ??)
 	public void createExaminerTest_ZeroSubjects() {
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminer("Examiner01", subjects, desires);
 	}
@@ -154,7 +154,7 @@ public class BackendTest {
 
 		String name = "Examiner01";
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		Examiner examiner = backend.createExaminer(name, subjects, desires);
 
@@ -187,7 +187,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void createAssessorTest_SubjectsNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createAssessor("Assessor01", null);
 	}
@@ -195,7 +195,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	// TODO Exception (was für eine ??)
 	public void createAssessorTest_ZeroSubjects() {
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createAssessor("Assessor01", subjects);
 	}
@@ -299,7 +299,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_Null() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", subjects, desires);
 		
@@ -309,7 +309,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_NonExistingExaminee() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", subjects, desires);
 		
@@ -319,7 +319,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_emptyList() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 		
 		backend.removeExaminee(new Examinee("Examinee01", subjects, desires));
 	}
@@ -327,7 +327,7 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_LegalArgument() {
 		subjects.add(new Subject("Subject01", "sub01"));
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		Examinee examine = backend.createExaminee("Examinee01", subjects, desires);
 		
@@ -343,7 +343,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_1Subject_1Examinee() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -358,7 +358,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_1Subject_2Examinee() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -374,7 +374,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_2Subject_1Examinee() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 		subjects.add(new Subject("Subject02", "sub02"));
@@ -390,7 +390,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_2Subject_2Examinee_BothSameSubjects() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 		subjects.add(new Subject("Subject02", "sub02"));
@@ -407,7 +407,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_2Subject_2Examinee_DifferentSubjects() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
@@ -423,7 +423,7 @@ public class BackendTest {
 	public void generateExamsTest_Simple_2Subject_2Examinee_TotallyDifferentSubjects() {
 
 		// create Examinee
-		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		subjects.add(new Subject("Subject01", "sub01"));
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
