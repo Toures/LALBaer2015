@@ -409,10 +409,20 @@ public class BackendTest {
 		// create Examinee
 		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
 
-		subjects.add(new Subject("Subject01", "sub01"));
-		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
-		subjects.add(new Subject("Subject02", "sub02"));
-		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
+		Subject sub01 = new Subject("Subject01", "sub01");
+		Subject sub02 = new Subject("Subject02", "sub02");
+
+		subjects.add(sub01);
+		subjects.add(sub02);
+
+		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
+		tempSubjects1.add(sub01);
+		tempSubjects1.add(sub02);
+		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
+		tempSubjects2.add(sub01);
+
+		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
 
 		// generateExams
 		backend.generateExams();
@@ -425,12 +435,19 @@ public class BackendTest {
 		// create Examinee
 		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
 
-		subjects.add(new Subject("Subject01", "sub01"));
-		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+		Subject sub01 = new Subject("Subject01", "sub01");
+		Subject sub02 = new Subject("Subject02", "sub02");
 
-		ArrayList<Subject> subjects2 = new ArrayList<Subject>();
-		subjects2.add(new Subject("Subject02", "sub02"));
-		Examinee examinee2 = backend.createExaminee("Examinee02", subjects2, desires);
+		subjects.add(sub01);
+		subjects.add(sub02);
+
+		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
+		tempSubjects1.add(sub01);
+		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
+		tempSubjects2.add(sub02);
+
+		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
 
 		// generateExams
 		backend.generateExams();
