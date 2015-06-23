@@ -16,7 +16,6 @@ public class Backend {
 	static final int MAX_PARALLEL_EXAMS = 3;
 
 	ArrayList<Subject> subjects;
-
 	ArrayList<Examinee> examinee;
 	ArrayList<Examiner> examiner;
 	ArrayList<Assessor> assessor;
@@ -51,6 +50,9 @@ public class Backend {
 			throw new IllegalArgumentException("subject is empty");
 		} else {
 			Examinee returnExaminee = new Examinee(name, subjects, desires);
+			for (int i = 0; i < subjects.size(); i++) {
+				subjects.get(i).incrementAmountOfExaminees();
+			}
 			examinee.add(returnExaminee);
 			return returnExaminee;
 		}
@@ -139,9 +141,14 @@ public class Backend {
 		if (ex == null) {
 			throw new IllegalArgumentException("Student nicht vorhanden");
 		} else {
-			for (Examinee e : examinee) {
-				if (e.equals(ex)) {
-					examinee.remove(e);
+			ArrayList<Subject> subjs = new ArrayList<Subject>();
+			for (int i = 0; i < examinee.size(); i++) {
+				if (examinee.get(i).equals(ex)) {
+					subjs = examinee.get(i).getSubjects();
+					for(int j = 0; j < subjs.size(); j++){
+						subjs.get(j).decrementAmountOfExaminees();
+					}
+					examinee.remove(i);
 					return;
 				}
 				throw new IllegalArgumentException("Student nicht in Liste");
@@ -197,253 +204,262 @@ public class Backend {
 	}
 
 	public void generateExams() {
-		int tmpIndex = 0;
-		boolean inserted = false;
+		if(this.examinee.size() != 0 && this.examiner.size() != 0 && this.subjects.size() != 0){
 
-		// Lists of subjects and examinee's that got deep cloned for use
-		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
-		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
-		ArrayList<Examiner> examiners = new ArrayList<Examiner>();
+			int tmpIndex = 0;
+			boolean inserted = false;
 
-		// List of the exams; builds up throughout this method
-		ArrayList<Exam> examCollection = new ArrayList<Exam>();
+			// Lists of subjects and examinee's that got deep cloned for use
+			ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
+			ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
+			ArrayList<Examiner> examiners = new ArrayList<Examiner>();
 
-		// ArrayList that is changed several times within the method; it holds
-		// the amount of combinations of 1 chosen subject with the rest
-		ArrayList<Integer> combi1SpecSubjectAndOthers = new ArrayList<Integer>();
+			// List of the exams; builds up throughout this method
+			ArrayList<Exam> examCollection = new ArrayList<Exam>();
 
-		// sets up the examineeCollection-list with clones
-		for (int count = 0; count < examinee.size(); count++) {
-			examineeCollection.add(examinee.get(count).cloneDeep());
-		}
+			// ArrayList that is changed several times within the method; it holds
+			// the amount of combinations of 1 chosen subject with the rest
+			ArrayList<Integer> combi1SpecSubjectAndOthers = new ArrayList<Integer>();
 
-		// sets up the examiners-list with clones
-		for (int count = 0; count < examiner.size(); count++) {
-			examiners.add(examiner.get(count).cloneDeep());
-		}
+			// sets up the examineeCollection-list with clones
+			for (int count = 0; count < examinee.size(); count++) {
+				examineeCollection.add(examinee.get(count).cloneDeep());
+			}
 
-		// get an ArrayList with the subjects sorted from highest amount of
-		// examinee's to lowest (each subject cloned)
-		for (int i = 0; i < subjects.size(); i++) {
-			if (subjectsForExam.size() != 0) {
-				for (int j = 0; j < subjectsForExam.size(); j++) {
-					inserted = false;
-					if (subjects.get(i).getAmountOfExaminees() > subjectsForExam
-							.get(j).getAmountOfExaminees()) {
-						subjectsForExam.add(j, subjects.get(i).cloneDeep());
-						j = subjectsForExam.size();
-						inserted = true;
+			// sets up the examiners-list with clones
+			for (int count = 0; count < examiner.size(); count++) {
+				examiners.add(examiner.get(count).cloneDeep());
+			}
+
+			// get an ArrayList with the subjects sorted from highest amount of
+			// examinee's to lowest (each subject cloned)
+			for (int i = 0; i < subjects.size(); i++) {
+				if (subjectsForExam.size() != 0) {
+					for (int j = 0; j < subjectsForExam.size(); j++) {
+						inserted = false;
+						if (subjects.get(i).getAmountOfExaminees() > subjectsForExam
+								.get(j).getAmountOfExaminees()) {
+							subjectsForExam.add(j, subjects.get(i).cloneDeep());
+							j = subjectsForExam.size();
+							inserted = true;
+						}
 					}
-				}
-				if (!inserted) {
+					if (!inserted) {
+						subjectsForExam.add(subjects.get(i).cloneDeep());
+					}
+				} else {
 					subjectsForExam.add(subjects.get(i).cloneDeep());
 				}
-			} else {
-				subjectsForExam.add(subjects.get(i).cloneDeep());
 			}
-		}
 
-		for (int i = 0; i < subjectsForExam.get(0).getAmountOfExaminees(); i++) {
-			examCollection.add(new Exam());
-			examCollection.get(i).addSubject(subjectsForExam.get(0));
-		}
+			for (int i = 0; i < subjectsForExam.get(0).getAmountOfExaminees(); i++) {
+				examCollection.add(new Exam());
+				examCollection.get(i).addSubject(subjectsForExam.get(0));
+			}
 
-		// the subject with the most participants needs 1 exam for each
-		// participant
-		combi1SpecSubjectAndOthers.add(-1);
+			// the subject with the most participants needs 1 exam for each
+			// participant
+			combi1SpecSubjectAndOthers.add(0);
 
-		while (subjectsForExam.size() > 0) {
+			while (subjectsForExam.size() > 0) {
 
-			fillListOfCombinations(subjectsForExam, examineeCollection,
-					combi1SpecSubjectAndOthers);
-			int highestComb, indexOfhighestComb;
-			indexOfhighestComb = getIndexOfHighestValue(combi1SpecSubjectAndOthers);
-			highestComb = combi1SpecSubjectAndOthers.get(indexOfhighestComb);
+				fillListOfCombinations(subjectsForExam, examineeCollection,
+						combi1SpecSubjectAndOthers);
+				int highestComb, indexOfhighestComb;
+				indexOfhighestComb = getIndexOfHighestValue(combi1SpecSubjectAndOthers);
+				highestComb = combi1SpecSubjectAndOthers.get(indexOfhighestComb);
 
-			// combinations with other subjects exist
-			if (highestComb != 0) {
+				// combinations with other subjects exist
+				if (highestComb != 0) {
 
-				for (int i = 0; i < examineeCollection.size(); i++) {
-					if (examineeCollection.get(i).hasSubject(
-							subjectsForExam.get(0))
-							&& examineeCollection.get(i).hasSubject(
-									subjectsForExam.get(indexOfhighestComb))) {
+					for (int i = 0; i < examineeCollection.size(); i++) {
+						if (examineeCollection.get(i).hasSubject(subjectsForExam.get(0))
+								&& examineeCollection.get(i).hasSubject(subjectsForExam.get(indexOfhighestComb))) {
 
-						if (examineeCollection.get(i).getSubjects().size() == 2) {
+							if (examineeCollection.get(i).getSubjects().size() == 2) {
+								examCollection.get(tmpIndex).setExaminee(
+										examineeCollection.get(i));
+								examCollection.get(tmpIndex).addSubject(
+										subjectsForExam.get(indexOfhighestComb));
+								examineeCollection.remove(i);
+								i--;
+								tmpIndex++;
+							} else {
+								examCollection.get(tmpIndex).setExaminee(
+										examineeCollection.get(i));
+								examCollection.get(tmpIndex).addSubject(
+										subjectsForExam.get(indexOfhighestComb));
+								examineeCollection.get(i).removeSubject(
+										subjectsForExam.get(indexOfhighestComb));
+								examineeCollection.get(i).removeSubject(
+										subjectsForExam.get(0));
+								tmpIndex++;
+							}
+
+							subjectsForExam.get(indexOfhighestComb)
+							.decrementAmountOfExaminees();
+							subjectsForExam.get(0).decrementAmountOfExaminees();
+						}
+					}
+
+					// the second subject is done due to creating all these
+					// combinations, no need to work with this later on
+					if (subjectsForExam.get(indexOfhighestComb)
+							.getAmountOfExaminees() == 0) {
+						subjectsForExam.remove(indexOfhighestComb);
+					}
+
+					// no combination exists
+				} else {
+
+					for (int i = 0; i < examineeCollection.size(); i++) {
+						if (examineeCollection.get(i).hasSubject(
+								subjectsForExam.get(0))) {
 							examCollection.get(tmpIndex).setExaminee(
 									examineeCollection.get(i));
-							examCollection.get(tmpIndex).addSubject(
-									subjectsForExam.get(indexOfhighestComb));
-							examineeCollection.remove(i);
-							i--;
-							tmpIndex++;
-						} else {
-							examCollection.get(tmpIndex).setExaminee(
-									examineeCollection.get(i));
-							examCollection.get(tmpIndex).addSubject(
-									subjectsForExam.get(indexOfhighestComb));
-							examineeCollection.get(i).removeSubject(
-									subjectsForExam.get(indexOfhighestComb));
 							examineeCollection.get(i).removeSubject(
 									subjectsForExam.get(0));
 							tmpIndex++;
+							subjectsForExam.get(0).decrementAmountOfExaminees();
+							if (examineeCollection.get(i).getSubjects().size() == 0) {
+								examineeCollection.remove(i);
+							}
 						}
-
-						subjectsForExam.get(indexOfhighestComb)
-								.decrementAmountOfExaminees();
-						subjectsForExam.get(0).decrementAmountOfExaminees();
 					}
 				}
 
-				// the second subject is done due to creating all these
-				// combinations, no need to work with this later on
-				if (subjectsForExam.get(indexOfhighestComb)
-						.getAmountOfExaminees() == 0) {
-					subjectsForExam.remove(indexOfhighestComb);
-				}
-
-				// no combination exists
-			} else {
-
-				for (int i = 0; i < examineeCollection.size(); i++) {
-					if (examineeCollection.get(i).hasSubject(
-							subjectsForExam.get(0))) {
-						examCollection.get(tmpIndex).setExaminee(
-								examineeCollection.get(i));
-						examineeCollection.get(i).removeSubject(
+				// all exams for this subjects are done, move on to the next one
+				if (subjectsForExam.get(0).getAmountOfExaminees() == 0
+						&& subjectsForExam.size() != 1) {
+					subjectsForExam.remove(0);
+					subjectsForExam = sortSubjectsToExaminees(subjectsForExam);
+					for (int i = 0; i < subjectsForExam.get(0)
+							.getAmountOfExaminees(); i++) {
+						examCollection.add(new Exam());
+						examCollection.get(tmpIndex + i).addSubject(
 								subjectsForExam.get(0));
-						tmpIndex++;
-						subjectsForExam.get(0).decrementAmountOfExaminees();
-						if (examineeCollection.get(i).getSubjects().size() == 0) {
-							examineeCollection.remove(i);
-						}
 					}
+				} else if (subjectsForExam.get(0).getAmountOfExaminees() == 0
+						&& subjectsForExam.size() == 1) {
+					subjectsForExam.remove(0);
+				}
+
+				for (int i = 1; i < combi1SpecSubjectAndOthers.size();) {
+					combi1SpecSubjectAndOthers.remove(i);
 				}
 			}
 
-			// all exams for this subjects are done, move on to the next one
-			if (subjectsForExam.get(0).getAmountOfExaminees() == 0
-					&& subjectsForExam.size() != 1) {
-				subjectsForExam.remove(0);
-				subjectsForExam = sortSubjectsToExaminees(subjectsForExam);
-				for (int i = 0; i < subjectsForExam.get(0)
-						.getAmountOfExaminees(); i++) {
-					examCollection.add(new Exam());
-					examCollection.get(tmpIndex + i).addSubject(
-							subjectsForExam.get(0));
-				}
-			} else if (subjectsForExam.get(0).getAmountOfExaminees() == 0
-					&& subjectsForExam.size() == 1) {
-				subjectsForExam.remove(0);
+			ArrayList<Exam> tmpExams = new ArrayList<Exam>();
+
+			// temporary list of all exams for use
+			for (int i = 0; i < examCollection.size(); i++) {
+				tmpExams.add(examCollection.get(i));
 			}
 
-			for (int i = 1; i < combi1SpecSubjectAndOthers.size();) {
-				combi1SpecSubjectAndOthers.remove(i);
-			}
-		}
+			while (examsHaveNoExaminer(examCollection)) {
+				for (int i = 0; tmpExams.size() != 0;) {
 
-		ArrayList<Exam> tmpExams = new ArrayList<Exam>();
+					// exam with only one subject
+					if (tmpExams.get(i).getSubjects()[0] != null
+							&& tmpExams.get(i).getSubjects()[1] == null) {
 
-		// temporary list of all exams for use
-		for (int i = 0; i < examCollection.size(); i++) {
-			tmpExams.add(examCollection.get(i));
-		}
-
-		while (examsHaveNoExaminer(examCollection)) {
-			for (int i = 0; tmpExams.size() != 0;) {
-
-				// exam with only one subject
-				if (tmpExams.get(i).getSubjects()[0] != null
-						&& tmpExams.get(i).getSubjects()[1] == null) {
-
-					for (int j = 0; j < examiners.size(); j++) {
-						if (examiners.get(j).hasSubject(
-								tmpExams.get(i).getSubjects()[0])) {
-							if (tmpExams.get(i).getExaminer()[0] == null) {
-								tmpExams.get(i).addExaminer(examiners.get(j));
+						for (int j = 0; j < examiners.size(); j++) {
+							if (examiners.get(j).hasSubject(
+									tmpExams.get(i).getSubjects()[0])) {
+								if (tmpExams.get(i).getExaminer()[0] == null) {
+									tmpExams.get(i).addExaminer(examiners.get(j));
+								}
 							}
 						}
-					}
-					tmpExams.remove(i);
-				} else {
+						tmpExams.remove(i);
+					} else {
 
-					// looks for examiners that have both subjects of the
-					// current exams in their subject list, so there would be no
-					// need for a second examiner
-					for (int j = 0; j < examiners.size(); j++) {
-						if (examiners.get(j).hasSubject(
-								tmpExams.get(i).getSubjects()[0])
-								&& examiners.get(j).hasSubject(
-										tmpExams.get(i).getSubjects()[1])) {
-							tmpExams.get(i).addExaminer(examiners.get(j));
-							tmpExams.remove(i);
-							examiners.remove(j);
-							j--;
-						}
-					}
-
-					// looks for examiners that have at least 1 subject of the
-					// current exam to add as examiner
-					for (int j = 0; j < examiners.size(); j++) {
-						if (examiners.get(j).hasSubject(
-								tmpExams.get(i).getSubjects()[0])
-								|| examiners.get(j).hasSubject(
-										tmpExams.get(i).getSubjects()[1])) {
-							if (tmpExams.get(i).getExaminer()[0] == null
-									|| tmpExams.get(i).getExaminer()[1] == null) {
+						// looks for examiners that have both subjects of the
+						// current exams in their subject list, so there would be no
+						// need for a second examiner
+						for (int j = 0; j < examiners.size(); j++) {
+							if (examiners.get(j).hasSubject(
+									tmpExams.get(i).getSubjects()[0])
+									&& examiners.get(j).hasSubject(
+											tmpExams.get(i).getSubjects()[1])) {
 								tmpExams.get(i).addExaminer(examiners.get(j));
-							} else {
 								tmpExams.remove(i);
-								j = -1;
+							}
+						}
+
+						if(tmpExams.size() != 0){
+							// looks for examiners that have at least 1 subject of the
+							// current exam to add as examiner
+							for (int j = 0; j < examiners.size(); j++) {
+								if (examiners.get(j).hasSubject(
+										tmpExams.get(i).getSubjects()[0])
+										|| examiners.get(j).hasSubject(
+												tmpExams.get(i).getSubjects()[1])) {
+									if (tmpExams.get(i).getExaminer()[0] == null
+											|| tmpExams.get(i).getExaminer()[1] == null) {
+										tmpExams.get(i).addExaminer(examiners.get(j));
+									} else {
+										tmpExams.remove(i);
+										j = -1;
+									}
+								}
 							}
 						}
 					}
-				}
 
-				// no examiners left, but some exams have only one examiner,
-				// they get assessors later on
-				if (examiners.size() == 0) {
-					for (int j = 0; j < tmpExams.size(); j++) {
-						tmpExams.remove(j);
+					// no examiners left, but some exams have only one examiner,
+					// they get assessors later on
+					if (examiners.size() == 0) {
+						for (int j = 0; j < tmpExams.size(); j++) {
+							tmpExams.remove(j);
+						}
+					}
+
+					if(tmpExams != null && tmpExams.size() != 0){
+
+						// last exam was finished, can be removed so the loop ends
+						if (tmpExams.get(i).getExaminer()[0] != null
+								&& tmpExams.size() == 1) {
+							tmpExams.remove(i);
+						}
 					}
 				}
+			}
 
-				// last exam was finished, can be removed so the loop ends
-				if (tmpExams.get(i).getExaminer()[0] != null
-						&& tmpExams.size() == 1) {
-					tmpExams.remove(i);
+			for (int i = 0; i < examCollection.size(); i++) {
+				if (examCollection.get(i).getSubjects()[1] != null) {
+					if (examCollection.get(i).getSubjects()[0].isPreEffort()
+							&& examCollection.get(i).getSubjects()[1].isPreEffort()) {
+						examCollection.get(i).setLength(15);
+
+					} else if ((examCollection.get(i).getSubjects()[0]
+							.isPreEffort() && !examCollection.get(i).getSubjects()[1]
+									.isPreEffort())
+									|| (!examCollection.get(i).getSubjects()[0]
+											.isPreEffort() && examCollection.get(i)
+											.getSubjects()[1].isPreEffort())) {
+						examCollection.get(i).setLength(20);
+
+					} else {
+						examCollection.get(i).setLength(25);
+					}
+				} else {
+					if (examCollection.get(i).getSubjects()[0].isPreEffort()) {
+						examCollection.get(i).setLength(10);
+
+					} else {
+						examCollection.get(i).setLength(15);
+					}
 				}
 			}
+			this.exams = examCollection;
+		}else if(examinee.size() == 0){
+			throw new IllegalArgumentException("Es existieren noch keine Prüflinge.");
+		}else if(examiner.size() == 0){
+			throw new IllegalArgumentException("Es existieren noch keine Prüfer.");
+		}else{
+			throw new IllegalArgumentException("Es existieren noch keine Fächer.");
 		}
-
-		for (int i = 0; i < examCollection.size(); i++) {
-			if (examCollection.get(i).getSubjects()[1] != null) {
-				if (examCollection.get(i).getSubjects()[0].isPreEffort()
-						&& examCollection.get(i).getSubjects()[1].isPreEffort()) {
-					examCollection.get(i).setLength(10);
-
-				} else if ((examCollection.get(i).getSubjects()[0]
-						.isPreEffort() && !examCollection.get(i).getSubjects()[1]
-						.isPreEffort())
-						|| (!examCollection.get(i).getSubjects()[0]
-								.isPreEffort() && examCollection.get(i)
-								.getSubjects()[1].isPreEffort())) {
-					examCollection.get(i).setLength(15);
-
-				} else {
-					examCollection.get(i).setLength(20);
-				}
-			} else {
-				if (examCollection.get(i).getSubjects()[0].isPreEffort()) {
-					examCollection.get(i).setLength(5);
-
-				} else {
-					examCollection.get(i).setLength(10);
-				}
-			}
-		}
-
-		this.exams = examCollection;
 	}
 
 	private boolean examsHaveNoExaminer(ArrayList<Exam> examCol) {
@@ -549,20 +565,20 @@ public class Backend {
 		int times[] = new int[MAX_PARALLEL_EXAMS];
 		DataModel master = schedule[0].createNewTable(
 				(TIME_END - TIME_BEGIN) / 5, MAX_PARALLEL_EXAMS); // New master
-																	// table
+		// table
 		int favoriteRow[] = new int[examiner.size()]; // The first time an
-														// examiner is added to
-														// the master plan, he
-														// will be preferably
-														// put in the same
-														// column.
+		// examiner is added to
+		// the master plan, he
+		// will be preferably
+		// put in the same
+		// column.
 		boolean tested[] = new boolean[examinee.size()]; // If someone already
-															// was tested and
-															// has another exam,
-															// the program will
-															// try to put those
-															// exams far away,
-															// time-wise.
+		// was tested and
+		// has another exam,
+		// the program will
+		// try to put those
+		// exams far away,
+		// time-wise.
 
 		// ---Begin with examiners and their favouriteRow--- //
 		for (Exam exam : exams) {

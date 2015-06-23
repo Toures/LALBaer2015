@@ -147,8 +147,8 @@ public class Exam implements PlanObject {
 		this.examDesire = new Desire(time, time + length, this.toString(), 3);
 		for (Examiner examiner : this.examiner)
 			if (examiner != null)
-				examiner.addExamDesire(examDesire);
-		examinee.addExamDesire(examDesire);
+				examiner.addDesire(examDesire);
+		examinee.addDesire(examDesire);
 		// TODO: Was ist mit Beisitzern? Sie haben keine Desires, diese sind
 		// aber notwendig mit diesem Lösungsansatz um anzuzeigen,
 		// dass sie in einer Prüfung beschäftigt sind und keine anderen
