@@ -79,7 +79,7 @@ public class Exam implements PlanObject {
 		if (subjects[0]!= null && subjects[0].equals(subject)) {
 			try {
 				throw new SameSubjectException(
-						"hinzufügen von 2 gleichen fächer nicht möglich");
+						"hinzufï¿½gen von 2 gleichen fï¿½cher nicht mï¿½glich");
 			} catch (SameSubjectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +111,7 @@ public class Exam implements PlanObject {
 	 * @return True if available, false if not.
 	 */
 	public boolean checkDesires(int priority, int time) {
-		for (Examiner examiner : this.examiner)
+		for (Examiner examiner : examiner)
 			if (examiner != null)
 				if (!examiner.isAvailable(priority, time)
 						|| !examiner.isAvailable(priority, time + length))
@@ -150,9 +150,9 @@ public class Exam implements PlanObject {
 				examiner.addDesire(examDesire);
 		examinee.addDesire(examDesire);
 		// TODO: Was ist mit Beisitzern? Sie haben keine Desires, diese sind
-		// aber notwendig mit diesem Lösungsansatz um anzuzeigen,
-		// dass sie in einer Prüfung beschäftigt sind und keine anderen
-		// Prüfungen beisitzen können.
+		// aber notwendig mit diesem Lï¿½sungsansatz um anzuzeigen,
+		// dass sie in einer Prï¿½fung beschï¿½ftigt sind und keine anderen
+		// Prï¿½fungen beisitzen kï¿½nnen.
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class Exam implements PlanObject {
 
 	@Override
 	public String toString() {
-		String output = "Prüfung in " + subjects[0].getAbbreviation();
+		String output = "Prï¿½fung in " + subjects[0].getAbbreviation();
 		if (subjects[1] != null)
 			output += " und " + subjects[1].getAbbreviation();
 		output += " \n";
@@ -188,10 +188,10 @@ public class Exam implements PlanObject {
 			output += (start + length / 60) + ":0" + (start + length % 60);
 		else
 			output += (start + length / 60) + ":" + (start + length % 60);
-		output += " Uhr \nPrüfer: " + examiner[0].getName();
+		output += " Uhr \nPrï¿½fer: " + examiner[0].getName();
 		if (examiner[1] != null)
 			output += " und " + examiner[1].getName();
-		output += " \nPrüfling: " + examinee.getName();
+		output += " \nPrï¿½fling: " + examinee.getName();
 		return output;
 	}
 
