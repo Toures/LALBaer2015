@@ -2,6 +2,7 @@ package de.hs_mannheim.IB.SS15.OOT;
 
 import java.util.ArrayList;
 
+import de.hs_mannheim.IB.SS15.OOT.Exceptions.FullCalendarException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
@@ -539,8 +540,11 @@ public class Backend {
 
 	/**
 	 * Generates the master table with all given exams.
+	 * @throws FullCalendarException 
+	 * 				will be thrown if there is a problem with examiners and examinees that both have no time
+	 * 				at all.
 	 */
-	public void generateMasterTable() {
+	public void generateMasterTable() throws FullCalendarException {
 
 		int times[] = new int[MAX_PARALLEL_EXAMS];
 		DataModel master = schedule[0].createNewTable(
@@ -560,7 +564,7 @@ public class Backend {
 															// exams far away,
 															// time-wise.
 
-		// ---Begin with examiners and their favouriteRow---//
+		// ---Begin with examiners and their favouriteRow--- //
 		for (Exam exam : exams) {
 			Examiner[] examiner = exam.getExaminer();
 			int examiner1Index = this.examiner.indexOf(examiner[0]);
@@ -568,25 +572,58 @@ public class Backend {
 
 			// CASE: first occurence of examiner
 			if (favoriteRow[examiner1Index] == 0) { // Has no favorite row yet.
-				int col = 0, lowestTime = 48 * 60;
+				int col = 0, lowestTime = 48 * 60; // Two days should be enough
 				for (int i = 0; i < times.length; i++) {
 					if (times[i] > lowestTime) {
 						lowestTime = times[i];
 						col = i;
 					}
 				}
-				favoriteRow[examiner1Index] = col; // New favorite row
+				favoriteRow[examiner1Index] = col; // Assign new row
 				if (favoriteRow[examiner2Index] == 0)
 					favoriteRow[examiner2Index] = col;
 			}
 
-			if (exam.checkDesires(3, times[favoriteRow[examiner1Index]])) { // No
-																			// overlapping?
-				master.setValueAt(exam, times[favoriteRow[examiner1Index]],
-						favoriteRow[examiner1Index]);
-
+			int[] i = new int[3];
+			
+			//Look where the next available appointment would be if high, med and low priority
+			//desires are considered.
+			int examinerRow = favoriteRow[examiner1Index];
+			while( !exam.checkDesires(3, times[examinerRow]+i[0]) ||
+					times[examinerRow]+i[0] > TIME_END - exam.getLength())
+				i[0] += 5;
+			while( !exam.checkDesires(2, times[examinerRow]+i[1]) ||
+					times[examinerRow]+i[1] > TIME_END - exam.getLength())
+				i[1] += 5;
+			while( !exam.checkDesires(1, times[examinerRow]+i[1]) ||
+					times[examinerRow]+i[2] > TIME_END - exam.getLength())
+				i[2] += 5;
+			//First, check low priority desires, if they interfere and if there is no possible
+			//appointment if so, go to higher priority and check if there is a possible appointment
+			if(times[examinerRow]+i[2] > TIME_END - exam.getLength())
+				if(times[examinerRow]+i[1] > TIME_END - exam.getLength())
+					if(times[examinerRow]+i[0] > TIME_END - exam.getLength())
+						throw(new FullCalendarException());
+					else {
+						master.setValueAt(exam, times[examinerRow]+i[0]/5,
+								examinerRow);
+						if(i[0] == exam.getLength())
+							times[examinerRow] += i[0];
+					}
+				else {
+					master.setValueAt(exam, times[examinerRow]+i[1]/5,
+							examinerRow);
+					if(i[1] == exam.getLength())
+						times[examinerRow] += i[1];
+				}
+			else {
+				master.setValueAt(exam, times[examinerRow]+i[2]/5,
+						examinerRow);
+				if(i[2] == exam.getLength())
+					times[examinerRow] += i[2];
 			}
-
-		}
+			
+			tested[this.examinee.indexOf(exam.getExaminee())] = true;
+		}	
 	}
 }
