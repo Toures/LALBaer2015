@@ -6,8 +6,6 @@ import de.hs_mannheim.IB.SS15.OOT.Subject;
 
 public class Examinee extends Participant {
 	
-	private String firstName = "";
-	
 	public Examinee() {
 
 	}
@@ -40,7 +38,7 @@ public class Examinee extends Participant {
 		ArrayList<Subject> clonedSubjects = new ArrayList<Subject>();
 		ArrayList<Desire> clonedDesires = new ArrayList<Desire>();
 		if (this.desires != null && this.desires.size() != 0) {
-			for (int i = 0; i < this.getSubjects().size(); i++) {
+			for (int i = 0; i < this.getDesires().size(); i++) {
 				clonedDesires.add(this.getDesires().get(i).cloneDeep());
 			}
 			clonedExaminee.setDesires(clonedDesires);
@@ -87,6 +85,6 @@ public class Examinee extends Participant {
 	}
 
 	public String toString(){
-		return this.name+this.firstName; 
+		return this.name;
 	}
 }

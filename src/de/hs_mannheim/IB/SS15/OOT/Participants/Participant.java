@@ -17,11 +17,16 @@ public abstract class Participant {
 	
 	protected Participant(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires) {
 		this.name = name;
-		this.subjects = subjects;
+		for(int i = 0; i < subjects.size(); i++){
+			this.subjects.add(subjects.get(i));
+		}
 		this.desires = desires;	
 	}
 	
 	public boolean isAvailable(int priority, int time) {
+		if(desires==null){
+			return true;
+		}
 		for(Desire desire : getDesires())
 			if(desire.getPriority() >= priority && desire.getTime()[0] < time && desire.getTime()[1] > time)
 				return false;
@@ -44,13 +49,17 @@ public abstract class Participant {
 	 * @param to When it ends.
 	 */
 	public void addExamDesire(int from, int to, Exam exam) {
-//		desires.add(new Desire(from, to, exam.toString(), 3));
+		desires.add(new Desire(from, to, exam.toString(), 3));
 	}
 	
 	public void addDesire(Desire newDesire){
 		desires.add(newDesire);
 	}
 
+	public void addSubject(Subject sub) {
+		this.subjects.add(sub);
+	}
+	
 	public abstract String getName();
 	
 	public abstract ArrayList<Desire> getDesires();
