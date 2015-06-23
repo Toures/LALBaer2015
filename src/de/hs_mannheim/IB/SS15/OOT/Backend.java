@@ -41,10 +41,14 @@ public class Backend {
 
 	public Examinee createExaminee(String name, ArrayList<Subject> subjects,
 			ArrayList<Desire> desires) throws IllegalArgumentException {
-		if (name == null || name.isEmpty() || subjects == null
-				|| desires == null) {
+		if (name == null || subjects == null|| desires == null) {
 			throw new IllegalArgumentException("null-argument was given to createExaminee, no examinee is added");
-		} else {
+		}else if(name.isEmpty()){
+			throw new IllegalArgumentException("Name is empty");
+		}else if(subjects.isEmpty()){
+			throw new IllegalArgumentException("subject is empty");
+		}
+		else {
 			Examinee returnExaminee = new Examinee(name, subjects, desires);
 			examinee.add(returnExaminee);
 			return returnExaminee;
@@ -53,11 +57,14 @@ public class Backend {
 
 	public Examiner createExaminer(String name, ArrayList<Subject> subjects,
 			ArrayList<Desire> desires) {
-		if (name == null || name.isEmpty() || subjects == null
-				|| desires == null) {
+		if (name == null ||subjects == null|| desires == null) {
 			throw new IllegalArgumentException("null-argument was given to createExaminer, no examiner is added");
-
-		} else {
+		}else if(name.isEmpty()){
+			throw new IllegalArgumentException("Name is empty");
+		}else if(subjects.isEmpty()){
+			throw new IllegalArgumentException("subject is empty");
+		}
+		else {
 
 			Examiner returnExaminer = new Examiner(name, subjects, desires);
 			examiner.add(returnExaminer);
@@ -68,10 +75,13 @@ public class Backend {
 	}
 
 	public Assessor createAssessor(String name, ArrayList<Subject> subjects) {
-		if (name == null || name.isEmpty() || subjects == null) {
+		if (name == null || subjects == null) {
 			throw new IllegalArgumentException("null-argument was given to createAssessor, no assessor is added");
-		}
-			else{
+		}else if(name.isEmpty()){
+			throw new IllegalArgumentException("Name is empty");
+		}else if(subjects.isEmpty()){
+			throw new IllegalArgumentException("subject is empty");
+		}else{
 		Assessor returnAssessor = new Assessor(name, subjects);
 		assessor.add(returnAssessor);
 		return returnAssessor;
@@ -79,8 +89,12 @@ public class Backend {
 	}
 
 	public Subject createSubject(String name, String abbreviation) {
-		if(name==null||name.isEmpty()||abbreviation==null||abbreviation.isEmpty()){
+		if(name==null||abbreviation==null){
 			throw new IllegalArgumentException("null-argument was given to createSubject, no subject is added");
+		}else if(name.isEmpty()){
+			throw new IllegalArgumentException("name is empty");
+		}else if(abbreviation.isEmpty()){
+			throw new IllegalArgumentException("abbreviation is empty");
 		}
 		Subject returnSubject = new Subject(name, abbreviation);
 		subjects.add(returnSubject);
