@@ -78,11 +78,12 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	
 	private void addDesireToExaminee(){
 		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
+		
 		if(examinee.size()>0){
 			//TODO pick examinee from list
 			Examinee selectedExaminee = (Examinee) JOptionPane.showInputDialog(this, "Name des Studenten:", "Wunsch hinzufügen", 
 					JOptionPane.QUESTION_MESSAGE, null, examinee.toArray(), examinee.get(0));
-			if(selectedExaminee != null){
+			if(selectedExaminee != null){		
 				DesireGUI desire = new DesireGUI(this, selectedExaminee);
 			}
 			
@@ -243,7 +244,7 @@ class MainTableModel extends AbstractTableModel {
 
 	private ArrayList<Examinee> examinee;
 
-	private final int COLUMS = 2;
+	private final int COLUMS = 3;
 
 	MainTableModel(GUI mainGUI) {
 		this.mainGUI = mainGUI;
@@ -284,6 +285,8 @@ class MainTableModel extends AbstractTableModel {
 			return "Vorname";
 		} else if (col == 1) {
 			return "Nachname";
+		} else if (col == 2) {
+			return "Wünsche";
 		}
 
 		return null;
@@ -297,6 +300,8 @@ class MainTableModel extends AbstractTableModel {
 			return examinee.get(rowIndex).getName();
 		} else if (columnIndex == 1) {
 			return examinee.get(rowIndex).getName();
+		} else if (columnIndex == 1) {
+			return examinee.get(rowIndex).getDesires();
 		}
 
 		return null;
