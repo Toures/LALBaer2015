@@ -52,7 +52,24 @@ public class Desire {
 	}
 
 	public String toString(){
-		String vonBis = "Von:" + time[0]+":"+time[1]+"Uhr"+"\nBis:"+time[2]+":"+time[3];
-		return (vonBis + "\n"+comment);
+		int startHour = time[0]/60;
+		int startMinute = time[0]%60;
+		int endHour = time[1]/60;
+		int endMinute = time[1]%60;
+		String von = "Von:";
+		String bis = "Bis:";
+		String vonFixed;
+		String bisFixed;
+		if (startMinute<10){
+			vonFixed = von+startHour+"0"+startMinute;
+		}else{
+			vonFixed = von+startHour+startMinute;
+		}
+		if (endMinute < 10){
+			bisFixed = bis+endHour+"0"+endMinute;
+		}else{
+			bisFixed = bis+endHour+endMinute;
+		}
+		return vonFixed+"\n"+bisFixed;
 	}
 }
