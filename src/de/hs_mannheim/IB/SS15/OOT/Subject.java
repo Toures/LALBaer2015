@@ -46,19 +46,42 @@ public class Subject {
 
 	@Override
 	public String toString() {
-		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees + " Studenten";
+		return "" + name + " (" + abbreviation + ") mit " + amountOfExaminees
+				+ " Studenten";
 	}
 
-	public boolean equals(Object sub) {
-		if (this == sub) {
-			return true;
-		} else if (sub == null) {
-			return false;
-		} else if (this.getName().equals(((Subject) sub).getName())) {
-			return true;
-		} else {
+	public boolean equals(Object obj) {
+		if (obj == null) {
 			return false;
 		}
+		if (this == obj) {
+			return true;
+		}
+		if (getClass() != obj.getClass())
+			return false;
+		Subject sub = (Subject) obj;
+
+		if (name == null) {
+			if (sub.name != null) {
+				return false;
+			}
+		}
+		else if(!name.equals(sub.name)){
+			return false;
+		}
+		if (abbreviation == null) {
+			if (sub.abbreviation != null ) {
+				return false;
+			}
+		}
+		else if(!abbreviation.equals(sub.abbreviation)){
+			return false;
+		}
+		if(sub.preEffort != preEffort){
+			return false;
+		}
+		return true;
+
 	}
 
 	public Subject cloneDeep() {
