@@ -1,4 +1,4 @@
-package de.hs_mannheim.IB.SS15.OOT;
+package de.hs_mannheim.IB.SS15.OOT.test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hs_mannheim.IB.SS15.OOT.Backend;
+import de.hs_mannheim.IB.SS15.OOT.Schedule;
+import de.hs_mannheim.IB.SS15.OOT.Subject;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;

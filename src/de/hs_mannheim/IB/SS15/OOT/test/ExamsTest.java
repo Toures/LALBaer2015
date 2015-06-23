@@ -1,4 +1,4 @@
-package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
+package de.hs_mannheim.IB.SS15.OOT.test;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,8 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.SameSubjectException;
 
 public class ExamsTest {
 	private Exam exam, exam2, exam3;
@@ -93,5 +95,10 @@ public class ExamsTest {
 		assertEquals(true, exam2.addSubject(subjectOne));
 		assertEquals(true, exam2.addSubject(subjectTwo));
 		assertEquals(true, exam3.addSubject(subjectTwo));
+	}
+	@Test
+	public void equalsTest(){
+		assertEquals(true, subjectThree.equals(new Subject("Höhere Mathematik 1", "HM1", true)));
+		assertEquals(true, subjectOne.equals(new Subject("Lineare Algebra", "LAL")));
 	}
 }
