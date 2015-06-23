@@ -17,7 +17,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
 public class ExamsTest {
-	private Exam exam, exam2, exam3, exam4,exam5,exam6,exam7,exam8,exam9;
+	private Exam exam, exam2, exam3, exam4,exam5,exam6,exam7,exam8,exam9, exam10,exam11,exam12,exam13,exam14,exam15;
 	Desire desireOne, desireTwo, desireThree;
 	private Subject[] subjects = new Subject[2];
 	private Subject[] subjects2 = new Subject[2];
@@ -62,12 +62,12 @@ public class ExamsTest {
         desiresList5 = new ArrayList<Desire>();
         desiresList6 = new ArrayList<Desire>();
         // desires
-        d1 = new Desire(660,930,"hoch",3 );
+        d1 = new Desire(600,930,"hoch",3 );
         d2 = new Desire(480,600,"hoch",3 );
         d3 = new Desire(480,600,"mittel",2 );
         d4 = new Desire(600,720,"mittel",2 );
         d5 = new Desire(600,720,"niedrig",1 );
-        d6 = new Desire(480,600,"niedrig",1 );
+        d6 = new Desire(480,500,"niedrig",1 );
        
         desiresList1.add(d1);
         desiresList2.add(d2);
@@ -115,7 +115,7 @@ public class ExamsTest {
 		exam3= new Exam(subjects3, examineeTest, examiner, assessorTest,3);
 		
 		examiner[0]=examiner1;
-		examiner[1]=examiner7;
+		examiner[1]=null;
 		exam4 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner2;
 		exam5 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
@@ -127,30 +127,62 @@ public class ExamsTest {
 		exam8 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner6;
 		exam9 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
+		exam10 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
+		exam11 = new Exam(subjects, examinee2, examiner, assessor6, 25 );
+		exam12 = new Exam(subjects, examinee3, examiner, assessor6, 25 );
+		exam13 = new Exam(subjects, examinee4, examiner, assessor6, 25 );
+		exam14 = new Exam(subjects, examinee5, examiner, assessor6, 25 );
+		exam15 = new Exam(subjects, examinee6, examiner, assessor6, 25 );
+
 	}
 	
+	//Assessor and examinee Prio 1 and not in testet time
 	@Test
-	public void checkDesireTest_LegalArguments(){
-		assertEquals(true, exam4.checkDesires(3, 600));
-		assertEquals(false, exam5.checkDesires(3, 600));
+	public void checkDesireTest_LegalArgumentsWithExaminers(){
+		assertEquals(false, exam4.checkDesires(3, 600));
+		assertEquals(true, exam5.checkDesires(3, 600));
 		assertEquals(true, exam6.checkDesires(3, 600));
 		assertEquals(true, exam7.checkDesires(3, 600));
 		assertEquals(true, exam8.checkDesires(3, 600));
 		assertEquals(true, exam9.checkDesires(3, 600));
 		
 		assertEquals(false, exam4.checkDesires(2, 600));
-		assertEquals(false, exam5.checkDesires(2, 600));
+		assertEquals(true, exam5.checkDesires(2, 600));
 		assertEquals(true, exam6.checkDesires(2, 600));
 		assertEquals(false, exam7.checkDesires(2, 600));
 		assertEquals(true, exam8.checkDesires(2, 600));
 		assertEquals(true, exam9.checkDesires(2, 600));
 		
 		assertEquals(false, exam4.checkDesires(1, 600));
-		assertEquals(false, exam5.checkDesires(1, 600));
-		assertEquals(false, exam6.checkDesires(1, 600));
+		assertEquals(true, exam5.checkDesires(1, 600));
+		assertEquals(true, exam6.checkDesires(1, 600));
 		assertEquals(false, exam7.checkDesires(1, 600));
 		assertEquals(false, exam8.checkDesires(1, 600));
 		assertEquals(true, exam9.checkDesires(1, 600));
+	}
+	
+	@Test
+	public void checkDesireTest_LegalArgummentsWithExaminee(){
+		assertEquals(false, exam10.checkDesires(3, 600));
+		assertEquals(true, exam11.checkDesires(3, 600));
+		assertEquals(true, exam12.checkDesires(3, 600));
+		assertEquals(true, exam13.checkDesires(3, 600));
+		assertEquals(true, exam14.checkDesires(3, 600));
+		assertEquals(true, exam15.checkDesires(3, 600));
+		
+		assertEquals(false, exam10.checkDesires(2, 600));
+		assertEquals(true, exam11.checkDesires(2, 600));
+		assertEquals(true, exam12.checkDesires(2, 600));
+		assertEquals(false, exam13.checkDesires(2, 600));
+		assertEquals(true, exam14.checkDesires(2, 600));
+		assertEquals(true, exam15.checkDesires(2, 600));
+		
+		assertEquals(false, exam10.checkDesires(1, 600));
+		assertEquals(true, exam11.checkDesires(1, 600));
+		assertEquals(true, exam12.checkDesires(1, 600));
+		assertEquals(false, exam13.checkDesires(1, 600));
+		assertEquals(false, exam14.checkDesires(1, 600));
+		assertEquals(true, exam15.checkDesires(1, 600));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
