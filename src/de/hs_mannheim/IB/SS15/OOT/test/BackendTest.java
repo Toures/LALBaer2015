@@ -27,7 +27,7 @@ public class BackendTest {
 		Schedule[] schedule = { new Schedule("test Schedule") };
 		backend = new Backend(schedule);
 
-		subjects = new ArrayList<Subject>();
+		subjects = backend.getSubjects(); // from Backend
 		desires = new ArrayList<Desire>();
 
 	}
@@ -291,6 +291,49 @@ public class BackendTest {
 
 		backend.removeAssessor(new Assessor("Assessor01", subjects));
 	}
+	
+	/*
+	 * removeExaminee(Examinee)
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminee_Null() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+
+		backend.createExaminee("Examinee01", subjects, desires);
+		
+		backend.removeExaminee(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminee_NonExistingExaminee() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+
+		backend.createExaminee("Examinee01", subjects, desires);
+		
+		backend.removeExaminee(new Examinee("Examinee02", subjects, desires));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminee_emptyList() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+		
+		backend.removeExaminee(new Examinee("Examinee01", subjects, desires));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminee_LegalArgument() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(10, 30, 12, 50, "Kommentar", 2));
+
+		Examinee examine = backend.createExaminee("Examinee01", subjects, desires);
+		
+		backend.removeExaminee(examine);
+	}
+		
 
 	/*
 	 * generateExams
