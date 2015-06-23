@@ -24,6 +24,9 @@ public abstract class Participant {
 	}
 	
 	public boolean isAvailable(int priority, int time) {
+		if(desires==null){
+			return true;
+		}
 		for(Desire desire : getDesires())
 			if(desire.getPriority() >= priority && desire.getTime()[0] < time && desire.getTime()[1] > time)
 				return false;

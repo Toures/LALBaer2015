@@ -25,7 +25,7 @@ public class ExamsTest {
 	private Examinee examinee, examinee1, examinee2, examinee3, examinee4, examinee5, examinee6;
 	private Examiner[] examiner = new Examiner[2];
 	private Assessor assessor, assessor1, assessor2,assessor3,assessor4,assessor5,assessor6;
-	private Examiner examiner1,examiner2,examiner3,examiner4,examiner5,examiner6;
+	private Examiner examiner1,examiner2,examiner3,examiner4,examiner5,examiner6, examiner7;
 	private Subject subjectOne,subjectTwo, subjectThree;
 	private ArrayList<Desire> desiresListOne,desiresList1,desiresList2,desiresList3,desiresList4,desiresList5,desiresList6 ;
     private Desire d1,d2,d3,d4,d5,d6;
@@ -85,7 +85,7 @@ public class ExamsTest {
         assessor6 = new Assessor("Ludwig",subjectsArrayList);
 		
 		//examiner && examinee
-		Examinee examineeTest = new Examinee("Harald", subjectsArrayList, null);
+		Examinee examineeTest = new Examinee("Harald", subjectsArrayList, desiresList1);
 		examinee1 = new Examinee("Wolfram", subjectsArrayList, desiresList1);
 		examinee2 = new Examinee("Walburga", subjectsArrayList,desiresList2);
 		examinee3 = new Examinee("Berta", subjectsArrayList,desiresList3);
@@ -99,6 +99,7 @@ public class ExamsTest {
 		examiner4 = new Examiner("Heidi", subjectsArrayList,desiresList4);
 		examiner5 = new Examiner("Willhelm", subjectsArrayList,desiresList5);
 		examiner6 = new Examiner("Hedwig", subjectsArrayList,desiresList6);
+		examiner7 = new Examiner("Horst", subjectsArrayList, desiresList6);
 		Examiner examinerTestOne = new Examiner("Dieter", subjectsArrayList, desiresListOne);
 		Examiner examinerTestTwo = new Examiner("Wolfgang", subjectsArrayList, null);
 		examiner[0]=examinerTestOne;
@@ -114,18 +115,18 @@ public class ExamsTest {
 		exam3= new Exam(subjects3, examineeTest, examiner, assessorTest,3);
 		
 		examiner[0]=examiner1;
-		examiner[1]=null;
-		exam4 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		examiner[1]=examiner7;
+		exam4 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner2;
-		exam5 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		exam5 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner3;
-		exam6 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		exam6 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner4;
-		exam7 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		exam7 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner5;
-		exam8 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		exam8 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 		examiner[0]=examiner6;
-		exam9 = new Exam(subjects, examinee1,examiner, assessor6, 25 );
+		exam9 = new Exam(subjects, examinee1, examiner, assessor6, 25 );
 	}
 	
 	@Test
