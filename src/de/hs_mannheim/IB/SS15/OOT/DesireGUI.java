@@ -27,16 +27,16 @@ public class DesireGUI extends JFrame implements ActionListener {
 	//	private JSpinner timeSpinner;
 	//	private JComponent editor;
 
-	String[] minutes = { "00","05","10","15","20","25","30","35","40","45","50","55" };
-	String[] hours = { "08","09","10","11","12","13","14","15","16" };
-	String[] lengthStrings = { "5","10","15","20","25","30","35","40","45","50","55","60" };
+	Integer[] minutes = { 0, 5,10,15,20,25,30,35,40,45,50,55};
+	Integer[] hours = {7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+	Integer[] lengthStrings = { "5","10","15","20","25","30","35","40","45","50","55","60" };
 	Integer[] priority = {1, 2, 3};
 
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
 			int fromHour = Integer.parseInt((String)fromHoursCombo.getSelectedItem());
-			int fromMinute = Integer.parseInt((String)fromMinutesCombo.getSelectedItem());
+
 			int toHour = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			int toMinute = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			String comment = desireComment.getText();
@@ -56,7 +56,8 @@ public class DesireGUI extends JFrame implements ActionListener {
 		super("Wunsch eintragen");
 		this.parent = gui;
 		this.participant = participant;
-		parent.setEnabled(false);
+		parent.setEnabled(false);		
+		
 		getContentPane().setLayout(new BorderLayout());
 
 		createNorthpanel();

@@ -49,7 +49,7 @@ public class ExamsTest {
 		
 		// desires
 		desiresListOne = new ArrayList<Desire>();
-		desireOne=new Desire(1,1,2,2,"wichtig",3 );
+		desireOne=new Desire(61 , 122,"wichtig",3 );
 		desiresListOne.add(desireOne);
 		
 		//examiner && examinee
