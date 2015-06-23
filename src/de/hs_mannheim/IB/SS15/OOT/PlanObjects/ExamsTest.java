@@ -16,6 +16,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 
 public class ExamsTest {
 	private Exam exam, exam2, exam3;
+	Desire desireOne, desireTwo, desireThree;
 	private Subject[] subjects = new Subject[2];
 	private Subject[] subjects2 = new Subject[2];
 	private Subject[] subjects3 = new Subject[2];
@@ -23,30 +24,44 @@ public class ExamsTest {
 	private Examiner[] examiner = new Examiner[2];
 	private Assessor assessor;
 	Subject subjectOne,subjectTwo, subjectThree;
+	ArrayList<Desire> desiresListOne ;
 	
 	@Before
 	public void setUp() throws Exception{
+		
+		// Subjects
 		subjectOne  = new Subject("Lineare Algebra", "LAL");
 		subjectTwo = new Subject("Analysis", "ANA");
-		subjectThree = new Subject("Höhere Mathematik 1", "HM1");
+		subjectThree = new Subject("Höhere Mathematik 1", "HM1", true);
 		subjects[0]= subjectOne;
 		subjects[1]=subjectTwo;
-		ArrayList<Subject> subjectsArrayList = new ArrayList<Subject>();
-		subjectsArrayList.add(subjectOne);
-		subjectsArrayList.add(subjectTwo);
-		ArrayList<Desire> desires = new ArrayList<Desire>();
-		desires.add(new Desire(1,1,2,2,"wichtig",3 ));
-		Examinee examineeTest = new Examinee("Harald", subjectsArrayList, desires);
-		Examiner examinerTestOne = new Examiner("Dieter", subjectsArrayList, desires);
-		Examiner examinerTestTwo = new Examiner("Wolfgang", subjectsArrayList, desires);
-		examiner[0]=examinerTestOne;
-		examiner[1]=examinerTestTwo;
-		Assessor assessorTest = new Assessor("Helene", subjectsArrayList);
-		exam = new Exam(subjects, examineeTest, examiner, assessorTest,3);
 		subjects3[0]=subjectOne;
 		subjects3[1]=null;
 		subjects2[0]=null;
 		subjects2[1]=null;
+		
+		
+		ArrayList<Subject> subjectsArrayList = new ArrayList<Subject>();
+		subjectsArrayList.add(subjectOne);
+		subjectsArrayList.add(subjectTwo);
+		
+		// desires
+		desiresListOne = new ArrayList<Desire>();
+		desireOne=new Desire(1,1,2,2,"wichtig",3 );
+		desiresListOne.add(desireOne);
+		
+		//examiner && examinee
+		Examinee examineeTest = new Examinee("Harald", subjectsArrayList, null);
+		Examiner examinerTestOne = new Examiner("Dieter", subjectsArrayList, desiresListOne);
+		Examiner examinerTestTwo = new Examiner("Wolfgang", subjectsArrayList, null);
+		examiner[0]=examinerTestOne;
+		examiner[1]=examinerTestTwo;
+		
+		//assessor
+		Assessor assessorTest = new Assessor("Helene", subjectsArrayList);
+		
+		// create exams
+		exam = new Exam(subjects, examineeTest, examiner, assessorTest,3);
 		exam2= new Exam(subjects2, examineeTest, examiner, assessorTest,3);
 		exam3= new Exam(subjects3, examineeTest, examiner, assessorTest,3);
 	}
