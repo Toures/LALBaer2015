@@ -40,7 +40,7 @@ public class Examinee extends Participant {
 		ArrayList<Subject> clonedSubjects = new ArrayList<Subject>();
 		ArrayList<Desire> clonedDesires = new ArrayList<Desire>();
 		if (this.desires != null && this.desires.size() != 0) {
-			for (int i = 0; i < this.getSubjects().size(); i++) {
+			for (int i = 0; i < this.getDesires().size(); i++) {
 				clonedDesires.add(this.getDesires().get(i).cloneDeep());
 			}
 			clonedExaminee.setDesires(clonedDesires);

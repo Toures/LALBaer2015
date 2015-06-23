@@ -17,7 +17,9 @@ public abstract class Participant {
 	
 	protected Participant(String name, ArrayList<Subject> subjects, ArrayList<Desire> desires) {
 		this.name = name;
-		this.subjects = subjects;
+		for(int i = 0; i < subjects.size(); i++){
+			this.subjects.add(subjects.get(i));
+		}
 		this.desires = desires;	
 	}
 	
@@ -51,6 +53,10 @@ public abstract class Participant {
 		desires.add(newDesire);
 	}
 
+	public void addSubject(Subject sub) {
+		this.subjects.add(sub);
+	}
+	
 	public abstract String getName();
 	
 	public abstract ArrayList<Desire> getDesires();

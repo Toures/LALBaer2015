@@ -15,7 +15,6 @@ public class Backend {
 	static final int MAX_PARALLEL_EXAMS = 3;
 
 	ArrayList<Subject> subjects;
-
 	ArrayList<Examinee> examinee;
 	ArrayList<Examiner> examiner;
 	ArrayList<Assessor> assessor;
@@ -50,6 +49,9 @@ public class Backend {
 			throw new IllegalArgumentException("subject is empty");
 		} else {
 			Examinee returnExaminee = new Examinee(name, subjects, desires);
+			for (int i = 0; i < subjects.size(); i++) {
+				subjects.get(i).incrementAmountOfExaminees();
+			}
 			examinee.add(returnExaminee);
 			return returnExaminee;
 		}
@@ -138,9 +140,14 @@ public class Backend {
 		if (ex == null) {
 			throw new IllegalArgumentException("Student nicht vorhanden");
 		} else {
-			for (Examinee e : examinee) {
-				if (e.equals(ex)) {
-					examinee.remove(e);
+			ArrayList<Subject> subjs = new ArrayList<Subject>();
+			for (int i = 0; i < examinee.size(); i++) {
+				if (examinee.get(i).equals(ex)) {
+					subjs = examinee.get(i).getSubjects();
+					for(int j = 0; j < subjs.size(); j++){
+						subjs.get(j).decrementAmountOfExaminees();
+					}
+					examinee.remove(i);
 					return;
 				}
 				throw new IllegalArgumentException("Student nicht in Liste");
@@ -196,9 +203,11 @@ public class Backend {
 	}
 
 	public void generateExams() {
+		if(this.examinee.size() != 0 && this.examiner.size() != 0 && this.subjects.size() != 0){
+		
 		int tmpIndex = 0;
 		boolean inserted = false;
-
+		
 		// Lists of subjects and examinee's that got deep cloned for use
 		ArrayList<Subject> subjectsForExam = new ArrayList<Subject>();
 		ArrayList<Examinee> examineeCollection = new ArrayList<Examinee>();
@@ -249,7 +258,7 @@ public class Backend {
 
 		// the subject with the most participants needs 1 exam for each
 		// participant
-		combi1SpecSubjectAndOthers.add(-1);
+		combi1SpecSubjectAndOthers.add(0);
 
 		while (subjectsForExam.size() > 0) {
 
@@ -263,10 +272,8 @@ public class Backend {
 			if (highestComb != 0) {
 
 				for (int i = 0; i < examineeCollection.size(); i++) {
-					if (examineeCollection.get(i).hasSubject(
-							subjectsForExam.get(0))
-							&& examineeCollection.get(i).hasSubject(
-									subjectsForExam.get(indexOfhighestComb))) {
+					if (examineeCollection.get(i).hasSubject(subjectsForExam.get(0))
+							&& examineeCollection.get(i).hasSubject(subjectsForExam.get(indexOfhighestComb))) {
 
 						if (examineeCollection.get(i).getSubjects().size() == 2) {
 							examCollection.get(tmpIndex).setExaminee(
@@ -289,7 +296,7 @@ public class Backend {
 						}
 
 						subjectsForExam.get(indexOfhighestComb)
-								.decrementAmountOfExaminees();
+						.decrementAmountOfExaminees();
 						subjectsForExam.get(0).decrementAmountOfExaminees();
 					}
 				}
@@ -407,10 +414,13 @@ public class Backend {
 					}
 				}
 
-				// last exam was finished, can be removed so the loop ends
-				if (tmpExams.get(i).getExaminer()[0] != null
-						&& tmpExams.size() == 1) {
-					tmpExams.remove(i);
+				if(tmpExams != null && tmpExams.size() != 0){
+					
+					// last exam was finished, can be removed so the loop ends
+					if (tmpExams.get(i).getExaminer()[0] != null
+							&& tmpExams.size() == 1) {
+						tmpExams.remove(i);
+					}
 				}
 			}
 		}
@@ -423,10 +433,10 @@ public class Backend {
 
 				} else if ((examCollection.get(i).getSubjects()[0]
 						.isPreEffort() && !examCollection.get(i).getSubjects()[1]
-						.isPreEffort())
-						|| (!examCollection.get(i).getSubjects()[0]
-								.isPreEffort() && examCollection.get(i)
-								.getSubjects()[1].isPreEffort())) {
+								.isPreEffort())
+								|| (!examCollection.get(i).getSubjects()[0]
+										.isPreEffort() && examCollection.get(i)
+										.getSubjects()[1].isPreEffort())) {
 					examCollection.get(i).setLength(15);
 
 				} else {
@@ -441,8 +451,14 @@ public class Backend {
 				}
 			}
 		}
-
 		this.exams = examCollection;
+		}else if(examinee.size() == 0){
+			throw new IllegalArgumentException("Es existieren noch keine Prüflinge.");
+		}else if(examiner.size() == 0){
+			throw new IllegalArgumentException("Es existieren noch keine Prüfer.");
+		}else{
+			throw new IllegalArgumentException("Es existieren noch keine Fächer.");
+		}
 	}
 
 	private boolean examsHaveNoExaminer(ArrayList<Exam> examCol) {
@@ -545,20 +561,20 @@ public class Backend {
 		int times[] = new int[MAX_PARALLEL_EXAMS];
 		DataModel master = schedule[0].createNewTable(
 				(TIME_END - TIME_BEGIN) / 5, MAX_PARALLEL_EXAMS); // New master
-																	// table
+		// table
 		int favoriteRow[] = new int[examiner.size()]; // The first time an
-														// examiner is added to
-														// the master plan, he
-														// will be preferably
-														// put in the same
-														// column.
+		// examiner is added to
+		// the master plan, he
+		// will be preferably
+		// put in the same
+		// column.
 		boolean tested[] = new boolean[examinee.size()]; // If someone already
-															// was tested and
-															// has another exam,
-															// the program will
-															// try to put those
-															// exams far away,
-															// time-wise.
+		// was tested and
+		// has another exam,
+		// the program will
+		// try to put those
+		// exams far away,
+		// time-wise.
 
 		// ---Begin with examiners and their favouriteRow---//
 		for (Exam exam : exams) {
@@ -581,7 +597,7 @@ public class Backend {
 			}
 
 			if (exam.checkDesires(3, times[favoriteRow[examiner1Index]])) { // No
-																			// overlapping?
+				// overlapping?
 				master.setValueAt(exam, times[favoriteRow[examiner1Index]],
 						favoriteRow[examiner1Index]);
 

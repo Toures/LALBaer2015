@@ -75,7 +75,7 @@ public class Exam implements PlanObject {
 	}
 
 	public boolean addSubject(Subject subject) {
-		if (subjects[0]!= null&&subjects[0].equals(subject)) {
+		if (subjects[0]!= null && subjects[0].equals(subject)) {
 			try {
 				throw new SameSubjectException(
 						"hinzufügen von 2 gleichen fächer nicht möglich");
