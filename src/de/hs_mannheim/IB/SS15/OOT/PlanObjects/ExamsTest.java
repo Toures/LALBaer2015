@@ -54,7 +54,7 @@ public class ExamsTest {
 		exam2.addSubject(null);
 		exam3.addSubject(null);
 	}
-	@Test// (expected = SameSubjectException.class)
+	@Test (expected = SameSubjectException.class)
 	public void addSubjectTest_ArrayHalfFullSameSubject(){
 		exam3.addSubject(subjectOne);
 		exam.addSubject(subjectOne);
