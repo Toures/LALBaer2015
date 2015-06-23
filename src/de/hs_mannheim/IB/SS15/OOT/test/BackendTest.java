@@ -566,5 +566,183 @@ public class BackendTest {
 		backend.generateExams();
 
 	}
+	
+	@Test
+	public void generateExamsTest_25Subjects_15Examinee_5Examiners() {
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+		
+		Subject sub01 = new Subject("Subject01", "sub01");
+		Subject sub02 = new Subject("Subject02", "sub02");
+		Subject sub03 = new Subject("Subject03", "sub03");
+		Subject sub04 = new Subject("Subject04", "sub04");
+		Subject sub05 = new Subject("Subject05", "sub05");
+		Subject sub06 = new Subject("Subject06", "sub06");
+		Subject sub07 = new Subject("Subject07", "sub07");
+		Subject sub08 = new Subject("Subject08", "sub08");
+		Subject sub09 = new Subject("Subject09", "sub09");
+		Subject sub10 = new Subject("Subject10", "sub10");
+		Subject sub11 = new Subject("Subject11", "sub11");
+		Subject sub12 = new Subject("Subject12", "sub12");
+		Subject sub13 = new Subject("Subject13", "sub13");
+		Subject sub14 = new Subject("Subject14", "sub14");
+		Subject sub15 = new Subject("Subject15", "sub15");
+		Subject sub16 = new Subject("Subject16", "sub16");
+		Subject sub17 = new Subject("Subject17", "sub17");
+		Subject sub18 = new Subject("Subject18", "sub18");
+		Subject sub19 = new Subject("Subject19", "sub19");
+		Subject sub20 = new Subject("Subject20", "sub20");
+		Subject sub21 = new Subject("Subject21", "sub21");
+		Subject sub22 = new Subject("Subject22", "sub22");
+		Subject sub23 = new Subject("Subject23", "sub23");
+		Subject sub24 = new Subject("Subject24", "sub24");
+		Subject sub25 = new Subject("Subject25", "sub25");
+		
+		subjects.add(sub01);
+		subjects.add(sub02);
+		subjects.add(sub03);
+		subjects.add(sub04);
+		subjects.add(sub05);
+		subjects.add(sub06);
+		subjects.add(sub07);
+		subjects.add(sub08);
+		subjects.add(sub09);
+		subjects.add(sub10);
+		subjects.add(sub11);
+		subjects.add(sub12);
+		subjects.add(sub13);
+		subjects.add(sub14);
+		subjects.add(sub15);
+		subjects.add(sub16);
+		subjects.add(sub17);
+		subjects.add(sub18);
+		subjects.add(sub19);
+		subjects.add(sub20);
+		subjects.add(sub21);
+		subjects.add(sub22);
+		subjects.add(sub23);
+		subjects.add(sub24);
+		subjects.add(sub25);
+		
+		ArrayList<Subject> subjects1 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects2 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects3 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects4 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects5 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects6 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects7 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects8 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects9 = new ArrayList<Subject>();
+		
+		
+		ArrayList<Subject> subjects10 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects11 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects12 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects13 = new ArrayList<Subject>();
+		ArrayList<Subject> subjects14 = new ArrayList<Subject>();
+		
+		//Examinee subjects
+		subjects1.add(sub01);
+		subjects1.add(sub02);
+		subjects1.add(sub03);
+		
+		subjects2.add(sub04);
+		subjects2.add(sub05);
+		subjects2.add(sub06);
+		subjects2.add(sub07);
+		subjects2.add(sub08);
+		subjects2.add(sub09);
+		
+		subjects3.add(sub10);
+		subjects3.add(sub11);
+		
+		subjects4.add(sub12);
+		subjects4.add(sub13);
+		subjects4.add(sub14);
+		subjects4.add(sub15);
+		
+		subjects5.add(sub16);
+		subjects5.add(sub17);
+		subjects5.add(sub01);
+		
+		subjects6.add(sub18);
+		subjects6.add(sub10);
+		
+		subjects7.add(sub19);
+		subjects7.add(sub20);
+		subjects7.add(sub25);
+	
+		subjects8.add(sub21);
+		subjects8.add(sub22);
+		subjects8.add(sub23);
+		subjects8.add(sub24);
+		subjects8.add(sub05);
+		
+		subjects9.add(sub18);
+		subjects9.add(sub08);
+		subjects9.add(sub01);
+		subjects9.add(sub06);
+		
+		
+		//Examiner subjects
+		subjects10.add(sub08);
+		subjects10.add(sub06);
+		subjects10.add(sub02);
+		subjects10.add(sub11);
+		subjects10.add(sub13);
+		
+		subjects11.add(sub07);
+		subjects11.add(sub05);
+		subjects11.add(sub09);
+		subjects11.add(sub15);
+		subjects11.add(sub25);
+		
+		subjects12.add(sub01);
+		subjects12.add(sub04);
+		subjects12.add(sub10);
+		subjects12.add(sub12);
+		subjects12.add(sub14);
+		
+		subjects13.add(sub21);
+		subjects13.add(sub23);
+		subjects13.add(sub03);
+		subjects13.add(sub18);
+		subjects13.add(sub20);
+		
+		subjects14.add(sub24);
+		subjects14.add(sub22);
+		subjects14.add(sub17);
+		subjects14.add(sub16);
+		subjects14.add(sub19);
+		
+		
+		
+		Examinee examinee01 = backend.createExaminee("examinee01", subjects1, desires);
+		Examinee examinee02 = backend.createExaminee("examinee02", subjects1, desires);
+		Examinee examinee03 = backend.createExaminee("examinee03", subjects1, desires);
+		Examinee examinee04 = backend.createExaminee("examinee04", subjects2, desires);
+		Examinee examinee05 = backend.createExaminee("examinee05", subjects3, desires);
+		Examinee examinee06 = backend.createExaminee("examinee06", subjects4, desires);
+		Examinee examinee07 = backend.createExaminee("examinee07", subjects5, desires);
+		Examinee examinee08 = backend.createExaminee("examinee08", subjects5, desires);
+		Examinee examinee09 = backend.createExaminee("examinee09", subjects6, desires);
+		Examinee examinee10 = backend.createExaminee("examinee10", subjects6, desires);
+		Examinee examinee11 = backend.createExaminee("examinee11", subjects7, desires);
+		Examinee examinee12 = backend.createExaminee("examinee12", subjects8, desires);
+		Examinee examinee13 = backend.createExaminee("examinee13", subjects9, desires);
+		Examinee examinee14 = backend.createExaminee("examinee14", subjects3, desires);
+		Examinee examinee15 = backend.createExaminee("examinee15", subjects3, desires);
+		
+		Examiner examiner01 = backend.createExaminer("examiner01", subjects10, desires);
+		Examiner examiner02 = backend.createExaminer("examiner02", subjects11, desires);
+		Examiner examiner03 = backend.createExaminer("examiner03", subjects12, desires);
+		Examiner examiner04 = backend.createExaminer("examiner04", subjects13, desires);
+		Examiner examiner05 = backend.createExaminer("examiner05", subjects14, desires);
+		
+		backend.generateExams();
+		
+		
+		
+	}
 
 }
