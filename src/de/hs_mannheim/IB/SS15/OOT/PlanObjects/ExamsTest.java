@@ -21,13 +21,13 @@ public class ExamsTest {
 	private Examinee examinee;
 	private Examiner[] examiner = new Examiner[2];
 	private Assessor assessor;
-	Subject subjectOne; 
-	Subject subjectTwo ;
+	Subject subjectOne,subjectTwo, subjectThree;
 	
 	@Before
 	public void setUp() throws Exception{
 		subjectOne  = new Subject("Lineare Algebra", "LAL");
 		subjectTwo = new Subject("Analysis", "ANA");
+		subjectThree = new Subject("Höhere Mathematik 1", "HM1");
 		subjects[0]= subjectOne;
 		subjects[1]=subjectTwo;
 		ArrayList<Subject> subjectsArrayList = new ArrayList<Subject>();
@@ -58,6 +58,11 @@ public class ExamsTest {
 	public void addSubjectTest_ArrayHalfFullSameSubject(){
 		exam3.addSubject(subjectOne);
 		exam.addSubject(subjectOne);
+	}
+	
+	@Test
+	public void addSubjectTest_ArrayFull(){
+		assertEquals(false, exam.addSubject(subjectThree));
 	}
 	
 	@Test
