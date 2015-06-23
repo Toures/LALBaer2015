@@ -1,4 +1,4 @@
-package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
+package de.hs_mannheim.IB.SS15.OOT.Exceptions;
 
 public class SameSubjectException extends Exception {
 	

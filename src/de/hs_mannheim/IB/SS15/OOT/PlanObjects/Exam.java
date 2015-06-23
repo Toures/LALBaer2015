@@ -1,5 +1,6 @@
 package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
+import de.hs_mannheim.IB.SS15.OOT.Exceptions.SameSubjectException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;

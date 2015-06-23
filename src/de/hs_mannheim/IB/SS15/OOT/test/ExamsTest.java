@@ -9,12 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.hs_mannheim.IB.SS15.OOT.Subject;
+import de.hs_mannheim.IB.SS15.OOT.Exceptions.SameSubjectException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
-import de.hs_mannheim.IB.SS15.OOT.PlanObjects.SameSubjectException;
 
 public class ExamsTest {
 	private Exam exam, exam2, exam3;
