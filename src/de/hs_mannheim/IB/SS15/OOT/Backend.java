@@ -429,7 +429,7 @@ public class Backend {
 				if (examCollection.get(i).getSubjects()[1] != null) {
 					if (examCollection.get(i).getSubjects()[0].isPreEffort()
 							&& examCollection.get(i).getSubjects()[1].isPreEffort()) {
-						examCollection.get(i).setLength(10);
+						examCollection.get(i).setLength(15);
 
 					} else if ((examCollection.get(i).getSubjects()[0]
 							.isPreEffort() && !examCollection.get(i).getSubjects()[1]
@@ -437,17 +437,17 @@ public class Backend {
 									|| (!examCollection.get(i).getSubjects()[0]
 											.isPreEffort() && examCollection.get(i)
 											.getSubjects()[1].isPreEffort())) {
-						examCollection.get(i).setLength(15);
+						examCollection.get(i).setLength(20);
 
 					} else {
-						examCollection.get(i).setLength(20);
+						examCollection.get(i).setLength(25);
 					}
 				} else {
 					if (examCollection.get(i).getSubjects()[0].isPreEffort()) {
-						examCollection.get(i).setLength(5);
+						examCollection.get(i).setLength(10);
 
 					} else {
-						examCollection.get(i).setLength(10);
+						examCollection.get(i).setLength(15);
 					}
 				}
 			}
