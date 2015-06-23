@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.hs_mannheim.IB.SS15.OOT.Subject;
@@ -43,10 +44,12 @@ public class ExamsTest {
 		Assessor assessorTest = new Assessor("Helene", subjectsArrayList);
 		exam = new Exam(subjects, examineeTest, examiner, assessorTest,3);
 		subjects3[0]=subjectOne;
+		subjects3[1]=null;
+		subjects2[0]=null;
+		subjects2[1]=null;
 		exam2= new Exam(subjects2, examineeTest, examiner, assessorTest,3);
 		exam3= new Exam(subjects3, examineeTest, examiner, assessorTest,3);
 	}
-	
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void addSubjectTest_NameNull(){
