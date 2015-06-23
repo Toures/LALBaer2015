@@ -239,10 +239,54 @@ public class BackendTest {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void createSubject_LegalArguments() {
+		assertEquals(0, backend.getSubjects().size());
 		backend.createSubject("Objektorientierte Programierung", "OOT");
+		assertEquals(1, backend.getSubjects().size());
 
+	}
+	
+	/*
+	 * removeAssessor(Assessor)
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeAssessor_Null() {
+		subjects.add(new Subject("Subject01", "Sub01"));
+
+		ArrayList<Assessor> assessors = backend.getAssessor();
+		assessors.add(new Assessor("Assessor01", subjects));
+
+		backend.removeAssessor(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeAssessor_NonExistingAssessor() {
+		subjects.add(new Subject("Subject01", "Sub01"));
+
+		ArrayList<Assessor> assessors = backend.getAssessor();
+		assessors.add(new Assessor("Assessor01", subjects));
+
+		backend.removeAssessor(new Assessor("Assessor02", subjects));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeAssessor_emptyList() {
+		subjects.add(new Subject("Subject01", "Sub01"));
+		
+		backend.removeAssessor(new Assessor("Assessor01", subjects));
+		
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeAssessor_LegalArgument() {
+		subjects.add(new Subject("Subject01", "Sub01"));
+
+		ArrayList<Assessor> assessors = backend.getAssessor();
+		assessors.add(new Assessor("Assessor01", subjects));
+
+		backend.removeAssessor(new Assessor("Assessor01", subjects));
 	}
 
 	/*
