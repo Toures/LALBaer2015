@@ -17,6 +17,7 @@ public class Exam implements PlanObject {
 	private Examinee examinee;
 	private Examiner[] examiner = new Examiner[2];
 	private Assessor assessor;
+	private Desire examDesire;
 
 	public Exam() {
 
@@ -143,16 +144,27 @@ public class Exam implements PlanObject {
 	 */
 	public void addExamDesires(int time) {
 		this.start = time;
+		this.examDesire = new Desire(time, time + length, this.toString(), 3);
 		for (Examiner examiner : this.examiner)
 			if (examiner != null)
-				examiner.addExamDesire(time, time + length, this);
-		examinee.addExamDesire(time, time + length, this);
+				examiner.addExamDesire(examDesire);
+		examinee.addExamDesire(examDesire);
 		// TODO: Was ist mit Beisitzern? Sie haben keine Desires, diese sind
 		// aber notwendig mit diesem Lösungsansatz um anzuzeigen,
 		// dass sie in einer Prüfung beschäftigt sind und keine anderen
 		// Prüfungen beisitzen können.
 	}
 
+	/**
+	 * This method should only be use for the swapping of exams, because it only includes the change of the time period
+	 * and not the exams itself or its priority
+	 * @param time the new starting time of the exam
+	 */
+	public void changeDesire(int time){
+		this.start = time;
+		this.examDesire.setTime(time, time + length);
+	}
+	
 	public void addExaminer(Examiner ex) {
 		if (examiner[0] == null) {
 			examiner[0] = ex;
