@@ -17,15 +17,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import sun.nio.ch.SelChImpl;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 
 public class StudentsGUI extends JFrame implements ActionListener {
 
-	private GUI gui;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private JScrollPane scrollMainTable;
-	private JScrollPane scrollSubjectTable;
+	private GUI gui;
 
 	private JPanel south;
 
@@ -38,7 +41,6 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	private JTable selectSubjectTable;
 	private MainTableModel mainTableModel;
 	private JTable mainJTable;
-	private DesireGUI desireGUI;
 
 	public StudentsGUI(GUI gui) {
 		this.gui = gui;
@@ -69,18 +71,30 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnRemoveStudent) {
 			removeStudentDialog();
 		} else if(e.getSource() == btnAddDesire){
-//			desireGUI.addDesire();
+			addDesireToExaminee();
 		}
 
 	}
-
+	
+	private void addDesireToExaminee(){
+		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
+		if(examinee.size()>0){
+			//TODO pick examinee from list
+			Examinee selectedExaminee = (Examinee) JOptionPane.showInputDialog(this, "Name des Studenten:", "Wunsch hinzufügen", 
+					JOptionPane.QUESTION_MESSAGE, null, examinee.toArray(), examinee.get(0));
+			if(selectedExaminee != null){
+				DesireGUI desire = new DesireGUI(this, selectedExaminee);
+			}
+			
+		}
+	}
+	
 	private void addStudentDialog() {
 		String name = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
 		if (name != null) {
 			String abbreviation = JOptionPane.showInputDialog(this, "Nachname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
 			if (abbreviation != null) {
 				// createExaminee
-				new DesireGUI(this);
 				ArrayList<Desire> desireList = new ArrayList<Desire>();
 				// TODO (quickFix createExaminee muss geändert werden)
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();

@@ -43,10 +43,9 @@ public abstract class Participant {
 	 * @param from When it begins.
 	 * @param to When it ends.
 	 */
-	public void addExamDesire(int fromHour, int fromMinute, int toHour, int toMinute, Exam exam) {
-		desires.add(new Desire(fromHour, fromMinute, toHour, toMinute, exam.toString(), 3));
+	public void addExamDesire(int fromHour, int fromMinute, int toHour, int toMinute, int priority) {
+		desires.add(new Desire(fromHour, fromMinute, toHour, toMinute, "", priority));
 	}
-	
 
 	public abstract String getName();
 	
