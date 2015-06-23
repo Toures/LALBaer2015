@@ -6,8 +6,6 @@ import de.hs_mannheim.IB.SS15.OOT.Subject;
 
 public class Examinee extends Participant {
 	
-	private String firstName = "";
-	
 	public Examinee() {
 
 	}
@@ -87,6 +85,6 @@ public class Examinee extends Participant {
 	}
 
 	public String toString(){
-		return this.name+this.firstName; 
+		return this.name;
 	}
 }
