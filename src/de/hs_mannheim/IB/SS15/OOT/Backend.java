@@ -118,33 +118,33 @@ public class Backend {
 		return subjects;
 	}
 
-	public void removeAssessor(String name) {
+	public void removeAssessor(Assessor ass) {
 		for (Assessor a : assessor) {
-			if (a.getName().equals(name)) {
+			if (a.equals(ass)) {
 				assessor.remove(a);
 			}
 		}
 	}
 
-	public void removeExaminee(String name) {
+	public void removeExaminee(Examinee ex) {
 		for (Examinee e : examinee) {
-			if (e.getName().equals(name)) {
+			if (e.equals(ex)) {
 				examinee.remove(e);
 			}
 		}
 	}
 
-	public void removeExaminer(String name) {
+	public void removeExaminer(Examiner ex) {
 		for (Examiner e : examiner) {
-			if (e.getName().equals(name)) {
+			if (e.equals(ex)) {
 				examiner.remove(e);
 			}
 		}
 	}
 
-	public void removeSubject(String name) {
+	public void removeSubject(Subject sub) {
 		for (Subject s : subjects) {
-			if (s.getName().equals(name)) {
+			if (s.equals(sub)) {
 				subjects.remove(s);
 			}
 

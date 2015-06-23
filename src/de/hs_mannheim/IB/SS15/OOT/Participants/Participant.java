@@ -44,7 +44,7 @@ public abstract class Participant {
 	 * @param to When it ends.
 	 */
 	public void addExamDesire(int from, int to, Exam exam) {
-		desires.add(new Desire(from, to, exam.toString(), 3));
+//		desires.add(new Desire(from, to, exam.toString(), 3));
 	}
 	
 	public void addDesire(Desire newDesire){
