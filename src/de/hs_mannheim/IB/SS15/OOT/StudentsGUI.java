@@ -300,7 +300,7 @@ class MainTableModel extends AbstractTableModel {
 			return examinee.get(rowIndex).getName();
 		} else if (columnIndex == 1) {
 			return examinee.get(rowIndex).getName();
-		} else if (columnIndex == 1) {
+		} else if (columnIndex == 2) {
 			return examinee.get(rowIndex).getDesires();
 		}
 
