@@ -20,7 +20,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Participant;
 public class DesireGUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JButton ok, cancel;
 	private JComboBox<Integer> fromHoursCombo, fromMinutesCombo, toHoursCombo, toMinutesCombo, priorityCombo;
 	private JFrame parent;
@@ -74,17 +74,16 @@ public class DesireGUI extends JFrame implements ActionListener{
 		parent.setEnabled(false);		
 
 		getContentPane().setLayout(new BorderLayout());
-		
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		addWindowListener( new WindowAdapter(){
 			public void windowClosing(WindowEvent arg0){
-				parent.setVisible(true);
 				parent.setEnabled(true);
 			}
 		});
-	
-	
+
+
 		createNorthpanel();
 		createCenterpanel();
 		createSouthpanel();

@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class BreakGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JLabel nameLabel, lengthLabel, timeLabel;
 	private JButton ok, cancel;
 	private JComboBox<String> length, hoursCombo, minutesCombo;
@@ -50,14 +50,13 @@ public class BreakGUI extends JFrame implements ActionListener {
 		createNorthpanel();
 		createCenterpanel();
 		createSouthpanel();
-		
+
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
-		
+
 		addWindowListener( new WindowAdapter(){
 			public void windowClosing(WindowEvent arg0){
-				parent.setVisible(true);
 				parent.setEnabled(true);
 			}
 		});
@@ -82,7 +81,7 @@ public class BreakGUI extends JFrame implements ActionListener {
 		south.add(cancel);
 		getContentPane().add(south, BorderLayout.SOUTH);
 	}
-	
+
 	private void createCenterpanel(){
 		//center panel
 		JPanel center = new JPanel();
@@ -105,6 +104,8 @@ public class BreakGUI extends JFrame implements ActionListener {
 		timePanel.add(hoursCombo);
 		timePanel.add(minutesCombo);
 
+		length = new JComboBox(lengthStrings);
+		
 		center.add(timeLabel);
 		center.add(timePanel);
 		//center.add(timeSpinner);
