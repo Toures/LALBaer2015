@@ -40,8 +40,9 @@ public class DesireGUI extends JFrame implements ActionListener {
 			int toHour = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			int toMinute = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			String comment = desireComment.getText();
-			participant.getDesires().add(new Desire(fromHour, fromMinute, toHour, toMinute, 
+			participant.addDesire(new Desire(fromHour, fromMinute, toHour, toMinute, 
 					comment,(Integer)priorityCombo.getSelectedItem()));
+			//TODO check if desire appears in backend
 			this.setVisible(false);
 			this.parent.setEnabled(true);
 		} else if(e.getSource()==cancel){

@@ -46,6 +46,10 @@ public abstract class Participant {
 	public void addExamDesire(int from, int to, Exam exam) {
 		desires.add(new Desire(from, to, exam.toString(), 3));
 	}
+	
+	public void addDesire(Desire newDesire){
+		desires.add(newDesire);
+	}
 
 	public abstract String getName();
 	
