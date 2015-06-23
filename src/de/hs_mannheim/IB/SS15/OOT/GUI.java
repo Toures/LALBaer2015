@@ -141,7 +141,13 @@ public class GUI extends JFrame implements ActionListener {
 		else if (e.getSource() == btnRooms) {
 			System.out.println("btnRooms");
 		} else if (e.getSource() == btnStudents) {
-			new StudentsGUI(this);
+			
+			if (backend.getSubjects().size() <= 0) {
+				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Studenten", JOptionPane.ERROR_MESSAGE);
+			} else {
+				new StudentsGUI(this);
+			}
+			
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {

@@ -78,31 +78,24 @@ public class StudentsGUI extends JFrame implements ActionListener {
 	
 	private void addDesireToExaminee(){
 		ArrayList<Examinee> examinee = gui.getBackend().getExaminee();
-		
-		if(examinee.size()>0){
-			//TODO pick examinee from list
-			Examinee selectedExaminee = (Examinee) JOptionPane.showInputDialog(this, "Name des Studenten:", "Wunsch hinzufügen", 
-					JOptionPane.QUESTION_MESSAGE, null, examinee.toArray(), examinee.get(0));
-			if(selectedExaminee != null){		
-				DesireGUI desire = new DesireGUI(this, selectedExaminee);
-			}
-			
+
+		if (examinee.size() > 0 &&  mainJTable.getSelectedRow() >= 0) {
+			new DesireGUI(this, examinee.get(mainJTable.getSelectedRow()));
+			mainTableModel.updateData(); // update jTable
 		}
+		
 	}
 	
 	private void addStudentDialog() {
-		String firstName = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
-		if (firstName != null) {
-			String secondName = JOptionPane.showInputDialog(this, "Nachname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
-			if (secondName != null) {
+		String name = JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Student hinzufügen", JOptionPane.PLAIN_MESSAGE);
+		if (name != null) {
 				// createExaminee
 				ArrayList<Desire> desireList = new ArrayList<Desire>();
 				// TODO (quickFix createExaminee muss geändert werden)
 				ArrayList<Subject> tempSub = new ArrayList<Subject>();
 				tempSub.add(currentSubject);
-				gui.getBackend().createExaminee(firstName, tempSub, desireList);
+				gui.getBackend().createExaminee(name , tempSub, desireList);
 				mainTableModel.updateData(); // update jTable
-			}
 		}
 
 	}
@@ -112,7 +105,7 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		ArrayList<Subject> subjects = gui.getBackend().getSubjects();
 
 		if (subjects.size() > 0) {
-			Subject selectedSubject = (Subject) JOptionPane.showInputDialog(this, "Vorname des Studenten:", "Studenten entfernen", JOptionPane.QUESTION_MESSAGE, null, subjects.toArray(), subjects.get(0));
+			Subject selectedSubject = (Subject) JOptionPane.showInputDialog(this, "Name des Studenten:", "Studenten entfernen", JOptionPane.QUESTION_MESSAGE, null, subjects.toArray(), subjects.get(0));
 
 			if (selectedSubject != null) {
 
@@ -244,7 +237,7 @@ class MainTableModel extends AbstractTableModel {
 
 	private ArrayList<Examinee> examinee;
 
-	private final int COLUMS = 3;
+	private final int COLUMS = 2;
 
 	MainTableModel(GUI mainGUI) {
 		this.mainGUI = mainGUI;
@@ -282,10 +275,8 @@ class MainTableModel extends AbstractTableModel {
 	@Override
 	public String getColumnName(int col) {
 		if (col == 0) {
-			return "Vorname";
+			return "Name";
 		} else if (col == 1) {
-			return "Nachname";
-		} else if (col == 2) {
 			return "Wünsche";
 		}
 
@@ -299,8 +290,6 @@ class MainTableModel extends AbstractTableModel {
 		if (columnIndex == 0) {
 			return examinee.get(rowIndex).getName();
 		} else if (columnIndex == 1) {
-			return examinee.get(rowIndex).getName();
-		} else if (columnIndex == 2) {
 			return examinee.get(rowIndex).getDesires();
 		}
 
