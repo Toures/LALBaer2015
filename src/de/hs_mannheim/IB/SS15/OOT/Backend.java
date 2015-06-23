@@ -41,14 +41,14 @@ public class Backend {
 
 	public Examinee createExaminee(String name, ArrayList<Subject> subjects,
 			ArrayList<Desire> desires) throws IllegalArgumentException {
-		if (name == null || subjects == null|| desires == null) {
-			throw new IllegalArgumentException("null-argument was given to createExaminee, no examinee is added");
-		}else if(name.isEmpty()){
+		if (name == null || subjects == null || desires == null) {
+			throw new IllegalArgumentException(
+					"null-argument was given to createExaminee, no examinee is added");
+		} else if (name.isEmpty()) {
 			throw new IllegalArgumentException("Name is empty");
-		}else if(subjects.isEmpty()){
+		} else if (subjects.isEmpty()) {
 			throw new IllegalArgumentException("subject is empty");
-		}
-		else {
+		} else {
 			Examinee returnExaminee = new Examinee(name, subjects, desires);
 			examinee.add(returnExaminee);
 			return returnExaminee;
@@ -57,14 +57,14 @@ public class Backend {
 
 	public Examiner createExaminer(String name, ArrayList<Subject> subjects,
 			ArrayList<Desire> desires) {
-		if (name == null ||subjects == null|| desires == null) {
-			throw new IllegalArgumentException("null-argument was given to createExaminer, no examiner is added");
-		}else if(name.isEmpty()){
+		if (name == null || subjects == null || desires == null) {
+			throw new IllegalArgumentException(
+					"null-argument was given to createExaminer, no examiner is added");
+		} else if (name.isEmpty()) {
 			throw new IllegalArgumentException("Name is empty");
-		}else if(subjects.isEmpty()){
+		} else if (subjects.isEmpty()) {
 			throw new IllegalArgumentException("subject is empty");
-		}
-		else {
+		} else {
 
 			Examiner returnExaminer = new Examiner(name, subjects, desires);
 			examiner.add(returnExaminer);
@@ -76,24 +76,26 @@ public class Backend {
 
 	public Assessor createAssessor(String name, ArrayList<Subject> subjects) {
 		if (name == null || subjects == null) {
-			throw new IllegalArgumentException("null-argument was given to createAssessor, no assessor is added");
-		}else if(name.isEmpty()){
+			throw new IllegalArgumentException(
+					"null-argument was given to createAssessor, no assessor is added");
+		} else if (name.isEmpty()) {
 			throw new IllegalArgumentException("Name is empty");
-		}else if(subjects.isEmpty()){
+		} else if (subjects.isEmpty()) {
 			throw new IllegalArgumentException("subject is empty");
-		}else{
-		Assessor returnAssessor = new Assessor(name, subjects);
-		assessor.add(returnAssessor);
-		return returnAssessor;
-			}
+		} else {
+			Assessor returnAssessor = new Assessor(name, subjects);
+			assessor.add(returnAssessor);
+			return returnAssessor;
+		}
 	}
 
 	public Subject createSubject(String name, String abbreviation) {
-		if(name==null||abbreviation==null){
-			throw new IllegalArgumentException("null-argument was given to createSubject, no subject is added");
-		}else if(name.isEmpty()){
+		if (name == null || abbreviation == null) {
+			throw new IllegalArgumentException(
+					"null-argument was given to createSubject, no subject is added");
+		} else if (name.isEmpty()) {
 			throw new IllegalArgumentException("name is empty");
-		}else if(abbreviation.isEmpty()){
+		} else if (abbreviation.isEmpty()) {
 			throw new IllegalArgumentException("abbreviation is empty");
 		}
 		Subject returnSubject = new Subject(name, abbreviation);
@@ -119,35 +121,58 @@ public class Backend {
 	}
 
 	public void removeAssessor(Assessor ass) {
-		for (Assessor a : assessor) {
-			if (a.equals(ass)) {
-				assessor.remove(a);
+		if (ass == null) {
+			throw new IllegalArgumentException("Beisitzer nicht vorhanden");
+		} else {
+			for (Assessor a : assessor) {
+				if (a.equals(ass)) {
+					assessor.remove(a);
+					return;
+				}
+				throw new IllegalArgumentException("Beisitzer nicht in Liste");
 			}
 		}
 	}
 
 	public void removeExaminee(Examinee ex) {
-		for (Examinee e : examinee) {
-			if (e.equals(ex)) {
-				examinee.remove(e);
+		if (ex == null) {
+			throw new IllegalArgumentException("Student nicht vorhanden");
+		} else {
+			for (Examinee e : examinee) {
+				if (e.equals(ex)) {
+					examinee.remove(e);
+					return;
+				}
+				throw new IllegalArgumentException("Student nicht in Liste");
 			}
 		}
 	}
 
 	public void removeExaminer(Examiner ex) {
-		for (Examiner e : examiner) {
-			if (e.equals(ex)) {
-				examiner.remove(e);
+		if (ex == null) {
+			throw new IllegalArgumentException("Prüfer nicht vorhanden");
+		} else {
+			for (Examiner e : examiner) {
+				if (e.equals(ex)) {
+					examiner.remove(e);
+					return;
+				}
+				throw new IllegalArgumentException();
 			}
 		}
 	}
 
 	public void removeSubject(Subject sub) {
-		for (Subject s : subjects) {
-			if (s.equals(sub)) {
-				subjects.remove(s);
+		if (sub == null) {
+			throw new IllegalArgumentException("Keine Fächer vorhanden");
+		} else {
+			for (Subject s : subjects) {
+				if (s.equals(sub)) {
+					subjects.remove(s);
+					return;
+				}
+				throw new IllegalArgumentException();
 			}
-
 		}
 	}
 
