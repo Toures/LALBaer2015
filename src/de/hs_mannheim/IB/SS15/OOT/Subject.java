@@ -80,7 +80,7 @@ public class Subject {
 		if(sub.preEffort != preEffort){
 			return false;
 		}
-		return true;
+		return true; 
 
 	}
 
