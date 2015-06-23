@@ -68,7 +68,7 @@ public class BackendTest {
 		backend.createExaminee("Examinee01", subjects, desires);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void createExamineeTest_DesiresNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -135,7 +135,7 @@ public class BackendTest {
 		backend.createExaminer("Examiner01", subjects, desires);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void createExaminerTest_DesiresNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -324,7 +324,7 @@ public class BackendTest {
 		backend.removeExaminee(new Examinee("Examinee01", subjects, desires));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void removeExaminee_LegalArgument() {
 		subjects.add(new Subject("Subject01", "sub01"));
 		desires.add(new Desire(630, 770, "Kommentar", 2));
@@ -338,15 +338,103 @@ public class BackendTest {
 	/*
 	 * generateExams
 	 */
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void generateExamsTest_DesiresNull() {
+		
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
 
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+		
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, null);
+
+		// generateExams
+		backend.generateExams();
+		
+	}
+	
+	@Test
+	public void generateExamsTest_DesiresEmpty() {
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+		
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void generateExamsTest_NoSubjects() {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+		
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void generateExamsTest_NoExaminer() {
+		
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+		
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void generateExamsTest_NoExaminee() {
+		
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+		
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// generateExams
+		backend.generateExams();
+		
+	}
+	
 	@Test
 	public void generateExamsTest_Simple_1Subject_1Examinee() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-
+		
+		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+		
+		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
 		// generateExams
@@ -357,11 +445,16 @@ public class BackendTest {
 	@Test
 	public void generateExamsTest_Simple_1Subject_2Examinee() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
+		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
+		
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
+		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
 
@@ -373,12 +466,17 @@ public class BackendTest {
 	@Test
 	public void generateExamsTest_Simple_2Subject_1Examinee() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
+		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 		subjects.add(new Subject("Subject02", "sub02"));
+		
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
+		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
 		// generateExams
@@ -389,12 +487,17 @@ public class BackendTest {
 	@Test
 	public void generateExamsTest_Simple_2Subject_2Examinee_BothSameSubjects() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
+		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 		subjects.add(new Subject("Subject02", "sub02"));
 
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+		
+		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
 
@@ -406,21 +509,26 @@ public class BackendTest {
 	@Test
 	public void generateExamsTest_Simple_2Subject_2Examinee_DifferentSubjects() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
+		// subject
 		Subject sub01 = new Subject("Subject01", "sub01");
 		Subject sub02 = new Subject("Subject02", "sub02");
 
 		subjects.add(sub01);
-		subjects.add(sub02);
+		subjects.add(sub02);		
 
 		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
 		tempSubjects1.add(sub01);
 		tempSubjects1.add(sub02);
 		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
 		tempSubjects2.add(sub01);
+		
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
+		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
 		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
 
@@ -432,9 +540,10 @@ public class BackendTest {
 	@Test
 	public void generateExamsTest_Simple_2Subject_2Examinee_TotallyDifferentSubjects() {
 
-		// create Examinee
+		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
+		// subject
 		Subject sub01 = new Subject("Subject01", "sub01");
 		Subject sub02 = new Subject("Subject02", "sub02");
 
@@ -445,7 +554,11 @@ public class BackendTest {
 		tempSubjects1.add(sub01);
 		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
 		tempSubjects2.add(sub02);
+		
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
+		// examiner
 		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
 		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
 

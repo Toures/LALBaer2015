@@ -91,7 +91,12 @@ public class Subject {
 	}
 
 	public void decrementAmountOfExaminees() {
-		amountOfExaminees--;
+		this.amountOfExaminees--;
+
+	}
+	
+	public void incrementAmountOfExaminees() {
+		this.amountOfExaminees++;
 
 	}
 

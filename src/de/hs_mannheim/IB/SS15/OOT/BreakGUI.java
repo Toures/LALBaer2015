@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,9 +15,11 @@ import javax.swing.JPanel;
 
 public class BreakGUI extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
+
 	private JLabel nameLabel, lengthLabel, timeLabel;
 	private JButton ok, cancel;
-	private JComboBox length, hoursCombo, minutesCombo;
+	private JComboBox<String> length, hoursCombo, minutesCombo;
 	private JFrame parent;
 	//	private JSpinner timeSpinner;
 	//	private JComponent editor;
@@ -46,10 +50,16 @@ public class BreakGUI extends JFrame implements ActionListener {
 		createNorthpanel();
 		createCenterpanel();
 		createSouthpanel();
-		
+
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
+
+		addWindowListener( new WindowAdapter(){
+			public void windowClosing(WindowEvent arg0){
+				parent.setEnabled(true);
+			}
+		});
 	}
 
 	private void createNorthpanel(){
@@ -71,7 +81,7 @@ public class BreakGUI extends JFrame implements ActionListener {
 		south.add(cancel);
 		getContentPane().add(south, BorderLayout.SOUTH);
 	}
-	
+
 	private void createCenterpanel(){
 		//center panel
 		JPanel center = new JPanel();
@@ -88,14 +98,14 @@ public class BreakGUI extends JFrame implements ActionListener {
 		JPanel timePanel = new JPanel();
 		timePanel.setLayout(new GridLayout(1,2));
 
-		hoursCombo = new JComboBox(hours);
-		minutesCombo = new JComboBox(minutes);
+		hoursCombo = new JComboBox<String>(hours);
+		minutesCombo = new JComboBox<String>(minutes);
 
 		timePanel.add(hoursCombo);
 		timePanel.add(minutesCombo);
 
 		length = new JComboBox(lengthStrings);
-
+		
 		center.add(timeLabel);
 		center.add(timePanel);
 		//center.add(timeSpinner);

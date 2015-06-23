@@ -4,7 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,33 +17,32 @@ import javax.swing.JTextField;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Participant;
 
-public class DesireGUI extends JFrame implements ActionListener {
+public class DesireGUI extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
 
 	private JButton ok, cancel;
-	private JComboBox<String> fromHoursCombo, fromMinutesCombo, toHoursCombo, toMinutesCombo;
-	private JComboBox<Integer> priorityCombo;
+	private JComboBox<Integer> fromHoursCombo, fromMinutesCombo, toHoursCombo, toMinutesCombo, priorityCombo;
 	private JFrame parent;
 	private JTextField desireComment;
 	private Participant participant;
 	//	private JSpinner timeSpinner;
 	//	private JComponent editor;
 
-	Integer[] minutes = { 0, 5,10,15,20,25,30,35,40,45,50,55};
-	Integer[] hours = {7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
-	Integer[] lengthStrings = { "5","10","15","20","25","30","35","40","45","50","55","60" };
+	Integer[] minutes = new Integer[12];
+	Integer[] hours;
 	Integer[] priority = {1, 2, 3};
 
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
-			int fromHour = Integer.parseInt((String)fromHoursCombo.getSelectedItem());
+			int from = (Integer)fromHoursCombo.getSelectedItem();
+			int to = (Integer)toHoursCombo.getSelectedItem();
 
-			int toHour = Integer.parseInt((String)toHoursCombo.getSelectedItem());
-			int toMinute = Integer.parseInt((String)toHoursCombo.getSelectedItem());
 			String comment = desireComment.getText();
-			participant.addDesire(new Desire(fromHour, fromMinute, toHour, toMinute, 
-					comment,(Integer)priorityCombo.getSelectedItem()));
-			//TODO check if desire appears in backend
+			System.out.println(comment);
+			participant.addDesire(new Desire(from, to, comment,(Integer)priorityCombo.getSelectedItem()));
+
 			this.setVisible(false);
 			this.parent.setEnabled(true);
 		} else if(e.getSource()==cancel){
@@ -50,23 +50,49 @@ public class DesireGUI extends JFrame implements ActionListener {
 			this.parent.setEnabled(true);
 		}
 	}
-	
+
 	//--GUI
 	public DesireGUI(JFrame gui, Participant participant) {
 		super("Wunsch eintragen");
 		this.parent = gui;
 		this.participant = participant;
+
+		int hourStart = Backend.TIME_BEGIN / 60;
+
+		int hourEnd = Backend.TIME_END / 60;
+
+		//hours-combo
+		hours = new Integer[hourEnd-hourStart];
+		for(int i = 0; i <  hours.length; i++ ){
+			hours[i] = hourStart+i;
+		}
+		//minutes-combo
+		for(int i = 0; i < 12; i++){
+			minutes[i] = i*5;
+		}		
+
 		parent.setEnabled(false);		
-		
+
 		getContentPane().setLayout(new BorderLayout());
+
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		addWindowListener( new WindowAdapter(){
+			public void windowClosing(WindowEvent arg0){
+				parent.setEnabled(true);
+			}
+		});
+
 
 		createNorthpanel();
 		createCenterpanel();
 		createSouthpanel();
-		
+
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
+
+
 	}
 
 	private void createNorthpanel(){
@@ -88,7 +114,7 @@ public class DesireGUI extends JFrame implements ActionListener {
 		south.add(cancel);
 		getContentPane().add(south, BorderLayout.SOUTH);
 	}
-	
+
 	private void createCenterpanel(){
 		//center panel
 		JPanel center = new JPanel();
@@ -99,24 +125,24 @@ public class DesireGUI extends JFrame implements ActionListener {
 		JPanel fromPanel = new JPanel();
 		fromPanel.setLayout(new GridLayout(1,2));
 
-		fromHoursCombo = new JComboBox<String>(hours);
-		fromMinutesCombo = new JComboBox<String>(minutes);
+		fromHoursCombo = new JComboBox<Integer>(hours);
+		fromMinutesCombo = new JComboBox<Integer>(minutes);
 
 		fromPanel.add(fromHoursCombo);
 		fromPanel.add(fromMinutesCombo);
-		
+
 		JPanel toPanel = new JPanel();
 		toPanel.setLayout(new GridLayout(1,2));
-		
-		toHoursCombo = new JComboBox<String>(hours);
-		toMinutesCombo = new JComboBox<String>(minutes);
+
+		toHoursCombo = new JComboBox<Integer>(hours);
+		toMinutesCombo = new JComboBox<Integer>(minutes);
 
 		toPanel.add(toHoursCombo);
 		toPanel.add(toMinutesCombo);
-		
+
 		priorityCombo = new JComboBox<Integer>(priority);
 		desireComment = new JTextField();
-		
+
 		center.add(fromLabel);
 		center.add(fromPanel);
 		//center.add(timeSpinner);

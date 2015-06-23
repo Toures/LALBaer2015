@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -37,6 +38,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem newFile;
 	private JMenuItem open;
 	private JMenuItem save;
+	private JMenuItem print;
 	private JMenuItem exit;
 
 	private JMenu info;
@@ -120,6 +122,14 @@ public class GUI extends JFrame implements ActionListener {
 				// plan object needs to be serializable
 				System.out.println("Dokument beenden");
 			}
+		} else if (e.getSource() == print) {
+			try {
+				tableMaster.print();
+			} catch (PrinterException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		} else if (e.getSource() == exit) {
 			System.out.println("Programm beenden");
 			System.exit(0);
@@ -131,7 +141,13 @@ public class GUI extends JFrame implements ActionListener {
 		else if (e.getSource() == btnRooms) {
 			System.out.println("btnRooms");
 		} else if (e.getSource() == btnStudents) {
-			new StudentsGUI(this);
+			
+			if (backend.getSubjects().size() <= 0) {
+				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Studenten", JOptionPane.ERROR_MESSAGE);
+			} else {
+				new StudentsGUI(this);
+			}
+			
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
@@ -157,10 +173,12 @@ public class GUI extends JFrame implements ActionListener {
 
 		newFile = new JMenuItem("Neu");
 		newFile.addActionListener(this);
-		open = new JMenuItem("Ã–ffnen");
+		open = new JMenuItem("Öffnen");
 		open.addActionListener(this);
 		save = new JMenuItem("Speichern");
 		save.addActionListener(this);
+		print = new JMenuItem("Drucken");
+		print.addActionListener(this);
 		exit = new JMenuItem("Beenden");
 		exit.addActionListener(this);
 
@@ -172,6 +190,9 @@ public class GUI extends JFrame implements ActionListener {
 		file.add(newFile);
 		file.add(open);
 		file.add(save);
+		file.addSeparator();
+		file.add(print);
+		file.addSeparator();
 		file.add(exit);
 
 		info.add(about);
