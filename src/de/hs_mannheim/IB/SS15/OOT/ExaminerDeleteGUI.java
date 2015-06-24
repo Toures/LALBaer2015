@@ -26,8 +26,11 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
-			Examiner currentNode = (Examiner)examiner.getSelectedItem();
-			mainGUI.getBackend().removeExaminer(currentNode);
+			if(mainGUI.getBackend().getExaminer().size() != 0){
+				Examiner currentNode = (Examiner)examiner.getSelectedItem();
+				mainGUI.getBackend().removeExaminer(currentNode);
+				this.setVisible(false);
+			}
 			this.setVisible(false);
 		} else if(e.getSource()==cancel){
 			this.setVisible(false);
