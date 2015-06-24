@@ -318,8 +318,8 @@ public class GUI extends JFrame implements ActionListener {
 				remove(centerTablePanel);
 				centerTablePanel.remove(tableContainer);
 				JScrollPane scrollPane = new JScrollPane(tableStudent);
-				tableContainer = new JPanel();
-				tableContainer.add(scrollPane);
+				tableContainer = new JPanel(new BorderLayout());
+				tableContainer.add(scrollPane, BorderLayout.CENTER);
 				centerTablePanel.add(tableContainer);
 				add(centerTablePanel);
 				repaint();
@@ -331,8 +331,8 @@ public class GUI extends JFrame implements ActionListener {
 			public void mouseClicked(MouseEvent e){
 				centerTablePanel.remove(tableContainer);
 				JScrollPane scrollPane = new JScrollPane(tableMaster);
-				tableContainer = new JPanel();
-				tableContainer.add(scrollPane);
+				tableContainer = new JPanel(new BorderLayout());
+				tableContainer.add(scrollPane, BorderLayout.CENTER);
 				centerTablePanel.add(tableContainer);
 				centerTablePanel.add(tableContainer);
 				add(centerTablePanel);
