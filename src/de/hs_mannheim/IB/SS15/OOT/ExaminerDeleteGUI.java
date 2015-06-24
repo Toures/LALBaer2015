@@ -1,37 +1,39 @@
 package de.hs_mannheim.IB.SS15.OOT;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 
 
 public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 	
-	private JLabel nameLabel;
+	private JLabel nameLabel, examLabel, examinerLabel, assessorLabel;
 	private JButton ok, cancel;
-	private JComboBox examiner;
+	private JComboBox examiner, exam;
+	private JRadioButton rbExaminer, rbAssessor;
 	
 	private GUI mainGUI;
-        private SubjectDataModel subjectDataModel;
 
 	
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
+			//TODO
 			if(mainGUI.getBackend().getExaminer().size() != 0){
 				Examiner currentNode = (Examiner)examiner.getSelectedItem();
 				mainGUI.getBackend().removeExaminer(currentNode);
 				this.setVisible(false);
-                                subjectDataModel.updateData();
 			}
 			this.setVisible(false);
 		} else if(e.getSource()==cancel){
@@ -43,7 +45,7 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 	public ExaminerDeleteGUI(GUI gui){
 		this.mainGUI = gui;
 		
-		setTitle("Prüfer löschen");
+		setTitle("PrÃ¼fer/Beisitzer lÃ¶schen");
 		
 		createLayout();
 
@@ -51,12 +53,6 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 		setLocationRelativeTo(gui);
 		setVisible(true);
 	}
-        
-        public ExaminerDeleteGUI(GUI gui, SubjectDataModel dataModel)
-        {
-            this(gui);
-            this.subjectDataModel = dataModel;
-        }
 	
 	private void createLayout(){
 		
@@ -64,12 +60,32 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 		
 		//north panel
 		JPanel north = new JPanel();
-		nameLabel = new JLabel("Bitte wählen Sie den zu löschenden Prüfer aus: ");
-		north.add(nameLabel);
 		
+		north.setLayout(new GridLayout(1,4));
+		examinerLabel = new JLabel("PrÃ¼fer:");
+		north.add(examinerLabel);
+		rbExaminer = new JRadioButton();
+		north.add(rbExaminer);
+		assessorLabel = new JLabel("Beisitzer:");
+		north.add(assessorLabel);
+		rbAssessor = new JRadioButton();
+		north.add(rbAssessor);
+		
+		ButtonGroup group = new ButtonGroup();
+	    group.add(rbExaminer);
+	    group.add(rbAssessor);
+
 		//center panel
 		JPanel center = new JPanel();
-		center.setLayout(new FlowLayout());
+		center.setLayout(new GridLayout(4,1));
+		
+		examLabel = new JLabel("Bitte wÃ¤hlen Sie das gewÃ¼nschte Fach aus:");
+		center.add(examLabel);
+		exam = new JComboBox(mainGUI.getBackend().getSubjects().toArray());
+		center.add(exam);
+		
+		nameLabel = new JLabel("Bitte wÃ¤hlen Sie den zu lÃ¶schenden PrÃ¼fer/Beisitzer aus: ");
+		center.add(nameLabel);
 		examiner = new JComboBox(mainGUI.getBackend().getExaminer().toArray());
 		center.add(examiner);
 		
