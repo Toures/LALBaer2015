@@ -41,7 +41,7 @@ public class ExamsTest {
 		// Subjects
 		subjectOne = new Subject("Lineare Algebra", "LAL");
 		subjectTwo = new Subject("Analysis", "ANA");
-		subjectThree = new Subject("H�here Mathematik 1", "HM1", true);
+		subjectThree = new Subject("Hoehere Mathematik 1", "HM1", true);
 		subjects[0] = subjectOne;
 		subjects[1] = subjectTwo;
 		subjects3[0] = subjectOne;
@@ -123,7 +123,7 @@ public class ExamsTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void CheckDesire_ExamineeNull() {
+	public void checkDesireTest_ExamineeNull() {
 		examiner[0] = examiner6;
 		examiner[1] = examiner7;
 		exam = new Exam(subjects, null, examiner, assessor6, 25);
@@ -385,21 +385,17 @@ public class ExamsTest {
 		assertEquals(false, exam.getExaminer()[1].equals(examiner3));
 	}
 	@Test(expected = IllegalArgumentException.class)
-	public void AddExamDesiresTest_NegativIntegers(){
+	public void addExamDesiresTest_NegativIntegers(){
 		examiner[0]=examiner1;
 		examiner[1]=examiner2;
 		exam = new Exam(subjects, examinee1, examiner, assessor1,25);
 		exam.addExamDesires(-20);
 	}
 	
-
-	
-	
-
 	@Test
 	public void equalsTest() {
 		assertEquals(true, subjectThree.equals(new Subject(
-				"H�here Mathematik 1", "HM1", true)));
+				"Hoehere Mathematik 1", "HM1", true)));
 		assertEquals(true,
 				subjectOne.equals(new Subject("Lineare Algebra", "LAL")));
 	}
