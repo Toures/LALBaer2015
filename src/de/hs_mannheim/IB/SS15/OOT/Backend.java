@@ -641,7 +641,7 @@ public class Backend implements Serializable {
 					}
 				}
 				favoriteRow[examiner1Index] = col; // Assign new row
-				if (favoriteRow[examiner2Index] == 0)
+				if (examiner2Index != -1 && favoriteRow[examiner2Index] == 0)
 					favoriteRow[examiner2Index] = col;
 			}
 
@@ -698,6 +698,7 @@ public class Backend implements Serializable {
 								examinerRow);
 						if(i[0] == exam.getLength())
 							times[examinerRow] += i[0];
+						exam.addExamDesires(times[examinerRow]+i[0]);
 					}
 				else {
 					for(int k = 0; k < exam.getLength(); k += 5)
@@ -705,6 +706,7 @@ public class Backend implements Serializable {
 								examinerRow);
 					if(i[1] == exam.getLength())
 						times[examinerRow] += i[1];
+					exam.addExamDesires(times[examinerRow]+i[1]);
 				}
 			else {
 				for(int k = 0; k < exam.getLength(); k += 5)
@@ -712,6 +714,7 @@ public class Backend implements Serializable {
 							examinerRow);
 				if(i[2] == exam.getLength())
 					times[examinerRow] += i[2];
+				exam.addExamDesires(times[examinerRow]+i[2]);
 			}
 			
 			tested[this.examinee.indexOf(exam.getExaminee())] = true;

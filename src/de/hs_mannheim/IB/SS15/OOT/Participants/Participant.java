@@ -64,6 +64,19 @@ public abstract class Participant implements Serializable{
 		this.subjects.add(sub);
 	}
 	
+	@Override
+	public boolean equals(Object object) {
+		if(this.toString().equals(object.toString()))
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+	
 	public abstract String getName();
 	
 	public abstract ArrayList<Desire> getDesires();
