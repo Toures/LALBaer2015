@@ -49,13 +49,7 @@ public class Backend implements Serializable {
 		schedule[2].setTable(new DataModel(rows, 1 + rooms));
 	}
 
-	public Backend(ArrayList<Subject> subjects, ArrayList<Examinee> examinee,
-			ArrayList<Examiner> examiner, ArrayList<Exam> exams) {
-		this.examinee = examinee;
-		this.examiner = examiner;
-		this.subjects = subjects;
-		this.exams = exams;
-	}
+
 
 	public Examinee createExaminee(String name, ArrayList<Subject> subjects,
 			ArrayList<Desire> desires) throws IllegalArgumentException {
