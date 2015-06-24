@@ -1,6 +1,6 @@
 package de.hs_mannheim.IB.SS15.OOT.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,7 @@ public class BackendTest {
 		backend.createExaminee("Examinee01", subjects, desires);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void createExamineeTest_DesiresNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -136,7 +136,7 @@ public class BackendTest {
 		backend.createExaminer("Examiner01", subjects, desires);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void createExaminerTest_DesiresNull() {
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -250,7 +250,31 @@ public class BackendTest {
 		assertEquals(1, backend.getSubjects().size());
 
 	}
-	
+
+	/*
+	 * addBreak(int time, int length) {
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void addBreak_length_0() {
+		backend.addBreak(600, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void addBreak_length_negative() {
+		backend.addBreak(600, -10);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void addBreak_time_negative() {
+		backend.addBreak(-10, 10);
+	}
+
+	@Test
+	public void addBreak_LegalArgument() {
+		backend.addBreak(600, 10);
+	}
+
 	/*
 	 * removeAssessor(Assessor)
 	 */
@@ -278,9 +302,9 @@ public class BackendTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void removeAssessor_emptyList() {
 		subjects.add(new Subject("Subject01", "Sub01"));
-		
+
 		backend.removeAssessor(new Assessor("Assessor01", subjects));
-		
+
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -292,7 +316,7 @@ public class BackendTest {
 
 		backend.removeAssessor(new Assessor("Assessor01", subjects));
 	}
-	
+
 	/*
 	 * removeExaminee(Examinee)
 	 */
@@ -303,60 +327,157 @@ public class BackendTest {
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", subjects, desires);
-		
+
 		backend.removeExaminee(null);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_NonExistingExaminee() {
 		subjects.add(new Subject("Subject01", "sub01"));
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		backend.createExaminee("Examinee01", subjects, desires);
-		
+
 		backend.removeExaminee(new Examinee("Examinee02", subjects, desires));
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void removeExaminee_emptyList() {
 		subjects.add(new Subject("Subject01", "sub01"));
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-		
+
 		backend.removeExaminee(new Examinee("Examinee01", subjects, desires));
 	}
-	
+
 	@Test
 	public void removeExaminee_LegalArgument() {
 		subjects.add(new Subject("Subject01", "sub01"));
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
 		Examinee examine = backend.createExaminee("Examinee01", subjects, desires);
-		
+
 		backend.removeExaminee(examine);
 	}
-		
+
+	/*
+	 * removeExaminer(Examiner)
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminer_Null() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		backend.createExaminer("Examiner01", subjects, desires);
+
+		backend.removeExaminer(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminer_NonExistingExaminer() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		backend.createExaminer("Examiner01", subjects, desires);
+
+		backend.removeExaminer(new Examiner("Examiner02", subjects, desires));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeExaminer_emptyList() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		backend.removeExaminer(new Examiner("Examiner01", subjects, desires));
+	}
+
+	@Test
+	public void removeExaminer_LegalArgument() {
+		subjects.add(new Subject("Subject01", "sub01"));
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		backend.createExaminer("Examiner01", subjects, desires);
+
+		backend.removeExaminer(new Examiner("Examiner01", subjects, desires));
+	}
+
+	/*
+	 * removeSubject(Subject)
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeSubject_Null() {
+		backend.removeSubject(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeSubject_NonExistingSubject() {
+		backend.createSubject("Objektorientierte Programierung", "OOT");
+
+		backend.removeSubject(new Subject("Subject01", "SUB01"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void removeSubject_emptyList() {
+		backend.removeSubject(new Subject("Subject01", "SUB01"));
+	}
+
+	@Test
+	public void removeSubject_LegalArgument() {		
+		backend.createSubject("Objektorientierte Programierung", "OOT");
+
+		backend.removeSubject( new Subject("Objektorientierte Programierung", "OOT"));
+	}
+
+	/*
+	 * removeBreak(int)
+	 */
+
+	@Test
+	public void removeBreak_emptryList() {
+		assertEquals(false, backend.removeBreak(600));
+
+	}
+
+	@Test
+	public void removeBreak_BreakDoesNotExist() {
+		backend.addBreak(500, 10);
+		assertEquals(false, backend.removeBreak(600));
+	}
+
+	@Test
+	public void removeBreak_BreakDoesNotExist_NegativeValue() {
+		backend.addBreak(500, 10);
+		assertEquals(false, backend.removeBreak(-600));
+	}
+
+	@Test
+	public void removeBreak_LegalValue() {
+		backend.addBreak(600, 10);
+		assertEquals(true, backend.removeBreak(600));
+	}
 
 	/*
 	 * generateExams
 	 */
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void generateExamsTest_DesiresNull() {
-		
+
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, null);
 
 		// generateExams
 		backend.generateExams();
-		
+
 	}
-	
+
 	@Test
 	public void generateExamsTest_DesiresEmpty() {
 		// subject
@@ -364,16 +485,16 @@ public class BackendTest {
 
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
 		// generateExams
 		backend.generateExams();
-		
+
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void generateExamsTest_NoSubjects() {
 
 		// desires
@@ -381,37 +502,37 @@ public class BackendTest {
 
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
 		// generateExams
 		backend.generateExams();
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void generateExamsTest_NoExaminer() {
-		
+
 		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-		
+
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
 		// generateExams
 		backend.generateExams();
-		
+
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void generateExamsTest_NoExaminee() {
-		
+
 		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-		
+
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 
@@ -420,21 +541,21 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 	}
-	
+
 	@Test
 	public void generateExamsTest_Simple_1Subject_1Examinee() {
 
 		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-		
+
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 
@@ -451,7 +572,7 @@ public class BackendTest {
 
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
-		
+
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
@@ -473,7 +594,7 @@ public class BackendTest {
 		// subject
 		subjects.add(new Subject("Subject01", "sub01"));
 		subjects.add(new Subject("Subject02", "sub02"));
-		
+
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
@@ -497,7 +618,7 @@ public class BackendTest {
 
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
-		
+
 		// examinee
 		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
 		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
@@ -518,14 +639,14 @@ public class BackendTest {
 		Subject sub02 = new Subject("Subject02", "sub02");
 
 		subjects.add(sub01);
-		subjects.add(sub02);		
+		subjects.add(sub02);
 
 		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
 		tempSubjects1.add(sub01);
 		tempSubjects1.add(sub02);
 		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
 		tempSubjects2.add(sub01);
-		
+
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
@@ -555,7 +676,7 @@ public class BackendTest {
 		tempSubjects1.add(sub01);
 		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
 		tempSubjects2.add(sub02);
-		
+
 		// examiner
 		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
 
@@ -567,12 +688,12 @@ public class BackendTest {
 		backend.generateExams();
 
 	}
-	
+
 	@Test
 	public void generateExamsTest_25Subjects_15Examinee_5Examiners() {
 		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
-		
+
 		Subject sub01 = new Subject("Subject01", "sub01");
 		Subject sub02 = new Subject("Subject02", "sub02");
 		Subject sub03 = new Subject("Subject03", "sub03");
@@ -598,7 +719,7 @@ public class BackendTest {
 		Subject sub23 = new Subject("Subject23", "sub23");
 		Subject sub24 = new Subject("Subject24", "sub24");
 		Subject sub25 = new Subject("Subject25", "sub25");
-		
+
 		subjects.add(sub01);
 		subjects.add(sub02);
 		subjects.add(sub03);
@@ -624,7 +745,7 @@ public class BackendTest {
 		subjects.add(sub23);
 		subjects.add(sub24);
 		subjects.add(sub25);
-		
+
 		ArrayList<Subject> subjects1 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects2 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects3 = new ArrayList<Subject>();
@@ -634,90 +755,87 @@ public class BackendTest {
 		ArrayList<Subject> subjects7 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects8 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects9 = new ArrayList<Subject>();
-		
-		
+
 		ArrayList<Subject> subjects10 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects11 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects12 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects13 = new ArrayList<Subject>();
 		ArrayList<Subject> subjects14 = new ArrayList<Subject>();
-		
-		//Examinee subjects
+
+		// Examinee subjects
 		subjects1.add(sub01);
 		subjects1.add(sub02);
 		subjects1.add(sub03);
-		
+
 		subjects2.add(sub04);
 		subjects2.add(sub05);
 		subjects2.add(sub06);
 		subjects2.add(sub07);
 		subjects2.add(sub08);
 		subjects2.add(sub09);
-		
+
 		subjects3.add(sub10);
 		subjects3.add(sub11);
-		
+
 		subjects4.add(sub12);
 		subjects4.add(sub13);
 		subjects4.add(sub14);
 		subjects4.add(sub15);
-		
+
 		subjects5.add(sub16);
 		subjects5.add(sub17);
 		subjects5.add(sub01);
-		
+
 		subjects6.add(sub18);
 		subjects6.add(sub10);
-		
+
 		subjects7.add(sub19);
 		subjects7.add(sub20);
 		subjects7.add(sub25);
-	
+
 		subjects8.add(sub21);
 		subjects8.add(sub22);
 		subjects8.add(sub23);
 		subjects8.add(sub24);
 		subjects8.add(sub05);
-		
+
 		subjects9.add(sub18);
 		subjects9.add(sub08);
 		subjects9.add(sub01);
 		subjects9.add(sub06);
-		
-		
-		//Examiner subjects
+
+		// Examiner subjects
 		subjects10.add(sub08);
 		subjects10.add(sub06);
 		subjects10.add(sub02);
 		subjects10.add(sub11);
 		subjects10.add(sub13);
-		
+
 		subjects11.add(sub07);
 		subjects11.add(sub05);
 		subjects11.add(sub09);
 		subjects11.add(sub15);
 		subjects11.add(sub25);
-		
+
 		subjects12.add(sub01);
 		subjects12.add(sub04);
 		subjects12.add(sub10);
 		subjects12.add(sub12);
 		subjects12.add(sub14);
-		
+
 		subjects13.add(sub21);
 		subjects13.add(sub23);
 		subjects13.add(sub03);
 		subjects13.add(sub18);
 		subjects13.add(sub20);
-		
+
 		subjects14.add(sub24);
 		subjects14.add(sub22);
 		subjects14.add(sub17);
 		subjects14.add(sub16);
 		subjects14.add(sub19);
-		
-		
-		//Examinees
+
+		// Examinees
 		backend.createExaminee("examinee01", subjects1, desires);
 		backend.createExaminee("examinee02", subjects1, desires);
 		backend.createExaminee("examinee03", subjects1, desires);
@@ -733,18 +851,16 @@ public class BackendTest {
 		backend.createExaminee("examinee13", subjects9, desires);
 		backend.createExaminee("examinee14", subjects3, desires);
 		backend.createExaminee("examinee15", subjects3, desires);
-		
-		//Examiners
+
+		// Examiners
 		backend.createExaminer("examiner01", subjects10, desires);
 		backend.createExaminer("examiner02", subjects11, desires);
 		backend.createExaminer("examiner03", subjects12, desires);
 		backend.createExaminer("examiner04", subjects13, desires);
 		backend.createExaminer("examiner05", subjects14, desires);
-		
+
 		backend.generateExams();
-		
-		
-		
+
 	}
 
 }
