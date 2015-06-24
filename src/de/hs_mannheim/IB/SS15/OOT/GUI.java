@@ -6,6 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -24,6 +30,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class GUI extends JFrame implements ActionListener {
 
 	private final static String TITLE = "IM-Planer";
+
+	// TODO copy to Backend
 	private final static int NUM_OF_PLANS = 3;
 
 	private Schedule[] schedule;
@@ -51,10 +59,12 @@ public class GUI extends JFrame implements ActionListener {
 
 	private JPanel east;
 
-	private JButton btnRooms;
+	private JButton btnAddRoom;
+	private JButton btnRemoveRoom;
 	private JButton btnStudents;
 	private JButton btnSubjects;
 	private JButton btnAddBreak;
+	private JButton btnRemoveBreak;
 
 	GUI() {
 		setTitle(TITLE); // set title
@@ -107,19 +117,23 @@ public class GUI extends JFrame implements ActionListener {
 
 		// JMenuBar
 		if (e.getSource() == newFile) {
-			System.out.println("Neue Datei");
+
+			backend = new Backend(schedule);
+
 		} else if (e.getSource() == open) {
 			// Opening FileChooser for open Dialog
 			JFileChooser fc = new JFileChooser((File) null);
+
 			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				System.out.println("Dokument öffnen");
+				loadObject(fc.getSelectedFile().toString());
 			}
 		} else if (e.getSource() == save) {
 			// Opening FileChooser for save Dialog
 			JFileChooser fc = new JFileChooser((File) null);
+
 			if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				// plan object needs to be serializable
-				System.out.println("Dokument beenden");
+				saveObject(fc.getSelectedFile().toString());
 			}
 		} else if (e.getSource() == print) {
 			try {
@@ -137,8 +151,10 @@ public class GUI extends JFrame implements ActionListener {
 		}
 
 		// EastButtons
-		else if (e.getSource() == btnRooms) {
-			System.out.println("btnRooms");
+		else if (e.getSource() == btnAddRoom) {
+			System.out.println("btnAddRoom");
+		} else if (e.getSource() == btnRemoveRoom) {
+			System.out.println("btnRemoveRoom");
 		} else if (e.getSource() == btnStudents) {
 
 			if (backend.getSubjects().size() <= 0) {
@@ -151,8 +167,48 @@ public class GUI extends JFrame implements ActionListener {
 			new SubjectGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
 			new BreakGUI(this);
+		} else if (e.getSource() == btnRemoveBreak) {
+			removeBreakDialog();
 		}
 
+	}
+
+	private void saveObject(String filename) {
+		ObjectOutputStream saver;
+		try {
+			saver = new ObjectOutputStream(new FileOutputStream(filename));
+			saver.writeObject(backend);
+			saver.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void loadObject(String filename) {
+		ObjectInputStream loader;
+		Backend loadedBackend = null;
+		try {
+			loader = new ObjectInputStream(new FileInputStream(filename));
+			loadedBackend = (Backend) loader.readObject();
+			loader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		backend = loadedBackend;
+	}
+
+	private void removeBreakDialog() {
+		// dropdown Menü mit den möglichen Pausen
+
+		// TODO breaks??
 	}
 
 	public Schedule createNewSchedule(String name) {
@@ -258,11 +314,14 @@ public class GUI extends JFrame implements ActionListener {
 	private void createEastButtons() {
 
 		east = new JPanel();
-		east.setLayout(new GridLayout(4, 1));
+		east.setLayout(new GridLayout(6, 1));
 
-		btnRooms = new JButton("Räume");
-		btnRooms.addActionListener(this);
-		east.add(btnRooms);
+		btnAddRoom = new JButton("Raum hinzufügen");
+		btnAddRoom.addActionListener(this);
+		east.add(btnAddRoom);
+		btnRemoveRoom = new JButton("Raum entfernen");
+		btnRemoveRoom.addActionListener(this);
+		east.add(btnRemoveRoom);
 		btnStudents = new JButton("Studenten");
 		btnStudents.addActionListener(this);
 		east.add(btnStudents);
@@ -272,6 +331,9 @@ public class GUI extends JFrame implements ActionListener {
 		btnAddBreak = new JButton("Pause hinzufügen");
 		btnAddBreak.addActionListener(this);
 		east.add(btnAddBreak);
+		btnRemoveBreak = new JButton("Pause entfernen");
+		btnRemoveBreak.addActionListener(this);
+		east.add(btnRemoveBreak);
 
 	}
 
