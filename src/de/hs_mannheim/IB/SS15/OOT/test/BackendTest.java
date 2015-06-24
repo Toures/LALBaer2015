@@ -717,28 +717,29 @@ public class BackendTest {
 		subjects14.add(sub19);
 		
 		
+		//Examinees
+		backend.createExaminee("examinee01", subjects1, desires);
+		backend.createExaminee("examinee02", subjects1, desires);
+		backend.createExaminee("examinee03", subjects1, desires);
+		backend.createExaminee("examinee04", subjects2, desires);
+		backend.createExaminee("examinee05", subjects3, desires);
+		backend.createExaminee("examinee06", subjects4, desires);
+		backend.createExaminee("examinee07", subjects5, desires);
+		backend.createExaminee("examinee08", subjects5, desires);
+		backend.createExaminee("examinee09", subjects6, desires);
+		backend.createExaminee("examinee10", subjects6, desires);
+		backend.createExaminee("examinee11", subjects7, desires);
+		backend.createExaminee("examinee12", subjects8, desires);
+		backend.createExaminee("examinee13", subjects9, desires);
+		backend.createExaminee("examinee14", subjects3, desires);
+		backend.createExaminee("examinee15", subjects3, desires);
 		
-		Examinee examinee01 = backend.createExaminee("examinee01", subjects1, desires);
-		Examinee examinee02 = backend.createExaminee("examinee02", subjects1, desires);
-		Examinee examinee03 = backend.createExaminee("examinee03", subjects1, desires);
-		Examinee examinee04 = backend.createExaminee("examinee04", subjects2, desires);
-		Examinee examinee05 = backend.createExaminee("examinee05", subjects3, desires);
-		Examinee examinee06 = backend.createExaminee("examinee06", subjects4, desires);
-		Examinee examinee07 = backend.createExaminee("examinee07", subjects5, desires);
-		Examinee examinee08 = backend.createExaminee("examinee08", subjects5, desires);
-		Examinee examinee09 = backend.createExaminee("examinee09", subjects6, desires);
-		Examinee examinee10 = backend.createExaminee("examinee10", subjects6, desires);
-		Examinee examinee11 = backend.createExaminee("examinee11", subjects7, desires);
-		Examinee examinee12 = backend.createExaminee("examinee12", subjects8, desires);
-		Examinee examinee13 = backend.createExaminee("examinee13", subjects9, desires);
-		Examinee examinee14 = backend.createExaminee("examinee14", subjects3, desires);
-		Examinee examinee15 = backend.createExaminee("examinee15", subjects3, desires);
-		
-		Examiner examiner01 = backend.createExaminer("examiner01", subjects10, desires);
-		Examiner examiner02 = backend.createExaminer("examiner02", subjects11, desires);
-		Examiner examiner03 = backend.createExaminer("examiner03", subjects12, desires);
-		Examiner examiner04 = backend.createExaminer("examiner04", subjects13, desires);
-		Examiner examiner05 = backend.createExaminer("examiner05", subjects14, desires);
+		//Examiners
+		backend.createExaminer("examiner01", subjects10, desires);
+		backend.createExaminer("examiner02", subjects11, desires);
+		backend.createExaminer("examiner03", subjects12, desires);
+		backend.createExaminer("examiner04", subjects13, desires);
+		backend.createExaminer("examiner05", subjects14, desires);
 		
 		backend.generateExams();
 		
