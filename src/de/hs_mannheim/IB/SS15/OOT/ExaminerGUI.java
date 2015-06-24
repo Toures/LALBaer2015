@@ -55,11 +55,15 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnAddExaminer) {
 
-			if (mainGUI.getBackend().getSubjects().size() > 0 && mainGUI.getBackend().getExaminee().size() > 0) {
+			if (mainGUI.getBackend().getSubjects().size() > 0 && mainGUI.getBackend().getExaminer().size() > 0) {
 				Subject selectedSubject = (Subject) subjectList.getSelectedItem();
 				Examiner selectedExaminer = (Examiner) examinerList.getSelectedItem();
 
 				selectedExaminer.addSubject(selectedSubject);
+				
+				revalidate();
+				repaint();
+				
 			} else {
 				JOptionPane.showMessageDialog(this, "Einer der beiden Werte ist ungültig.", "Prüfer", JOptionPane.ERROR_MESSAGE);
 
@@ -76,6 +80,13 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 				selectedSubjectList.add(selectedSubject);
 
 				mainGUI.getBackend().createExaminer(examinerName, selectedSubjectList, new ArrayList<Desire>());
+				
+				name.setText("");
+				
+				examinerList.updateUI();
+				
+				revalidate();
+				repaint();
 			} else {
 				JOptionPane.showMessageDialog(this, "Einer der beiden Werte ist ungültig.", "Prüfer", JOptionPane.ERROR_MESSAGE);
 
@@ -117,7 +128,7 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 		layout2.setLayout(new GridLayout(1, 3));
 		Label pruefer = new Label("Prüfer :");
 		layout2.add(pruefer);
-		JComboBox examinerList = new JComboBox(mainGUI.getBackend().getExaminer().toArray());
+		examinerList = new JComboBox(mainGUI.getBackend().getExaminer().toArray());
 		layout2.add(examinerList);
 
 		btnAddExaminer = new JButton("hinzufügen");
