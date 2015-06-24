@@ -193,7 +193,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnExaminer) {
 			new ExaminerGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
-			new BreakGUI(this);
+			new BreakGUI(this, getBackend());
 		} else if (e.getSource() == btnRemoveBreak) {
 			removeBreakDialog();
 		} else if (e.getSource() == btnGeneratePlan) {

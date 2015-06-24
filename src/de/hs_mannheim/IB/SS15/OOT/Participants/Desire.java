@@ -58,20 +58,20 @@ public class Desire implements Serializable{
 		int startMinute = time[0]%60;
 		int endHour = time[1]/60;
 		int endMinute = time[1]%60;
-		String von = "Von:";
-		String bis = "Bis:";
+		String von = "Von: ";
+		String bis = "Bis: ";
 		String vonFixed;
 		String bisFixed;
 		if (startMinute<10){
-			vonFixed = von+startHour+"0"+startMinute;
+			vonFixed = von+startHour+":0"+startMinute;
 		}else{
-			vonFixed = von+startHour+startMinute;
+			vonFixed = von+startHour+":"+startMinute;
 		}
 		if (endMinute < 10){
-			bisFixed = bis+endHour+"0"+endMinute;
+			bisFixed = bis+endHour+":0"+endMinute;
 		}else{
-			bisFixed = bis+endHour+endMinute;
+			bisFixed = bis+endHour+":"+endMinute;
 		}
-		return vonFixed+"\n"+bisFixed;
+		return vonFixed+"  \n  "+bisFixed;
 	}
 }

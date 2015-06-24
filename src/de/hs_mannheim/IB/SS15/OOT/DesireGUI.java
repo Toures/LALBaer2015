@@ -36,8 +36,8 @@ public class DesireGUI extends JFrame implements ActionListener{
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
-			int from = (Integer)fromHoursCombo.getSelectedItem();
-			int to = (Integer)toHoursCombo.getSelectedItem();
+			int from = (Integer)fromHoursCombo.getSelectedItem()*60+(int)fromMinutesCombo.getSelectedItem();
+			int to = (Integer)toHoursCombo.getSelectedItem()*60+(int)toMinutesCombo.getSelectedItem();
 
 			String comment = desireComment.getText();
 			System.out.println(comment);
@@ -45,6 +45,8 @@ public class DesireGUI extends JFrame implements ActionListener{
 
 			this.setVisible(false);
 			this.parent.setEnabled(true);
+			this.parent.toFront();
+			this.parent.repaint();
 		} else if(e.getSource()==cancel){
 			this.setVisible(false);
 			this.parent.setEnabled(true);
@@ -52,15 +54,13 @@ public class DesireGUI extends JFrame implements ActionListener{
 	}
 
 	//--GUI
-	public DesireGUI(JFrame gui, Participant participant) {
+	public DesireGUI(JFrame parentFrame, Participant participant) {
 		super("Wunsch eintragen");
-		this.parent = gui;
+		this.parent = parentFrame;
 		this.participant = participant;
 
 		int hourStart = Backend.TIME_BEGIN / 60;
-
 		int hourEnd = Backend.TIME_END / 60;
-
 		//hours-combo
 		hours = new Integer[hourEnd-hourStart];
 		for(int i = 0; i <  hours.length; i++ ){
@@ -72,17 +72,7 @@ public class DesireGUI extends JFrame implements ActionListener{
 		}		
 
 		parent.setEnabled(false);		
-
 		getContentPane().setLayout(new BorderLayout());
-
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		addWindowListener( new WindowAdapter(){
-			public void windowClosing(WindowEvent arg0){
-				parent.setEnabled(true);
-			}
-		});
-
 
 		createNorthpanel();
 		createCenterpanel();
@@ -92,7 +82,11 @@ public class DesireGUI extends JFrame implements ActionListener{
 		pack();
 		setVisible(true);
 
-
+		addWindowListener( new WindowAdapter(){
+			public void windowClosing(WindowEvent arg0){
+				parent.setEnabled(true);
+			}
+		});		
 	}
 
 	private void createNorthpanel(){

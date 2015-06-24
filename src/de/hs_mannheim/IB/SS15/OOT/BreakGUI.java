@@ -19,21 +19,24 @@ public class BreakGUI extends JFrame implements ActionListener {
 
 	private JLabel nameLabel, lengthLabel, timeLabel;
 	private JButton ok, cancel;
-	private JComboBox<String> length, hoursCombo, minutesCombo;
+	private JComboBox<Integer> length, hoursCombo, minutesCombo;
 	private JFrame parent;
+	private Backend backend;
 	//	private JSpinner timeSpinner;
 	//	private JComponent editor;
 
-	String[] minutes = { "00","05","10","15","20","25","30","35","40","45","50","55" };
-	String[] hours = { "08","09","10","11","12","13","14","15","16" };
-	String[] lengthStrings = { "5","10","15","20","25","30","35","40","45","50","55","60" };
+	Integer[] minutes = new Integer[12];
+	Integer[] lengthRange = new Integer[12];
+	Integer[] hours;
 
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
-			//TODO create break
 			this.setVisible(false);
 			this.parent.setEnabled(true);
+			int time = 60*(int)hoursCombo.getSelectedItem()+(int)minutesCombo.getSelectedItem();
+			int length = (int)this.length.getSelectedItem();
+			backend.addBreak(time, length);
 		} else if(e.getSource()==cancel){
 			this.setVisible(false);
 			this.parent.setEnabled(true);
@@ -41,12 +44,27 @@ public class BreakGUI extends JFrame implements ActionListener {
 	}
 
 	//--GUI
-	public BreakGUI(JFrame gui) {
+	public BreakGUI(JFrame gui, Backend backend) {
 		super("Pause einrichten");
 		this.parent = gui;
+		this.backend = backend;
+
+		int hourStart = Backend.TIME_BEGIN / 60;
+		int hourEnd = Backend.TIME_END / 60;
+		//hours-combo
+		hours = new Integer[hourEnd-hourStart];
+		for(int i = 0; i <  hours.length; i++ ){
+			hours[i] = hourStart+i;
+		}
+		//minutes-combo
+		for(int i = 0; i < 12; i++){
+			minutes[i] = i*5;
+			lengthRange[i] = (i*5)+5;
+		}		
+
 		parent.setEnabled(false);
 		getContentPane().setLayout(new BorderLayout());
-
+		
 		createNorthpanel();
 		createCenterpanel();
 		createSouthpanel();
@@ -98,14 +116,14 @@ public class BreakGUI extends JFrame implements ActionListener {
 		JPanel timePanel = new JPanel();
 		timePanel.setLayout(new GridLayout(1,2));
 
-		hoursCombo = new JComboBox<String>(hours);
-		minutesCombo = new JComboBox<String>(minutes);
+		hoursCombo = new JComboBox<Integer>(hours);
+		minutesCombo = new JComboBox<Integer>(minutes);
 
 		timePanel.add(hoursCombo);
 		timePanel.add(minutesCombo);
 
-		length = new JComboBox(lengthStrings);
-		
+		length = new JComboBox<Integer>(lengthRange);
+
 		center.add(timeLabel);
 		center.add(timePanel);
 		//center.add(timeSpinner);
