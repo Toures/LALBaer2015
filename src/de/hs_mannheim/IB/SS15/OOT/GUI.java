@@ -33,6 +33,7 @@ import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
 import de.hs_mannheim.IB.SS15.OOT.Exceptions.FullCalendarException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
+import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -52,12 +53,13 @@ public class GUI extends JFrame implements ActionListener {
 
 	private JMenu info;
 	private JMenuItem about;
-
-	private JTabbedPane tabTable;
+	private JMenu professorTableMenu, masterTableMenu, studentTableMenu;
+	
 	private JTable tableMaster;
 	private JTable tableProfessor;
 	private JTable tableStudent;
 
+	private JPanel centerTablePanel;
 	private JPanel east;
 	private JPanel south;
 
@@ -159,9 +161,9 @@ public class GUI extends JFrame implements ActionListener {
 			Backend.rooms++;
 
 			backend.updateSchedules();
-			getContentPane().remove(tabTable);
-			createTabTable();
-			getContentPane().add(tabTable, BorderLayout.CENTER);
+			getContentPane().remove(centerTablePanel);
+			createTableMenu();
+			getContentPane().add(centerTablePanel, BorderLayout.CENTER);
 
 			revalidate();
 			repaint();
@@ -171,9 +173,9 @@ public class GUI extends JFrame implements ActionListener {
 				Backend.rooms--;
 
 				backend.updateSchedules();
-				getContentPane().remove(tabTable);
-				createTabTable();
-				getContentPane().add(tabTable, BorderLayout.CENTER);
+				getContentPane().remove(centerTablePanel);
+				createTableMenu();
+				getContentPane().add(centerTablePanel, BorderLayout.CENTER);
 
 				revalidate();
 				repaint();
@@ -289,6 +291,53 @@ public class GUI extends JFrame implements ActionListener {
 		jMenuBar.add(file);
 		jMenuBar.add(info);
 	}
+	
+	public void refreshTableMenu(){
+		professorTableMenu.removeAll();
+		for(Examiner examiner: getBackend().getExaminer()){
+			JMenuItem newExaminerEntry = new JMenuItem(examiner.getName());
+			professorTableMenu.add(newExaminerEntry);
+		}
+	}
+	
+	private void createTableMenu(){
+		if(centerTablePanel!=null){
+			this.remove(centerTablePanel);
+		}
+		
+		createTable();
+		
+		centerTablePanel = new JPanel(new BorderLayout());
+		
+		JMenuBar tableMenu = new JMenuBar();
+		
+
+		
+		professorTableMenu = new JMenu("Professor");
+		studentTableMenu = new JMenu("Studenten");
+		masterTableMenu = new JMenu("Master");
+		
+		studentTableMenu.addActionListener(this);
+		masterTableMenu.addActionListener(this);
+		
+//		for(Examiner examiner: getBackend().getExaminer()){
+//			JMenuItem newExaminerEntry = new JMenuItem(examiner.getName());
+//			professorTableMenu.add(newExaminerEntry);
+//		}
+
+		tableMenu.add(studentTableMenu);
+		tableMenu.add(masterTableMenu);
+		tableMenu.add(professorTableMenu);
+		
+		JScrollPane tableScrollPane = new JScrollPane(tableMaster);
+		JPanel tableContainer = new JPanel();
+		tableContainer.add(tableScrollPane);
+		
+		centerTablePanel.add(tableContainer, BorderLayout.CENTER);
+		centerTablePanel.add(tableMenu, BorderLayout.NORTH);
+		
+		getContentPane().add(centerTablePanel, BorderLayout.CENTER);
+	}
 
 	private void createLayout() {
 		// set Layout
@@ -298,8 +347,7 @@ public class GUI extends JFrame implements ActionListener {
 		getContentPane().add(jMenuBar, BorderLayout.NORTH);
 
 		// CENTER Panel
-		createTabTable();
-		getContentPane().add(tabTable, BorderLayout.CENTER);
+		createTableMenu();
 
 		// SOUTH Panel
 		createSouthButtons();
@@ -310,24 +358,6 @@ public class GUI extends JFrame implements ActionListener {
 		getContentPane().add(east, BorderLayout.EAST);
 	}
 
-	private void createTabTable() {
-		tabTable = new JTabbedPane();
-
-		createTable();
-
-		JPanel master = new JPanel(new GridLayout());
-		master.add(new JScrollPane(tableMaster));
-		tabTable.addTab("Master", master);
-
-		JPanel professor = new JPanel(new GridLayout());
-		professor.add(new JScrollPane(tableProfessor));
-		tabTable.addTab("Professor", professor);
-
-		JPanel student = new JPanel(new GridLayout());
-		student.add(new JScrollPane(tableStudent));
-		tabTable.addTab("Student", student);
-
-	}
 
 	private void createTable() {
 
