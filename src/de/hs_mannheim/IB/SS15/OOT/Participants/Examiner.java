@@ -74,5 +74,9 @@ public class Examiner extends Participant {
 	public void setSubjects(ArrayList<Subject> subjects) {
 		this.subjects = subjects;
 	}
+	
+	public String toString(){
+		return this.name;
+	}
 
 }
