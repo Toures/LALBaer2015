@@ -272,7 +272,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		info = new JMenu("Info");
 
-		about = new JMenuItem("Ãœber");
+		about = new JMenuItem("Über");
 		about.addActionListener(this);
 
 		file.add(newFile);
