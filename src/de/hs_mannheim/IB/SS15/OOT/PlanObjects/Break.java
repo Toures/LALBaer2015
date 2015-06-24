@@ -26,4 +26,9 @@ public class Break implements PlanObject {
 		return this.time;
 	}
 
+	@Override
+	public boolean isExam() {
+		return false;
+	}
+
 }

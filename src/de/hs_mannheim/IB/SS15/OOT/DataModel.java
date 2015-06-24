@@ -36,6 +36,11 @@ public class DataModel extends AbstractTableModel implements Serializable {
 					public boolean isBreak() {
 						return false;
 					}
+					
+					@Override
+					public boolean isExam() {
+						return false;
+					}
 
 					@Override
 					public String toString() {

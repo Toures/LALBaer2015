@@ -13,4 +13,10 @@ public interface PlanObject extends Serializable {
 	 * @return true when PlanObject is a break.
 	 */
 	boolean isBreak();
+	
+	/**
+	 * 
+	 * @return true when PlanObject is an exam.
+	 */
+	boolean isExam();
 }

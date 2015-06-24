@@ -25,4 +25,9 @@ public class Text implements PlanObject, Serializable {
 		return text;
 	}
 
+	@Override
+	public boolean isExam() {
+		return false;
+	}
+
 }

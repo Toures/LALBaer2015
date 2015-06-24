@@ -235,7 +235,7 @@ public class Backend implements Serializable {
 	}
 	
 	public boolean removeBreak(int time) {
-		for(int i = breaks.size(); i >= 0; i--) {
+		for(int i = breaks.size()-1; i >= 0; i--) {
 			if(time >= breaks.get(i).getTime() && time <= breaks.get(i).getTime()+breaks.get(i).getLength()) {
 				breaks.remove(i);
 				return true;
@@ -721,6 +721,36 @@ public class Backend implements Serializable {
 		}
 		
 		schedule[0].setTable(master);
+	}
+	
+	/**
+	 * Generates a single table with all examiners having their own row. All contents are shifted one down,
+	 * so the first row can be the examiner which the column belongs to.
+	 */
+	public void generateExaminerPlan() {
+		DataModel master = schedule[0].getTable();
+		DataModel masterExaminer = schedule[1].getTable();
+		int examinerNo = 0;
+		for(Examiner examiner : this.examiner) {
+			masterExaminer.setValueAt(examiner, 0, examinerNo);
+			for(int row = 0; row < master.getRowCount(); row++) {
+				for(int col = 0; col < master.getColumnCount(); col++) {
+					if(master.getValueAt(row, col) != null && master.getValueAt(row, col).isExam() == true) {
+						Exam exam = (Exam)master.getValueAt(row, col);
+						if(exam.getExaminer()[0].equals(examiner) || exam.getExaminer()[1].equals(examiner)) {
+							masterExaminer.setValueAt(exam, (exam.getStart()/5)+1, examinerNo);
+						}
+					}
+				}
+			}
+			examinerNo++;
+		}
+		schedule[1].setTable(masterExaminer);
+	}
+	
+	public void generateExamineePlan() {
+		DataModel master = schedule[0].getTable();
+		
 	}
 
 	public ArrayList<Exam> getExams() {

@@ -41,9 +41,22 @@ public class Exam implements PlanObject {
 		return this.length;
 	}
 	
+	public void setStart(int start) {
+		this.start = start;
+	}
+	
+	public int getStart() {
+		return this.start;
+	}
+	
 	@Override
 	public boolean isBreak() {
 		return false;
+	}
+
+	@Override
+	public boolean isExam() {
+		return true;
 	}
 
 	public void setLength(int length) {
