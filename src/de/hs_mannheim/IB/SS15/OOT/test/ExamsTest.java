@@ -314,6 +314,66 @@ public class ExamsTest {
 		assertEquals(true, exam2.addSubject(subjectTwo));
 		assertEquals(true, exam3.addSubject(subjectTwo));
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void addExaminerTest_NullToEmptyArray(){
+		examiner[0]=null;
+		examiner[1]=null;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void addExaminerTest_NullToHalffullArray(){
+		examiner[0]=examiner1;
+		examiner[1]=null;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void addExaminerTest_NullFullArray(){
+		examiner[0]=examiner1;
+		examiner[1]=examiner2;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(null);
+	}
+	
+	@Test(expected = SameSubjectException.class)
+	public void addExaminerTest_AddSameExaminer(){
+		examiner[0]=examiner1;
+		examiner[1]=examiner2;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(examiner1);
+	}
+	
+	@Test
+	public void addExaminerTest_LegalArgumentsToEmptyArray(){
+		examiner[0]=null;
+		examiner[1]=null;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(examiner1);
+		assertEquals(true, exam.getExaminer()[0].equals(examiner1));
+	}
+	@Test
+	public void addExaminerTest_LegalArgumentsHalfFullArray(){
+		examiner[0]=examiner1;
+		examiner[1]=null;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(examiner2);
+		assertEquals(true, exam.getExaminer()[1].equals(examiner2));
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void AddExamDesiresTest_NegativIntegers(){
+		examiner[0]=examiner1;
+		examiner[1]=examiner2;
+		exam = new Exam(subjects, examinee1, examiner, assessor1,25);
+		exam.addExamDesires(-20);
+	}
+	
+
+	
+	
 
 	@Test
 	public void equalsTest() {
