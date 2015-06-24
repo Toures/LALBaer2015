@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,6 +28,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+
+import de.hs_mannheim.IB.SS15.OOT.Exceptions.FullCalendarException;
+import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -53,17 +59,20 @@ public class GUI extends JFrame implements ActionListener {
 	private JTable tableStudent;
 
 	private JPanel east;
+	private JPanel south;
 
 	private JButton btnAddRoom;
 	private JButton btnRemoveRoom;
 	private JButton btnStudents;
+	private JButton btnExaminer;
 	private JButton btnSubjects;
 	private JButton btnAddBreak;
 	private JButton btnRemoveBreak;
+	private JButton btnGeneratePlan;
 
 	GUI() {
 		setTitle(TITLE); // set title
-		
+
 		createNewMainController();
 
 		createJMenuBar();
@@ -78,7 +87,6 @@ public class GUI extends JFrame implements ActionListener {
 		pack();
 
 		setLocationRelativeTo(null);
-
 
 	}
 
@@ -161,12 +169,12 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnRemoveRoom) {
 			if (Backend.rooms > 1) {
 				Backend.rooms--;
-				
+
 				backend.updateSchedules();
 				getContentPane().remove(tabTable);
 				createTabTable();
 				getContentPane().add(tabTable, BorderLayout.CENTER);
-				
+
 				revalidate();
 				repaint();
 			} else {
@@ -182,10 +190,23 @@ public class GUI extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnSubjects) {
 			new SubjectGUI(this);
+		} else if (e.getSource() == btnExaminer) {
+			new ExaminerGUI(this);
 		} else if (e.getSource() == btnAddBreak) {
 			new BreakGUI(this);
 		} else if (e.getSource() == btnRemoveBreak) {
 			removeBreakDialog();
+		} else if (e.getSource() == btnGeneratePlan) {
+
+			backend.createExaminer("Name", backend.subjects, new ArrayList<Desire>());
+
+			try {
+				backend.generateExams();
+				backend.generateMasterTable();
+			} catch (FullCalendarException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
@@ -229,7 +250,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	public void createNewMainController() {
-		backend =  new Backend();
+		backend = new Backend();
 
 	}
 
@@ -280,6 +301,10 @@ public class GUI extends JFrame implements ActionListener {
 		createTabTable();
 		getContentPane().add(tabTable, BorderLayout.CENTER);
 
+		// SOUTH Panel
+		createSouthButtons();
+		getContentPane().add(south, BorderLayout.SOUTH);
+
 		// EAST Panel
 		createEastButtons();
 		getContentPane().add(east, BorderLayout.EAST);
@@ -305,7 +330,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	private void createTable() {
-		
+
 		System.out.println();
 
 		// create JTables from DataModels
@@ -315,29 +340,49 @@ public class GUI extends JFrame implements ActionListener {
 
 	}
 
-	private void createEastButtons() {
+	private void createSouthButtons() {
 
-		east = new JPanel();
-		east.setLayout(new GridLayout(6, 1));
+		south = new JPanel();
+		south.setLayout(new GridLayout(1, 4));
 
 		btnAddRoom = new JButton("Raum hinzufügen");
 		btnAddRoom.addActionListener(this);
-		east.add(btnAddRoom);
+		south.add(btnAddRoom);
+
 		btnRemoveRoom = new JButton("Raum entfernen");
 		btnRemoveRoom.addActionListener(this);
-		east.add(btnRemoveRoom);
-		btnStudents = new JButton("Studenten");
-		btnStudents.addActionListener(this);
-		east.add(btnStudents);
+		south.add(btnRemoveRoom);
+
+		btnAddBreak = new JButton("Pause hinzufügen");
+		btnAddBreak.addActionListener(this);
+		south.add(btnAddBreak);
+
+		btnRemoveBreak = new JButton("Pause entfernen");
+		btnRemoveBreak.addActionListener(this);
+		south.add(btnRemoveBreak);
+
+	}
+
+	private void createEastButtons() {
+
+		east = new JPanel();
+		east.setLayout(new GridLayout(3, 1));
+
 		btnSubjects = new JButton("Fächer");
 		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
-		btnAddBreak = new JButton("Pause hinzufügen");
-		btnAddBreak.addActionListener(this);
-		east.add(btnAddBreak);
-		btnRemoveBreak = new JButton("Pause entfernen");
-		btnRemoveBreak.addActionListener(this);
-		east.add(btnRemoveBreak);
+
+//		btnExaminer = new JButton("Prüfer");
+//		btnExaminer.addActionListener(this);
+//		east.add(btnExaminer);
+
+		btnStudents = new JButton("Studenten");
+		btnStudents.addActionListener(this);
+		east.add(btnStudents);
+
+		btnGeneratePlan = new JButton("Plan erstellen");
+		btnGeneratePlan.addActionListener(this);
+		east.add(btnGeneratePlan);
 
 	}
 

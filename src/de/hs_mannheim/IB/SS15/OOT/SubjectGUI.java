@@ -23,6 +23,8 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 	private JButton btnAddSubject;
 	private JButton btnRemoveSubject;
+	private JButton btnAddExaminer;
+	private JButton btnRemoveExaminer;
 
 	//
 	private GUI mainGUI;
@@ -84,6 +86,8 @@ public class SubjectGUI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Fach entfernen", JOptionPane.ERROR_MESSAGE);
 			}
 
+		} else if (e.getSource() == btnAddExaminer) {
+			new ExaminerGUI(mainGUI);
 		}
 
 	}
@@ -112,7 +116,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 	private void createSouthButtons() {
 		south = new JPanel();
-		south.setLayout(new GridLayout(1, 2));
+		south.setLayout(new GridLayout(1, 4));
 
 		btnAddSubject = new JButton("Fach hinzufügen");
 		btnAddSubject.addActionListener(this);
@@ -121,6 +125,14 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		btnRemoveSubject = new JButton("Fach löschen");
 		btnRemoveSubject.addActionListener(this);
 		south.add(btnRemoveSubject);
+		
+		btnAddExaminer = new JButton("Prüfer/Beisitzer hinzufügen");
+		btnAddExaminer.addActionListener(this);
+		south.add(btnAddExaminer);
+		
+		btnRemoveExaminer = new JButton("Prüfer/Beisitzer löschen");
+		btnRemoveExaminer.addActionListener(this);
+		south.add(btnRemoveExaminer);
 
 	}
 
