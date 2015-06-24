@@ -1,5 +1,6 @@
 package de.hs_mannheim.IB.SS15.OOT;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hs_mannheim.IB.SS15.OOT.Exceptions.FullCalendarException;
@@ -10,11 +11,13 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Break;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
-public class Backend {
+public class Backend implements Serializable {
 
 	public static final int TIME_BEGIN = 8 * 60; // 8:00 am
 	public static final int TIME_END = 20 * 60; // 8:00 pm
 	static final int MAX_PARALLEL_EXAMS = 3;
+	
+	static int rooms = 1;
 
 	ArrayList<Subject> subjects;
 	ArrayList<Examinee> examinee;
@@ -24,13 +27,26 @@ public class Backend {
 	ArrayList<Break> breaks;
 	Schedule[] schedule;
 
-	public Backend(Schedule[] schedule) {
-		this.schedule = schedule;
-
+	public Backend() {
 		subjects = new ArrayList<Subject>();
 		examinee = new ArrayList<Examinee>();
 		examiner = new ArrayList<Examiner>();
 		assessor = new ArrayList<Assessor>();
+
+		schedule = new Schedule[3]; // master - profs - students
+		schedule[0] = new Schedule("Masterplan");
+		schedule[1] = new Schedule("ProfsPlan");
+		schedule[2] = new Schedule("StudentPlan");
+
+		updateSchedules();
+	}
+
+	public void updateSchedules() {
+		int rows = 97; // TODO calculate size
+		
+		schedule[0].setTable(new DataModel(rows, 1 + rooms));
+		schedule[1].setTable(new DataModel(rows, 1 + rooms));
+		schedule[2].setTable(new DataModel(rows, 1 + rooms));
 	}
 
 	public Backend(ArrayList<Subject> subjects, ArrayList<Examinee> examinee,
@@ -107,6 +123,14 @@ public class Backend {
 		subjects.add(returnSubject);
 
 		return returnSubject;
+	}
+	
+	public Schedule[] getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Schedule[] schedule) {
+		this.schedule = schedule;
 	}
 
 	public ArrayList<Assessor> getAssessor() {

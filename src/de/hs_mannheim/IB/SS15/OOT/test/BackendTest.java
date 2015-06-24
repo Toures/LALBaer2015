@@ -24,8 +24,9 @@ public class BackendTest {
 
 	@Before
 	public void setUp() throws Exception {
+		backend = new Backend();
 		Schedule[] schedule = { new Schedule("test Schedule") };
-		backend = new Backend(schedule);
+		backend.setSchedule(schedule);
 
 		subjects = backend.getSubjects(); // from Backend
 		desires = new ArrayList<Desire>();

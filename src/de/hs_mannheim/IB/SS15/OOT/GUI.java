@@ -31,12 +31,6 @@ public class GUI extends JFrame implements ActionListener {
 
 	private final static String TITLE = "IM-Planer";
 
-	// TODO copy to Backend
-	private final static int NUM_OF_PLANS = 3;
-
-	private Schedule[] schedule;
-	private DataModel[] tableData;
-
 	private Backend backend;
 
 	// Menüleiste
@@ -68,6 +62,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	GUI() {
 		setTitle(TITLE); // set title
+		
+		createNewMainController();
 
 		createJMenuBar();
 		createLayout();
@@ -82,8 +78,6 @@ public class GUI extends JFrame implements ActionListener {
 
 		setLocationRelativeTo(null);
 
-		// temp
-		backend = createNewMainController();
 
 	}
 
@@ -118,7 +112,7 @@ public class GUI extends JFrame implements ActionListener {
 		// JMenuBar
 		if (e.getSource() == newFile) {
 
-			backend = new Backend(schedule);
+			backend = new Backend();
 
 		} else if (e.getSource() == open) {
 			// Opening FileChooser for open Dialog
@@ -152,9 +146,31 @@ public class GUI extends JFrame implements ActionListener {
 
 		// EastButtons
 		else if (e.getSource() == btnAddRoom) {
-			System.out.println("btnAddRoom");
+
+			Backend.rooms++;
+
+			backend.updateSchedules();
+			getContentPane().remove(tabTable);
+			createTabTable();
+			getContentPane().add(tabTable, BorderLayout.CENTER);
+
+			revalidate();
+			repaint();
+
 		} else if (e.getSource() == btnRemoveRoom) {
-			System.out.println("btnRemoveRoom");
+			if (Backend.rooms > 1) {
+				Backend.rooms--;
+				
+				backend.updateSchedules();
+				getContentPane().remove(tabTable);
+				createTabTable();
+				getContentPane().add(tabTable, BorderLayout.CENTER);
+				
+				revalidate();
+				repaint();
+			} else {
+				JOptionPane.showMessageDialog(this, "Es muss mindestens ein Raum existieren.", "Raum entfernen", JOptionPane.ERROR_MESSAGE);
+			}
 		} else if (e.getSource() == btnStudents) {
 
 			if (backend.getSubjects().size() <= 0) {
@@ -216,8 +232,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	}
 
-	public Backend createNewMainController() {
-		return new Backend(schedule);
+	public void createNewMainController() {
+		backend =  new Backend();
 
 	}
 
@@ -293,21 +309,13 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	private void createTable() {
-
-		// init Arrays
-		schedule = new Schedule[NUM_OF_PLANS];
-		tableData = new DataModel[NUM_OF_PLANS];
-
-		// create Schedulers and Tables
-		for (int i = 0; i < schedule.length; i++) {
-			schedule[i] = new Schedule("Schedule " + i);
-			tableData[i] = new DataModel(97, 5);
-		}
+		
+		System.out.println();
 
 		// create JTables from DataModels
-		tableMaster = new JTable(tableData[0]);
-		tableProfessor = new JTable(tableData[1]);
-		tableStudent = new JTable(tableData[2]);
+		tableMaster = new JTable(backend.getSchedule()[0].getTable());
+		tableProfessor = new JTable(backend.getSchedule()[1].getTable());
+		tableStudent = new JTable(backend.getSchedule()[2].getTable());
 
 	}
 
