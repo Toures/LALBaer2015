@@ -244,6 +244,10 @@ public class Backend implements Serializable {
 		return false;		
 	}
 
+	/**
+	 * This method generates all Exams out of all the given subjects, examinee's and examiners
+	 * @throws IllegalArgumentException if the subject list, examiner list and/or examinee list is empty
+	 */
 	public void generateExams() {
 		if(this.examinee.size() != 0 && this.examiner.size() != 0 && this.subjects.size() != 0){
 
