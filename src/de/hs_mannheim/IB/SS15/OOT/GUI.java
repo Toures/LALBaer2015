@@ -28,7 +28,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class GUI extends JFrame implements ActionListener, Serializable {
+public class GUI extends JFrame implements ActionListener {
 
 	private final static String TITLE = "IM-Planer";
 
