@@ -1,11 +1,12 @@
 package de.hs_mannheim.IB.SS15.OOT.Participants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hs_mannheim.IB.SS15.OOT.Subject;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
-public abstract class Participant {
+public abstract class Participant implements Serializable{
 	
 	protected ArrayList<Subject> subjects = new ArrayList<Subject>();
 	protected String name;

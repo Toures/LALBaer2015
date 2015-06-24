@@ -1,6 +1,8 @@
 package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
-public class Break implements PlanObject{
+import java.io.Serializable;
+
+public class Break implements PlanObject, Serializable{
 
 	private int length;
 	private int time;

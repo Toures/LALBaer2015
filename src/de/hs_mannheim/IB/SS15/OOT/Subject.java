@@ -1,6 +1,8 @@
 package de.hs_mannheim.IB.SS15.OOT;
 
-public class Subject {
+import java.io.Serializable;
+
+public class Subject implements Serializable{
 
 	private String name;
 	private String abbreviation;

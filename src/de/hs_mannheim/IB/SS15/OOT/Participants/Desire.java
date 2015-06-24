@@ -1,6 +1,8 @@
 package de.hs_mannheim.IB.SS15.OOT.Participants;
 
-public class Desire {
+import java.io.Serializable;
+
+public class Desire implements Serializable{
 
 	int[] time = new int[2];
 	String comment;

@@ -1,5 +1,7 @@
 package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
+import java.io.Serializable;
+
 import de.hs_mannheim.IB.SS15.OOT.Exceptions.SameSubjectException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
@@ -8,7 +10,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 import de.hs_mannheim.IB.SS15.OOT.Backend;
 import de.hs_mannheim.IB.SS15.OOT.Subject;
 
-public class Exam implements PlanObject {
+public class Exam implements PlanObject, Serializable{
 
 	private int length;
 	private int start; // Start of the exam will be concluded by the organizing
