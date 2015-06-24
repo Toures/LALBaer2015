@@ -41,7 +41,7 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 	public ExaminerDeleteGUI(GUI gui){
 		this.mainGUI = gui;
 		
-		setTitle("PrÃ¼fer lÃ¶schen");
+		setTitle("Prüfer löschen");
 		
 		createLayout();
 
@@ -56,7 +56,7 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 		
 		//north panel
 		JPanel north = new JPanel();
-		nameLabel = new JLabel("Bitte wÃ¤hlen Sie den zu lÃ¶schenden PrÃ¼fer aus: ");
+		nameLabel = new JLabel("Bitte wählen Sie den zu löschenden Prüfer aus: ");
 		north.add(nameLabel);
 		
 		//center panel
