@@ -39,9 +39,7 @@ public class DesireGUI extends JFrame implements ActionListener{
 			int from = (Integer)fromHoursCombo.getSelectedItem()*60+(int)fromMinutesCombo.getSelectedItem();
 			int to = (Integer)toHoursCombo.getSelectedItem()*60+(int)toMinutesCombo.getSelectedItem();
 
-			String comment = desireComment.getText();
-			System.out.println(comment);
-			participant.addDesire(new Desire(from, to, comment,(Integer)priorityCombo.getSelectedItem()));
+			participant.addDesire(new Desire(from, to, desireComment.getText(),(Integer)priorityCombo.getSelectedItem()));
 
 			this.setVisible(false);
 			this.parent.setEnabled(true);
@@ -50,6 +48,8 @@ public class DesireGUI extends JFrame implements ActionListener{
 		} else if(e.getSource()==cancel){
 			this.setVisible(false);
 			this.parent.setEnabled(true);
+			parent.toFront();
+			parent.repaint();
 		}
 	}
 
@@ -85,6 +85,8 @@ public class DesireGUI extends JFrame implements ActionListener{
 		addWindowListener( new WindowAdapter(){
 			public void windowClosing(WindowEvent arg0){
 				parent.setEnabled(true);
+				parent.toFront();
+				parent.repaint();
 			}
 		});		
 	}

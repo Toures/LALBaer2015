@@ -32,14 +32,20 @@ public class BreakGUI extends JFrame implements ActionListener {
 	//--Actions here
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == ok){
-			this.setVisible(false);
-			this.parent.setEnabled(true);
 			int time = 60*(int)hoursCombo.getSelectedItem()+(int)minutesCombo.getSelectedItem();
 			int length = (int)this.length.getSelectedItem();
+			//send to backend
 			backend.addBreak(time, length);
+			//close window and parent to front
+			setVisible(false);
+			parent.setEnabled(true);
+			parent.toFront();
+			parent.repaint();
 		} else if(e.getSource()==cancel){
-			this.setVisible(false);
-			this.parent.setEnabled(true);
+			setVisible(false);
+			parent.setEnabled(true);
+			parent.toFront();
+			parent.repaint();
 		}
 	}
 
@@ -76,6 +82,8 @@ public class BreakGUI extends JFrame implements ActionListener {
 		addWindowListener( new WindowAdapter(){
 			public void windowClosing(WindowEvent arg0){
 				parent.setEnabled(true);
+				parent.toFront();
+				parent.repaint();
 			}
 		});
 	}
