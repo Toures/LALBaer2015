@@ -88,6 +88,7 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 				
 				revalidate();
 				repaint();
+				mainGUI.refreshTableMenu();
 			} else {
 				JOptionPane.showMessageDialog(this, "Bitte Fach auswählen und Prüfer eingeben", "Prüfer", JOptionPane.ERROR_MESSAGE);
 
