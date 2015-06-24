@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import de.hs_mannheim.IB.SS15.OOT.ExaminerDeleteGUI;
+
 public class SubjectGUI extends JFrame implements ActionListener {
 
 	// Swing
@@ -34,7 +36,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 	public SubjectGUI(GUI gui) {
 		this.mainGUI = gui;
 
-		setTitle("Fächer");
+		setTitle("FÃ¤cher");
 
 		createLayout();
 
@@ -51,15 +53,15 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnAddSubject) {
 
-			String name = JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
+			String name = JOptionPane.showInputDialog(this, "Name des Fachs:", "Fach hinzufÃ¼gen", JOptionPane.PLAIN_MESSAGE);
 			if (name != null) {
-				String abbreviation = JOptionPane.showInputDialog(this, "Kürzel des Fachs:", "Fach hinzufügen", JOptionPane.PLAIN_MESSAGE);
+				String abbreviation = JOptionPane.showInputDialog(this, "KÃ¼rzel des Fachs:", "Fach hinzufÃ¼gen", JOptionPane.PLAIN_MESSAGE);
 				if (abbreviation != null) {
 					try {
 						mainGUI.getBackend().createSubject(name, abbreviation);
 						dataModel.updateData();
 					} catch (Exception error) {
-						JOptionPane.showMessageDialog(this, error.getMessage(), "Fach hinzufügen", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this, error.getMessage(), "Fach hinzufÃ¼gen", JOptionPane.ERROR_MESSAGE);
 					}
 
 				}
@@ -67,7 +69,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == btnRemoveSubject) {
 
-			// dropdown Menü mit den möglichen Fächern
+			// dropdown MenÃ¼ mit den mÃ¶glichen FÃ¤chern
 			ArrayList<Subject> subjects = mainGUI.getBackend().getSubjects();
 
 			if (subjects.size() > 0) {
@@ -83,12 +85,13 @@ public class SubjectGUI extends JFrame implements ActionListener {
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(this, "Es sind noch keine Fächer vorhanden.", "Fach entfernen", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Es sind noch keine FÃ¤cher vorhanden.", "Fach entfernen", JOptionPane.ERROR_MESSAGE);
 			}
 
 		} else if (e.getSource() == btnAddExaminer) {
 			new ExaminerGUI(mainGUI);
-		}
+		} else if (e.getSource() == btnRemoveExaminer) {
+			new ExaminerDeleteGUI(mainGUI);
 
 	}
 
@@ -118,19 +121,19 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		south = new JPanel();
 		south.setLayout(new GridLayout(1, 4));
 
-		btnAddSubject = new JButton("Fach hinzufügen");
+		btnAddSubject = new JButton("Fach hinzufÃ¼gen");
 		btnAddSubject.addActionListener(this);
 		south.add(btnAddSubject);
 
-		btnRemoveSubject = new JButton("Fach löschen");
+		btnRemoveSubject = new JButton("Fach lÃ¶schen");
 		btnRemoveSubject.addActionListener(this);
 		south.add(btnRemoveSubject);
 		
-		btnAddExaminer = new JButton("Prüfer/Beisitzer hinzufügen");
+		btnAddExaminer = new JButton("PrÃ¼fer/Beisitzer hinzufÃ¼gen");
 		btnAddExaminer.addActionListener(this);
 		south.add(btnAddExaminer);
 		
-		btnRemoveExaminer = new JButton("Prüfer/Beisitzer löschen");
+		btnRemoveExaminer = new JButton("PrÃ¼fer/Beisitzer lÃ¶schen");
 		btnRemoveExaminer.addActionListener(this);
 		south.add(btnRemoveExaminer);
 
@@ -175,7 +178,7 @@ class SubjectDataModel extends AbstractTableModel {
 		if (col == 0) {
 			return "Name";
 		} else if (col == 1) {
-			return "Abkürzung";
+			return "AbkÃ¼rzung";
 		} else {
 			return "Anzahl der Studenten";
 		}
