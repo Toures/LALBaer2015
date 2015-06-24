@@ -10,6 +10,7 @@ import org.junit.Test;
 import de.hs_mannheim.IB.SS15.OOT.Backend;
 import de.hs_mannheim.IB.SS15.OOT.Schedule;
 import de.hs_mannheim.IB.SS15.OOT.Subject;
+import de.hs_mannheim.IB.SS15.OOT.Exceptions.FullCalendarException;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
@@ -603,6 +604,8 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+//		assertEquals(1, backend.get);
 
 	}
 
@@ -862,5 +865,176 @@ public class BackendTest {
 		backend.generateExams();
 
 	}
+	
+	/*
+	 * generateMasterTable()
+	 */
 
+	@Test
+	public void generateMasterTableTest_Simple_1Subject_1Examinee() throws FullCalendarException {
+		
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable()
+		backend.generateMasterTable();
+		
+		
+	}
+	
+	@Test
+	public void generateMasterTableTest_Simple_1Subject_2Examinee() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable()
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateMasterTableTest_Simple_2Subject_1Examinee() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		subjects.add(new Subject("Subject02", "sub02"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateMasterTableTest_Simple_2Subject_2Examinee_BothSameSubjects() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		subjects.add(new Subject("Subject02", "sub02"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateMasterTableTest_Simple_2Subject_2Examinee_DifferentSubjects() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		Subject sub01 = new Subject("Subject01", "sub01");
+		Subject sub02 = new Subject("Subject02", "sub02");
+
+		subjects.add(sub01);
+		subjects.add(sub02);
+
+		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
+		tempSubjects1.add(sub01);
+		tempSubjects1.add(sub02);
+		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
+		tempSubjects2.add(sub01);
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable()
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateMasterTableTest_Simple_2Subject_2Examinee_TotallyDifferentSubjects() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		Subject sub01 = new Subject("Subject01", "sub01");
+		Subject sub02 = new Subject("Subject02", "sub02");
+
+		subjects.add(sub01);
+		subjects.add(sub02);
+
+		ArrayList<Subject> tempSubjects1 = new ArrayList<Subject>();
+		tempSubjects1.add(sub01);
+		ArrayList<Subject> tempSubjects2 = new ArrayList<Subject>();
+		tempSubjects2.add(sub02);
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examiner
+		Examinee examinee1 = backend.createExaminee("Examinee01", tempSubjects1, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", tempSubjects2, desires);
+
+		// generateExams
+		backend.generateExams();
+		
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
+
+	
+	
 }
