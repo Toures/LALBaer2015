@@ -715,4 +715,9 @@ public class Backend implements Serializable {
 		
 		schedule[0].setTable(master);
 	}
+
+	public ArrayList<Exam> getExams() {
+		return exams;
+	}
+
 }

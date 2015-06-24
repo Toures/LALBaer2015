@@ -562,6 +562,9 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+		// Tests
+		assertEquals(1, backend.getExams().size());
 
 	}
 
@@ -583,6 +586,9 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+		// Tests
+		assertEquals(2, backend.getExams().size());
 
 	}
 
@@ -605,7 +611,8 @@ public class BackendTest {
 		// generateExams
 		backend.generateExams();
 		
-//		assertEquals(1, backend.get);
+		// Tests
+		assertEquals(1, backend.getExams().size());
 
 	}
 
@@ -628,6 +635,9 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+		// Tests
+		assertEquals(2, backend.getExams().size());
 
 	}
 
@@ -659,6 +669,9 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+		// Tests
+		assertEquals(2, backend.getExams().size());
 
 	}
 
@@ -689,6 +702,9 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
+		
+		// Tests
+		assertEquals(2, backend.getExams().size());
 
 	}
 
