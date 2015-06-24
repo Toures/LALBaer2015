@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import de.hs_mannheim.IB.SS15.OOT.ExaminerDeleteGUI;
+import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 
 public class SubjectGUI extends JFrame implements ActionListener {
 
@@ -148,7 +149,7 @@ class SubjectDataModel extends AbstractTableModel {
 
 	private ArrayList<Subject> subjects;
 
-	private final int COLUMS = 3;
+	private final int COLUMS = 4;
 
 	SubjectDataModel(GUI mainGUI) {
 		this.mainGUI = mainGUI;
@@ -180,8 +181,10 @@ class SubjectDataModel extends AbstractTableModel {
 			return "Name";
 		} else if (col == 1) {
 			return "Abkürzung";
-		} else {
+		} else if (col == 2) {
 			return "Anzahl der Studenten";
+		} else {
+			return "Prüfer";
 		}
 	}
 
@@ -192,8 +195,18 @@ class SubjectDataModel extends AbstractTableModel {
 			return subjects.get(rowIndex).getName();
 		} else if (columnIndex == 1) {
 			return subjects.get(rowIndex).getAbbreviation();
-		} else {
+		} else if (columnIndex == 2) {
 			return subjects.get(rowIndex).getAmountOfExaminees();
+		} else {
+                    
+                    Subject subject = subjects.get(rowIndex);
+                    ArrayList<Examiner> examiners = mainGUI.getBackend().getExaminer();
+                    
+                    String strExaminers = "";
+                    for (Examiner examiner : examiners)
+                        if (examiner.hasSubject(subject))
+                            strExaminers += (!"".equals(strExaminers)?", ":"") + examiner;
+                    return strExaminers;
 		}
 
 	}
