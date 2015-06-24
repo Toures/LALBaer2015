@@ -32,6 +32,7 @@ public class Backend implements Serializable {
 		examinee = new ArrayList<Examinee>();
 		examiner = new ArrayList<Examiner>();
 		assessor = new ArrayList<Assessor>();
+		breaks = new ArrayList<Break>();
 
 		schedule = new Schedule[3]; // master - profs - students
 		schedule[0] = new Schedule("Masterplan");
