@@ -1,9 +1,11 @@
 package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
-public class Text implements PlanObject{
-	
+import java.io.Serializable;
+
+public class Text implements PlanObject, Serializable {
+
 	String text;
-	
+
 	public Text(String text) {
 		this.text = text;
 	}
@@ -17,7 +19,7 @@ public class Text implements PlanObject{
 	public boolean isBreak() {
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return text;

@@ -4,12 +4,14 @@ package de.hs_mannheim.IB.SS15.OOT;
  * Hier befinden sich die Daten, mit der die Tabelle gefüllt wird.
  */
 
+import java.io.Serializable;
+
 import javax.swing.table.AbstractTableModel;
 
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.PlanObject;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Text;
 
-public class DataModel extends AbstractTableModel {
+public class DataModel extends AbstractTableModel implements Serializable {
 	private int amountOfRows;
 	private int amountOfColumns;
 

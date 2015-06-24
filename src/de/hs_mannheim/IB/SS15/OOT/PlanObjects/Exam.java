@@ -10,7 +10,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
 import de.hs_mannheim.IB.SS15.OOT.Backend;
 import de.hs_mannheim.IB.SS15.OOT.Subject;
 
-public class Exam implements PlanObject, Serializable{
+public class Exam implements PlanObject {
 
 	private int length;
 	private int start; // Start of the exam will be concluded by the organizing

@@ -1,12 +1,14 @@
 package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
-public interface PlanObject {
-	
+import java.io.Serializable;
+
+public interface PlanObject extends Serializable {
+
 	/**
 	 * @return Returns length in minutes.
 	 */
 	int getLength();
-	
+
 	/**
 	 * @return true when PlanObject is a break.
 	 */

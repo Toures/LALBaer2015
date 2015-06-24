@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,7 +28,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, Serializable {
 
 	private final static String TITLE = "IM-Planer";
 
@@ -225,11 +226,6 @@ public class GUI extends JFrame implements ActionListener {
 		// dropdown Menü mit den möglichen Pausen
 
 		// TODO breaks??
-	}
-
-	public Schedule createNewSchedule(String name) {
-		return new Schedule(name);
-
 	}
 
 	public void createNewMainController() {

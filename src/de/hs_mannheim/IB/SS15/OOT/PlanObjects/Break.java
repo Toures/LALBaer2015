@@ -2,7 +2,7 @@ package de.hs_mannheim.IB.SS15.OOT.PlanObjects;
 
 import java.io.Serializable;
 
-public class Break implements PlanObject, Serializable{
+public class Break implements PlanObject {
 
 	private int length;
 	private int time;
