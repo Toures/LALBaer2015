@@ -90,9 +90,9 @@ public class SubjectGUI extends JFrame implements ActionListener {
 			}
 
 		} else if (e.getSource() == btnAddExaminer) {
-			new ExaminerGUI(mainGUI);
+			new ExaminerGUI(mainGUI, dataModel);
 		} else if (e.getSource() == btnRemoveExaminer) {
-			new ExaminerDeleteGUI(mainGUI);
+			new ExaminerDeleteGUI(mainGUI, dataModel);
 		}
 
 	}
@@ -162,7 +162,7 @@ class SubjectDataModel extends AbstractTableModel {
 		subjects = mainGUI.getBackend().getSubjects();
 
 		fireTableDataChanged(); // Notifies all listeners that all cell values in the table's rows may have changed.
-
+                
 	}
 
 	@Override

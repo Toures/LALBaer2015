@@ -35,6 +35,7 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 
 	//
 	private GUI mainGUI;
+        private SubjectDataModel subjectDataModel;
 
 	public ExaminerGUI(GUI gui) {
 		this.mainGUI = gui;
@@ -49,6 +50,12 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 		setVisible(true);
 
 	}
+        
+        public ExaminerGUI(GUI gui, SubjectDataModel dataModel)
+        {
+            this(gui);
+            this.subjectDataModel = dataModel;
+        }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -60,6 +67,8 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 				Examiner selectedExaminer = (Examiner) examinerList.getSelectedItem();
 
 				selectedExaminer.addSubject(selectedSubject);
+                                
+                                subjectDataModel.updateData();
 				
 				revalidate();
 				repaint();
@@ -85,6 +94,8 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 				
                                 examinerList.addItem(examiner);
 				examinerList.updateUI();
+                                
+                                subjectDataModel.updateData();
 				
 				revalidate();
 				repaint();

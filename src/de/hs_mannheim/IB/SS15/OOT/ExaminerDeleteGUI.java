@@ -21,6 +21,7 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 	private JComboBox examiner;
 	
 	private GUI mainGUI;
+        private SubjectDataModel subjectDataModel;
 
 	
 	//--Actions here
@@ -30,6 +31,7 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 				Examiner currentNode = (Examiner)examiner.getSelectedItem();
 				mainGUI.getBackend().removeExaminer(currentNode);
 				this.setVisible(false);
+                                subjectDataModel.updateData();
 			}
 			this.setVisible(false);
 		} else if(e.getSource()==cancel){
@@ -49,6 +51,12 @@ public class ExaminerDeleteGUI extends JDialog implements ActionListener{
 		setLocationRelativeTo(gui);
 		setVisible(true);
 	}
+        
+        public ExaminerDeleteGUI(GUI gui, SubjectDataModel dataModel)
+        {
+            this(gui);
+            this.subjectDataModel = dataModel;
+        }
 	
 	private void createLayout(){
 		
