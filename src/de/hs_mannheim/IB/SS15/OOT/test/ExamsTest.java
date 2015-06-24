@@ -152,10 +152,10 @@ public class ExamsTest {
 		assertEquals(true, exam.checkDesires(3, 600));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void checkDesireTest_Assessornull() {
 		exam = new Exam(subjects, examinee2, examiner, null, 25);
-		assertEquals(true, exam.checkDesires(600, 3));
+		assertEquals(true, exam.checkDesires(3, 600));
 	}
 
 	// bei allen legal argumentsTest sind die exams so angelegt, dass die
@@ -286,9 +286,18 @@ public class ExamsTest {
 
 
 	@Test(expected = IllegalArgumentException.class)
-	public void addSubjectTest_NameNull() {
+	public void addSubjectTest_NameNullFullArray() {
 		exam.addSubject(null);
+
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void addSubjectTest_NameNullHalffullArray() {
+
 		exam2.addSubject(null);
+
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void addSubjectTest_NameNullEmptyArray() {
 		exam3.addSubject(null);
 	}
 
@@ -309,10 +318,14 @@ public class ExamsTest {
 	}
 
 	@Test
-	public void addSubjectTest_LegalArguments() {
-		assertEquals(true, exam2.addSubject(subjectOne));
+	public void addSubjectTest_LegalArgumentsArrayHalffull() {
+		assertEquals(true, exam3.addSubject(subjectOne));
+
+	}
+	
+	@Test
+	public void addSubjectTest_LegalArgumentsEmpty() {
 		assertEquals(true, exam2.addSubject(subjectTwo));
-		assertEquals(true, exam3.addSubject(subjectTwo));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -362,6 +375,14 @@ public class ExamsTest {
 		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
 		exam.addExaminer(examiner2);
 		assertEquals(true, exam.getExaminer()[1].equals(examiner2));
+	}
+	@Test
+	public void addExaminerTest_LegalArgumentsFullArray(){
+		examiner[0]=examiner1;
+		examiner[1]=examiner2;
+		exam=new Exam(subjects, examinee1, examiner, assessor1, 25);
+		exam.addExaminer(examiner2);
+		assertEquals(false, exam.getExaminer()[1].equals(examiner3));
 	}
 	@Test(expected = IllegalArgumentException.class)
 	public void AddExamDesiresTest_NegativIntegers(){
