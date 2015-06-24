@@ -79,16 +79,17 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 				ArrayList<Subject> selectedSubjectList = new ArrayList<Subject>();
 				selectedSubjectList.add(selectedSubject);
 
-				mainGUI.getBackend().createExaminer(examinerName, selectedSubjectList, new ArrayList<Desire>());
+				Examiner examiner = mainGUI.getBackend().createExaminer(examinerName, selectedSubjectList, new ArrayList<Desire>());
 				
 				name.setText("");
 				
+                                examinerList.addItem(examiner);
 				examinerList.updateUI();
 				
 				revalidate();
 				repaint();
 			} else {
-				JOptionPane.showMessageDialog(this, "Einer der beiden Werte ist ungültig.", "Prüfer", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Bitte Fach auswählen und Prüfer eingeben", "Prüfer", JOptionPane.ERROR_MESSAGE);
 
 			}
 		}
@@ -123,7 +124,6 @@ public class ExaminerGUI extends JFrame implements ActionListener {
 		center.add(layout1);
 
 		// 2
-
 		JPanel layout2 = new JPanel();
 		layout2.setLayout(new GridLayout(1, 3));
 		Label pruefer = new Label("Prüfer :");
