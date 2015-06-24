@@ -7,6 +7,7 @@ package de.hs_mannheim.IB.SS15.OOT;
 import javax.swing.table.AbstractTableModel;
 
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.PlanObject;
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Text;
 
 public class DataModel extends AbstractTableModel {
 	private int amountOfRows;
@@ -27,6 +28,11 @@ public class DataModel extends AbstractTableModel {
 					public int getLength() {
 						// TODO Auto-generated method stub
 						return 0;
+					}
+					
+					@Override
+					public boolean isBreak() {
+						return false;
 					}
 
 					@Override
@@ -61,13 +67,13 @@ public class DataModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Object getValueAt(int row, int col) {
+	public PlanObject getValueAt(int row, int col) {
 		if (col == 0) {
 			int time = Backend.TIME_BEGIN + 5 * row;
 			if(time % 60 < 10)
-				return (time / 60) + ":0" + (time % 60);
+				return new Text((time / 60) + ":0" + (time % 60));
 			else
-				return (time / 60) + ":" + (time % 60);
+				return new Text((time / 60) + ":" + (time % 60));
 		}
 
 		return data[row][col];

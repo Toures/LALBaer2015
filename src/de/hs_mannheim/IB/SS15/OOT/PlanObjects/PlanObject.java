@@ -6,4 +6,9 @@ public interface PlanObject {
 	 * @return Returns length in minutes.
 	 */
 	int getLength();
+	
+	/**
+	 * @return true when PlanObject is a break.
+	 */
+	boolean isBreak();
 }

@@ -38,6 +38,11 @@ public class Exam implements PlanObject {
 	public int getLength() {
 		return this.length;
 	}
+	
+	@Override
+	public boolean isBreak() {
+		return false;
+	}
 
 	public void setLength(int length) {
 		this.length = length;

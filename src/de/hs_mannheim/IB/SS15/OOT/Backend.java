@@ -7,6 +7,7 @@ import de.hs_mannheim.IB.SS15.OOT.Participants.Assessor;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Desire;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examinee;
 import de.hs_mannheim.IB.SS15.OOT.Participants.Examiner;
+import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Break;
 import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 
 public class Backend {
@@ -20,6 +21,7 @@ public class Backend {
 	ArrayList<Examiner> examiner;
 	ArrayList<Assessor> assessor;
 	ArrayList<Exam> exams;
+	ArrayList<Break> breaks;
 	Schedule[] schedule;
 
 	public Backend(Schedule[] schedule) {
@@ -184,23 +186,43 @@ public class Backend {
 		}
 	}
 
-	public Schedule getExaminerSchedule(Examiner examiner) {
-		Schedule ret = new Schedule("ExaminerSchedule");
-		ArrayList<Exam> temp = schedule[0].getExams();
-		for (int i = 0; i < temp.size(); i++) {
-			if (temp.get(i).getExaminer().equals(examiner)) {
-				ret.getExams().add(temp.get(i));
+	//TODO: Mal nach den neuen Standards machen (Jonas' Aufgabe)
+	//Hinweis zu den Tables und Schedules: Schedule hat eine table, kriegt man über getTable()
+	//schedule[0] ist der master table, sie hat max 3 reihen (MAX_PARALLEL_EXAMS) und vorhanden sind
+	//in dieser Tabelle exams (welche die 5 minuten zwischenpause beinhalten von der länge her) und
+	//breaks.
+	
+//	public Schedule getExaminerSchedule(Examiner examiner) {
+//		Schedule ret = new Schedule("ExaminerSchedule");
+//		ArrayList<Exam> temp = exams;
+//		for (int i = 0; i < temp.size(); i++) {
+//			if (temp.get(i).getExaminer().equals(examiner)) {
+//				ret.getExams().add(temp.get(i));
+//			}
+//		}
+//
+//		return ret;
+//	}
+//
+//	public Schedule getStudentSchedule() {
+//		Schedule ret = new Schedule("StudentSchedule");
+//		ArrayList<Exam> temp = schedule[0].getExams();
+//		ret.setExams(temp);
+//		return ret;
+//	}
+	
+	public void addBreak(int time, int length) {
+		breaks.add(new Break(time, length));
+	}
+	
+	public boolean removeBreak(int time) {
+		for(int i = breaks.size(); i >= 0; i--) {
+			if(time >= breaks.get(i).getTime() && time <= breaks.get(i).getTime()+breaks.get(i).getLength()) {
+				breaks.remove(i);
+				return true;
 			}
 		}
-
-		return ret;
-	}
-
-	public Schedule getStudentSchedule() {
-		Schedule ret = new Schedule("StudentSchedule");
-		ArrayList<Exam> temp = schedule[0].getExams();
-		ret.setExams(temp);
-		return ret;
+		return false;		
 	}
 
 	public void generateExams() {
@@ -603,17 +625,44 @@ public class Backend {
 			int[] i = new int[3];
 			
 			//Look where the next available appointment would be if high, med and low priority
-			//desires are considered.
+			//desires are considered. Breaks are also considered.
 			int examinerRow = favoriteRow[examiner1Index];
 			while( !exam.checkDesires(3, times[examinerRow]+i[0]) ||
-					times[examinerRow]+i[0] > TIME_END - exam.getLength())
+					times[examinerRow]+i[0] > TIME_END - exam.getLength()) {
 				i[0] += 5;
+				for(int k = 0; k < exam.getLength(); k += 5) {
+					if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow) != null) {
+						if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow).isBreak()) {
+							i[0] += k + master.getValueAt(times[examinerRow]+i[0]+k, examinerRow).getLength();
+							break;
+						}
+					}
+				}
+			}
 			while( !exam.checkDesires(2, times[examinerRow]+i[1]) ||
-					times[examinerRow]+i[1] > TIME_END - exam.getLength())
+					times[examinerRow]+i[1] > TIME_END - exam.getLength()) {
 				i[1] += 5;
+				for(int k = 0; k < exam.getLength(); k += 5) {
+					if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow) != null) {
+						if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow).isBreak()) {
+							i[1] += k + master.getValueAt(times[examinerRow]+i[1]+k, examinerRow).getLength();
+							break;
+						}
+					}
+				}
+			}
 			while( !exam.checkDesires(1, times[examinerRow]+i[1]) ||
-					times[examinerRow]+i[2] > TIME_END - exam.getLength())
+					times[examinerRow]+i[2] > TIME_END - exam.getLength()) {
 				i[2] += 5;
+				for(int k = 0; k < exam.getLength(); k += 5) {
+					if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow) != null) {
+						if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow).isBreak()) {
+							i[2] += k + master.getValueAt(times[examinerRow]+i[2]+k, examinerRow).getLength();
+							break;
+						}
+					}
+				}
+			}
 			//First, check low priority desires, if they interfere and if there is no possible
 			//appointment if so, go to higher priority and check if there is a possible appointment
 			if(times[examinerRow]+i[2] > TIME_END - exam.getLength())
@@ -621,25 +670,30 @@ public class Backend {
 					if(times[examinerRow]+i[0] > TIME_END - exam.getLength())
 						throw(new FullCalendarException());
 					else {
-						master.setValueAt(exam, times[examinerRow]+i[0]/5,
+						for(int k = 0; k < exam.getLength(); k += 5)
+							master.setValueAt(exam, times[examinerRow]+i[0]+k/5,
 								examinerRow);
 						if(i[0] == exam.getLength())
 							times[examinerRow] += i[0];
 					}
 				else {
-					master.setValueAt(exam, times[examinerRow]+i[1]/5,
-							examinerRow);
+					for(int k = 0; k < exam.getLength(); k += 5)
+						master.setValueAt(exam, times[examinerRow]+i[1]+k/5,
+								examinerRow);
 					if(i[1] == exam.getLength())
 						times[examinerRow] += i[1];
 				}
 			else {
-				master.setValueAt(exam, times[examinerRow]+i[2]/5,
-						examinerRow);
+				for(int k = 0; k < exam.getLength(); k += 5)
+					master.setValueAt(exam, times[examinerRow]+i[2]+k/5,
+							examinerRow);
 				if(i[2] == exam.getLength())
 					times[examinerRow] += i[2];
 			}
 			
 			tested[this.examinee.indexOf(exam.getExaminee())] = true;
-		}	
+		}
+		
+		schedule[0].setTable(master);
 	}
 }

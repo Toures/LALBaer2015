@@ -8,20 +8,23 @@ import de.hs_mannheim.IB.SS15.OOT.PlanObjects.Exam;
 public class Schedule {
 
 	private String name;
-
-	private ArrayList<Exam> exams;
-	private ArrayList<Break> breaks;
-	
-	public DataModel table;
+	private DataModel table;
 
 	public Schedule(String name) {
-		this.name = name;
-		
+		this.name = name;	
 	}
 
 	public DataModel createNewTable(int rows, int columns) {
 		table = new DataModel(rows, columns);
 		return table;
+	}
+	
+	public void setTable(DataModel table) {
+		this.table = table;
+	}
+	
+	public DataModel getTable() {
+		return this.table;
 	}
 
 	public String getName() {
@@ -31,22 +34,4 @@ public class Schedule {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public ArrayList<Exam> getExams() {
-		return exams;
-	}
-
-	public void setExams(ArrayList<Exam> exams) {
-		this.exams = exams;
-	}
-
-	public ArrayList<Break> getBreaks() {
-		return breaks;
-	}
-
-	public void setBreaks(ArrayList<Break> breaks) {
-		this.breaks = breaks;
-	}
-
-
 }
