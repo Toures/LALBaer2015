@@ -197,15 +197,16 @@ public class GUI extends JFrame implements ActionListener {
 			removeBreakDialog();
 		} else if (e.getSource() == btnGeneratePlan) {
 
-			backend.createExaminer("Name", backend.subjects, new ArrayList<Desire>());
-
 			try {
 				backend.generateExams();
 				backend.generateMasterTable();
-			} catch (FullCalendarException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage(), "Plan erstellen", JOptionPane.ERROR_MESSAGE);
 			}
+
+			backend.getSchedule()[0].getTable().fireTableDataChanged();
+			backend.getSchedule()[1].getTable().fireTableDataChanged();
+			backend.getSchedule()[2].getTable().fireTableDataChanged();
 		}
 
 	}
@@ -245,7 +246,7 @@ public class GUI extends JFrame implements ActionListener {
 	private void removeBreakDialog() {
 		// dropdown Menü mit den möglichen Pausen
 
-		// TODO breaks?? 
+		// TODO breaks??
 	}
 
 	public void createNewMainController() {
@@ -289,16 +290,16 @@ public class GUI extends JFrame implements ActionListener {
 		jMenuBar.add(info);
 	}
 
-	public void refreshTableMenu(){
+	public void refreshTableMenu() {
 		professorTableMenu.removeAll();
-		for(Examiner examiner: getBackend().getExaminer()){
+		for (Examiner examiner : getBackend().getExaminer()) {
 			JMenuItem newExaminerEntry = new JMenuItem(examiner.getName());
 			professorTableMenu.add(newExaminerEntry);
 		}
 	}
 
-	private void createTableMenu(){
-		if(centerTablePanel!=null){
+	private void createTableMenu() {
+		if (centerTablePanel != null) {
 			this.remove(centerTablePanel);
 		}
 
@@ -312,9 +313,9 @@ public class GUI extends JFrame implements ActionListener {
 		studentTableMenu = new JMenu("Studenten");
 		masterTableMenu = new JMenu("Master");
 
-		studentTableMenu.addMouseListener(new MouseAdapter(){
+		studentTableMenu.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				remove(centerTablePanel);
 				centerTablePanel.remove(tableContainer);
 				JScrollPane scrollPane = new JScrollPane(tableStudent);
@@ -324,11 +325,12 @@ public class GUI extends JFrame implements ActionListener {
 				add(centerTablePanel);
 				repaint();
 				revalidate();
-			}});
-		
-		masterTableMenu.addMouseListener(new MouseAdapter(){
+			}
+		});
+
+		masterTableMenu.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				centerTablePanel.remove(tableContainer);
 				JScrollPane scrollPane = new JScrollPane(tableMaster);
 				tableContainer = new JPanel(new BorderLayout());
@@ -419,9 +421,9 @@ public class GUI extends JFrame implements ActionListener {
 		btnSubjects.addActionListener(this);
 		east.add(btnSubjects);
 
-		//		btnExaminer = new JButton("Prüfer");
-		//		btnExaminer.addActionListener(this);
-		//		east.add(btnExaminer);
+		// btnExaminer = new JButton("Prüfer");
+		// btnExaminer.addActionListener(this);
+		// east.add(btnExaminer);
 
 		btnStudents = new JButton("Studenten");
 		btnStudents.addActionListener(this);
