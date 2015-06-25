@@ -145,6 +145,8 @@ public class Backend implements Serializable {
 	public void removeAssessor(Assessor ass) {
 		if (ass == null) {
 			throw new IllegalArgumentException("Beisitzer nicht vorhanden");
+		} else if (assessor.isEmpty()) {
+			throw new IllegalArgumentException("assessor.isEmpty()");
 		} else {
 			for (Assessor a : assessor) {
 				if (a.equals(ass)) {
@@ -159,7 +161,10 @@ public class Backend implements Serializable {
 	public void removeExaminee(Examinee ex) {
 		if (ex == null) {
 			throw new IllegalArgumentException("Student nicht vorhanden");
+		} else if(examinee.isEmpty()) {
+			throw new IllegalArgumentException("examinee.isEmpty()");
 		} else {
+		
 			ArrayList<Subject> subjs = new ArrayList<Subject>();
 			for (int i = 0; i < examinee.size(); i++) {
 				if (examinee.get(i).equals(ex)) {
@@ -178,6 +183,8 @@ public class Backend implements Serializable {
 	public void removeExaminer(Examiner ex) {
 		if (ex == null) {
 			throw new IllegalArgumentException("Prüfer nicht vorhanden");
+		} else if (examiner.isEmpty()) {
+			throw new IllegalArgumentException("examiner.isEmpty()");
 		} else {
 			for (Examiner e : examiner) {
 				if (e.equals(ex)) {
@@ -192,6 +199,8 @@ public class Backend implements Serializable {
 	public void removeSubject(Subject sub) {
 		if (sub == null) {
 			throw new IllegalArgumentException("Keine Fächer vorhanden");
+		}else if (subjects.isEmpty()) {
+			throw new IllegalArgumentException("subjects.isEmpty()");
 		} else {
 			for (Subject s : subjects) {
 				if (s.equals(sub)) {
@@ -229,6 +238,13 @@ public class Backend implements Serializable {
 //	}
 	
 	public void addBreak(int time, int length) {
+		
+		if (time < 0 || length < 0) {
+			throw new IllegalArgumentException("time oder lenth ist negativ");
+		} else if (length == 0) {
+			throw new IllegalArgumentException("length muss größer 0 sein");
+		}
+		
 		breaks.add(new Break(time, length));
 	}
 	
