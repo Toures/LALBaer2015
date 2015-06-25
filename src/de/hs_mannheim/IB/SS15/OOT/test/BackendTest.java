@@ -1,6 +1,6 @@
 package de.hs_mannheim.IB.SS15.OOT.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -424,10 +424,10 @@ public class BackendTest {
 	}
 
 	@Test
-	public void removeSubject_LegalArgument() {		
+	public void removeSubject_LegalArgument() {
 		backend.createSubject("Objektorientierte Programierung", "OOT");
 
-		backend.removeSubject( new Subject("Objektorientierte Programierung", "OOT"));
+		backend.removeSubject(new Subject("Objektorientierte Programierung", "OOT"));
 	}
 
 	/*
@@ -562,7 +562,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
 		assertEquals(1, backend.getExams().size());
 
@@ -586,7 +586,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
 		assertEquals(2, backend.getExams().size());
 
@@ -610,7 +610,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
 		assertEquals(1, backend.getExams().size());
 
@@ -635,7 +635,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
 		assertEquals(2, backend.getExams().size());
 
@@ -669,7 +669,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
 		assertEquals(2, backend.getExams().size());
 
@@ -702,8 +702,132 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// Tests
+		assertEquals(2, backend.getExams().size());
+
+	}
+
+	@Test
+	public void generateExamsTest_Simple_3Subject_1Examinee() {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		subjects.add(new Subject("Subject02", "sub02"));
+		subjects.add(new Subject("Subject03", "sub03"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// Tests
+		assertEquals(2, backend.getExams().size());
+
+	}
+
+	@Test
+	public void generateExamsTest_Simple_3Subject_3Examinee_TotallyDifferentSubjects() {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		Subject subject01 = new Subject("Subject01", "sub01");
+		Subject subject02 = new Subject("Subject02", "sub02");
+		Subject subject03 = new Subject("Subject03", "sub03");
+
+		// subject
+		subjects.add(subject01);
+		subjects.add(subject02);
+		subjects.add(subject03);
+
+		ArrayList<Subject> sub01 = new ArrayList<Subject>();
+		sub01.add(subject01);
+		ArrayList<Subject> sub02 = new ArrayList<Subject>();
+		sub02.add(subject02);
+		ArrayList<Subject> sub03 = new ArrayList<Subject>();
+		sub03.add(subject03);
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", sub01, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", sub02, desires);
+		Examinee examinee3 = backend.createExaminee("Examinee03", sub03, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// Tests
+		assertEquals(3, backend.getExams().size());
+
+	}
+
+	@Test
+	public void generateExamsTest_Simple_Twice_1Subject_1Examinee() {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// Tests
+		assertEquals(1, backend.getExams().size());
+
+		// again generateExams
+		backend.generateExams();
+
+		// again Tests
+		assertEquals(1, backend.getExams().size());
+
+	}
+
+	@Test
+	public void generateExamsTest_Simple_Twice_DifferentAmountOfExaminee() {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// Tests
+		assertEquals(1, backend.getExams().size());
+
+		// examinee
+		Examinee examinee2 = backend.createExaminee("Examinee02", subjects, desires);
+
+		// again generateExams
+		backend.generateExams();
+
+		// again Tests
 		assertEquals(2, backend.getExams().size());
 
 	}
@@ -881,14 +1005,14 @@ public class BackendTest {
 		backend.generateExams();
 
 	}
-	
+
 	/*
 	 * generateMasterTable()
 	 */
 
 	@Test
 	public void generateMasterTableTest_Simple_1Subject_1Examinee() throws FullCalendarException {
-		
+
 		// desires
 		desires.add(new Desire(630, 770, "Kommentar", 2));
 
@@ -903,13 +1027,12 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable()
 		backend.generateMasterTable();
-		
-		
+
 	}
-	
+
 	@Test
 	public void generateMasterTableTest_Simple_1Subject_2Examinee() throws FullCalendarException {
 
@@ -928,7 +1051,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable()
 		backend.generateMasterTable();
 
@@ -952,7 +1075,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable
 		backend.generateMasterTable();
 
@@ -977,7 +1100,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable
 		backend.generateMasterTable();
 
@@ -1011,7 +1134,7 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable()
 		backend.generateMasterTable();
 
@@ -1044,13 +1167,160 @@ public class BackendTest {
 
 		// generateExams
 		backend.generateExams();
-		
+
 		// generateMasterTable
 		backend.generateMasterTable();
 
 	}
 
+	@Test
+	public void generateMasterTableTest_Simple_3Subject_1Examinee() throws FullCalendarException {
 
-	
-	
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		subjects.add(new Subject("Subject02", "sub02"));
+		subjects.add(new Subject("Subject03", "sub03"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateMasterTableTest_Simple_3Subject_3Examinee_TotallyDifferentSubjects() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		Subject subject01 = new Subject("Subject01", "sub01");
+		Subject subject02 = new Subject("Subject02", "sub02");
+		Subject subject03 = new Subject("Subject03", "sub03");
+
+		// subject
+		subjects.add(subject01);
+		subjects.add(subject02);
+		subjects.add(subject03);
+
+		ArrayList<Subject> sub01 = new ArrayList<Subject>();
+		sub01.add(subject01);
+		ArrayList<Subject> sub02 = new ArrayList<Subject>();
+		sub02.add(subject02);
+		ArrayList<Subject> sub03 = new ArrayList<Subject>();
+		sub03.add(subject03);
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		Examinee examinee1 = backend.createExaminee("Examinee01", sub01, desires);
+		Examinee examinee2 = backend.createExaminee("Examinee02", sub02, desires);
+		Examinee examinee3 = backend.createExaminee("Examinee03", sub03, desires);
+
+		// generateExams
+		backend.generateExams();
+
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
+	@Test
+	public void generateExamsTest_generateMasterTableTest_GiantTest_6Subjects_24Examinee() throws FullCalendarException {
+
+		// desires
+		desires.add(new Desire(630, 770, "Kommentar", 2));
+
+		// subject
+		subjects.add(new Subject("Subject01", "sub01"));
+		subjects.add(new Subject("Subject02", "sub02"));
+		subjects.add(new Subject("Subject03", "sub03"));
+		subjects.add(new Subject("Subject04", "sub04"));
+		subjects.add(new Subject("Subject05", "sub05"));
+		subjects.add(new Subject("Subject06", "sub06"));
+
+		// examiner
+		Examiner examiner01 = backend.createExaminer("Examiner01", subjects, new ArrayList<Desire>());
+
+		// examinee
+		backend.createExaminee("Examinee01", subjects, desires);
+		backend.createExaminee("Examinee02", subjects, desires);
+		backend.createExaminee("Examinee03", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(9, backend.getExams().size());
+
+		backend.createExaminee("Examinee04", subjects, desires);
+		backend.createExaminee("Examinee05", subjects, desires);
+		backend.createExaminee("Examinee06", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(18, backend.getExams().size());
+
+		backend.createExaminee("Examinee07", subjects, desires);
+		backend.createExaminee("Examinee08", subjects, desires);
+		backend.createExaminee("Examinee09", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(27, backend.getExams().size());
+
+		backend.createExaminee("Examinee10", subjects, desires);
+		backend.createExaminee("Examinee11", subjects, desires);
+		backend.createExaminee("Examinee12", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(36, backend.getExams().size());
+
+		backend.createExaminee("Examinee13", subjects, desires);
+		backend.createExaminee("Examinee14", subjects, desires);
+		backend.createExaminee("Examinee15", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(45, backend.getExams().size());
+
+		backend.createExaminee("Examinee16", subjects, desires);
+		backend.createExaminee("Examinee17", subjects, desires);
+		backend.createExaminee("Examinee18", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(54, backend.getExams().size());
+
+		backend.createExaminee("Examinee19", subjects, desires);
+		backend.createExaminee("Examinee20", subjects, desires);
+		backend.createExaminee("Examinee21", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(63, backend.getExams().size());
+
+		backend.createExaminee("Examinee22", subjects, desires);
+		backend.createExaminee("Examinee23", subjects, desires);
+		backend.createExaminee("Examinee24", subjects, desires);
+
+		// generateExams
+		backend.generateExams();
+		assertEquals(72, backend.getExams().size());
+
+		// generateMasterTable
+		backend.generateMasterTable();
+
+	}
+
 }
