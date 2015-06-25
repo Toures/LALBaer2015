@@ -623,7 +623,7 @@ public class Backend implements Serializable {
 
 		int times[] = new int[MAX_PARALLEL_EXAMS];
 		DataModel master = schedule[0].createNewTable(
-				(TIME_END - TIME_BEGIN) / 5, MAX_PARALLEL_EXAMS); // New master
+				(TIME_END - TIME_BEGIN) / 5, MAX_PARALLEL_EXAMS+1); // New master
 		// table
 		int favoriteRow[] = new int[examiner.size()]; // The first time an
 		// examiner is added to
@@ -668,9 +668,9 @@ public class Backend implements Serializable {
 					times[examinerRow]+i[0] > TIME_END - exam.getLength()) {
 				i[0] += 5;
 				for(int k = 0; k < exam.getLength(); k += 5) {
-					if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow) != null) {
-						if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow).isBreak()) {
-							i[0] += k + master.getValueAt(times[examinerRow]+i[0]+k, examinerRow).getLength();
+					if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow+1) != null) {
+						if(master.getValueAt(times[examinerRow]+i[0]+k, examinerRow+1).isBreak()) {
+							i[0] += k + master.getValueAt(times[examinerRow]+i[0]+k, examinerRow+1).getLength();
 							break;
 						}
 					}
@@ -680,9 +680,9 @@ public class Backend implements Serializable {
 					times[examinerRow]+i[1] > TIME_END - exam.getLength()) {
 				i[1] += 5;
 				for(int k = 0; k < exam.getLength(); k += 5) {
-					if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow) != null) {
-						if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow).isBreak()) {
-							i[1] += k + master.getValueAt(times[examinerRow]+i[1]+k, examinerRow).getLength();
+					if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow+1) != null) {
+						if(master.getValueAt(times[examinerRow]+i[1]+k, examinerRow+1).isBreak()) {
+							i[1] += k + master.getValueAt(times[examinerRow]+i[1]+k, examinerRow+1).getLength();
 							break;
 						}
 					}
@@ -692,9 +692,9 @@ public class Backend implements Serializable {
 					times[examinerRow]+i[2] > TIME_END - exam.getLength()) {
 				i[2] += 5;
 				for(int k = 0; k < exam.getLength(); k += 5) {
-					if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow) != null) {
-						if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow).isBreak()) {
-							i[2] += k + master.getValueAt(times[examinerRow]+i[2]+k, examinerRow).getLength();
+					if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow+1) != null) {
+						if(master.getValueAt(times[examinerRow]+i[2]+k, examinerRow+1).isBreak()) {
+							i[2] += k + master.getValueAt(times[examinerRow]+i[2]+k, examinerRow+1).getLength();
 							break;
 						}
 					}
@@ -709,7 +709,7 @@ public class Backend implements Serializable {
 					else {
 						for(int k = 0; k < exam.getLength(); k += 5)
 							master.setValueAt(exam, times[examinerRow]+i[0]+k/5,
-								examinerRow);
+								examinerRow+1);
 						if(i[0] == exam.getLength())
 							times[examinerRow] += i[0];
 						exam.addExamDesires(times[examinerRow]+i[0]);
@@ -717,7 +717,7 @@ public class Backend implements Serializable {
 				else {
 					for(int k = 0; k < exam.getLength(); k += 5)
 						master.setValueAt(exam, times[examinerRow]+i[1]+k/5,
-								examinerRow);
+								examinerRow+1);
 					if(i[1] == exam.getLength())
 						times[examinerRow] += i[1];
 					exam.addExamDesires(times[examinerRow]+i[1]);
@@ -725,7 +725,7 @@ public class Backend implements Serializable {
 			else {
 				for(int k = 0; k < exam.getLength(); k += 5)
 					master.setValueAt(exam, times[examinerRow]+i[2]+k/5,
-							examinerRow);
+							examinerRow+1);
 				if(i[2] == exam.getLength())
 					times[examinerRow] += i[2];
 				exam.addExamDesires(times[examinerRow]+i[2]);
@@ -743,8 +743,9 @@ public class Backend implements Serializable {
 	 */
 	public void generateExaminerPlan() {
 		DataModel master = schedule[0].getTable();
-		DataModel masterExaminer = schedule[1].getTable();
-		int examinerNo = 0;
+		DataModel masterExaminer = schedule[1].createNewTable(
+				(TIME_END - TIME_BEGIN) / 5, examiner.size()+1);;
+		int examinerNo = 1;
 		for(Examiner examiner : this.examiner) {
 			masterExaminer.setValueAt(examiner, 0, examinerNo);
 			for(int row = 0; row < master.getRowCount(); row++) {

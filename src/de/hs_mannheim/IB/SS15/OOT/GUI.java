@@ -203,10 +203,21 @@ public class GUI extends JFrame implements ActionListener {
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, e1.getMessage(), "Plan erstellen", JOptionPane.ERROR_MESSAGE);
 			}
+			
+			System.out.println(backend.getSchedule()[0].getTable().getValueAt(0, 0));
+			System.out.println(backend.getSchedule()[0].getTable().getValueAt(0, 1));
+			System.out.println(backend.getSchedule()[0].getTable().getValueAt(1, 0));
+			System.out.println(backend.getSchedule()[0].getTable().getValueAt(0, 1));
 
 			backend.getSchedule()[0].getTable().fireTableDataChanged();
 			backend.getSchedule()[1].getTable().fireTableDataChanged();
 			backend.getSchedule()[2].getTable().fireTableDataChanged();
+			
+			backend.getSchedule()[1].setTable(backend.getSchedule()[0].getTable());
+			backend.getSchedule()[2].setTable(backend.getSchedule()[0].getTable());
+			
+			revalidate();
+			repaint();
 		}
 
 	}
