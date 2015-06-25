@@ -80,9 +80,21 @@ public class StudentsGUI extends JFrame implements ActionListener {
 		if (name != null) {
 
 			try {
-				ArrayList<Subject> tempSub = new ArrayList<Subject>();
-				tempSub.add(currentSubject);
-				gui.getBackend().createExaminee(name, tempSub, new ArrayList<Desire>());
+
+				boolean foundStudent = false;
+				if(gui.getBackend().getExaminee().size() != 0){
+					for(int i = 0; i < gui.getBackend().getExaminee().size(); i++){
+						if(gui.getBackend().getExaminee().get(i).equals(name)){
+							foundStudent = true;
+							gui.getBackend().getExaminee().get(i).addSubject(currentSubject);
+						}
+					}
+				} else{
+					if(!foundStudent){
+						ArrayList<Subject> tempSub = new ArrayList<Subject>();
+						tempSub.add(currentSubject);
+						gui.getBackend().createExaminee(name, tempSub, new ArrayList<Desire>());
+					}}
 				mainTableModel.updateData(); // update jTable
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Student hinzufügen", JOptionPane.ERROR_MESSAGE);
