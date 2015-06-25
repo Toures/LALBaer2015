@@ -308,7 +308,7 @@ public class BackendTest {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void removeAssessor_LegalArgument() {
 		subjects.add(new Subject("Subject01", "Sub01"));
 
@@ -435,12 +435,6 @@ public class BackendTest {
 	 */
 
 	@Test
-	public void removeBreak_emptryList() {
-		assertEquals(false, backend.removeBreak(600));
-
-	}
-
-	@Test
 	public void removeBreak_BreakDoesNotExist() {
 		backend.addBreak(500, 10);
 		assertEquals(false, backend.removeBreak(600));
@@ -450,6 +444,12 @@ public class BackendTest {
 	public void removeBreak_BreakDoesNotExist_NegativeValue() {
 		backend.addBreak(500, 10);
 		assertEquals(false, backend.removeBreak(-600));
+	}
+
+	@Test
+	public void removeBreak_emptryList() {
+		assertEquals(false, backend.removeBreak(600));
+
 	}
 
 	@Test
