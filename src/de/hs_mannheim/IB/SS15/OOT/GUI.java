@@ -155,7 +155,7 @@ public class GUI extends JFrame implements ActionListener {
 			// EastButtons
 		} else if (e.getSource() == btnAddRoom) {
 
-			Backend.rooms++;
+			Backend.MAX_PARALLEL_EXAMS++;
 
 			backend.updateSchedules();
 			getContentPane().remove(centerTablePanel);
@@ -166,8 +166,8 @@ public class GUI extends JFrame implements ActionListener {
 			repaint();
 
 		} else if (e.getSource() == btnRemoveRoom) {
-			if (Backend.rooms > 1) {
-				Backend.rooms--;
+			if (Backend.MAX_PARALLEL_EXAMS > 1) {
+				Backend.MAX_PARALLEL_EXAMS--;
 
 				backend.updateSchedules();
 				getContentPane().remove(centerTablePanel);

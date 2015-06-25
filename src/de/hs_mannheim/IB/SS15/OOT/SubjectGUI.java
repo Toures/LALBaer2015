@@ -92,7 +92,7 @@ public class SubjectGUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == btnAddExaminer) {
 			new ExaminerGUI(mainGUI, dataModel);
 		} else if (e.getSource() == btnRemoveExaminer) {
-			new ExaminerDeleteGUI(mainGUI, dataModel);
+			new ExaminerDeleteGUI(mainGUI);
 		}
 
 	}

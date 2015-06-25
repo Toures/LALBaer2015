@@ -15,9 +15,7 @@ public class Backend implements Serializable {
 
 	public static final int TIME_BEGIN = 8 * 60; // 8:00 am
 	public static final int TIME_END = 20 * 60; // 8:00 pm
-	static final int MAX_PARALLEL_EXAMS = 3;
-	
-	static int rooms = 1;
+	static int MAX_PARALLEL_EXAMS = 1;
 
 	ArrayList<Subject> subjects;
 	ArrayList<Examinee> examinee;
@@ -45,9 +43,9 @@ public class Backend implements Serializable {
 	public void updateSchedules() {
 		int rows = 97; // TODO calculate size
 		
-		schedule[0].setTable(new DataModel(rows, 1 + rooms));
-		schedule[1].setTable(new DataModel(rows, 1 + rooms));
-		schedule[2].setTable(new DataModel(rows, 1 + rooms));
+		schedule[0].setTable(new DataModel(rows, 1 + MAX_PARALLEL_EXAMS));
+		schedule[1].setTable(new DataModel(rows, 1 + MAX_PARALLEL_EXAMS));
+		schedule[2].setTable(new DataModel(rows, 1 + MAX_PARALLEL_EXAMS));
 	}
 
 
