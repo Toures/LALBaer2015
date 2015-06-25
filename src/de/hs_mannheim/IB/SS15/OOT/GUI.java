@@ -218,6 +218,22 @@ public class GUI extends JFrame implements ActionListener {
 			
 			revalidate();
 			repaint();
+			
+//			createTableMenu();
+			
+			createTable();
+			
+			
+			// update table
+			centerTablePanel.remove(tableContainer);
+			JScrollPane scrollPane = new JScrollPane(tableMaster);
+			tableContainer = new JPanel(new BorderLayout());
+			tableContainer.add(scrollPane, BorderLayout.CENTER);
+			centerTablePanel.add(tableContainer);
+			centerTablePanel.add(tableContainer);
+			add(centerTablePanel);
+			repaint();
+			revalidate();
 		}
 
 	}
@@ -353,17 +369,16 @@ public class GUI extends JFrame implements ActionListener {
 				revalidate();
 			}
 		});
-
-		tableMenu.add(studentTableMenu);
 		tableMenu.add(masterTableMenu);
+		tableMenu.add(studentTableMenu);
+	
 		tableMenu.add(professorTableMenu);
 
 		masterTableMenu.add(tableMaster);
 
 		JScrollPane tableScrollPane = new JScrollPane(tableMaster);
-		tableContainer = new JPanel();
-		tableContainer.add(tableScrollPane);
-
+		tableContainer = new JPanel(new BorderLayout());
+		tableContainer.add(tableScrollPane, BorderLayout.CENTER);
 		centerTablePanel.add(tableContainer, BorderLayout.CENTER);
 		centerTablePanel.add(tableMenu, BorderLayout.NORTH);
 
